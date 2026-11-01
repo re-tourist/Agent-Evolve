@@ -56,3 +56,14 @@ rerun3 passed. SDK/local substitutes+reviewed replay6 passed,3 upstream warnings
 Latest narrow semantic/budget/sprint24 passed; related baseline/sprint58 passed;
 Ruff31files/check passed. New O/A/I paid worker contract and3–5 real-case review,
 paired repeats, transient-error recovery and real execution remain outstanding.
+
+2026-11-02 pre-Live: paired Validation uses6 tasks×2 seeds42/43 in the official
+GEPA valset; both arms60 evaluation caps (increased from40 solely to accommodate
+repeats), proposals6, matched search settings. Final Test still2Trials/deduplicated
+identical prompts. Native engine check5 passed, verifies both seeds per candidate.
+New-protocol requests retry only the first HTTP500/502/503/504 once, count every
+attempt and reserve unavailable Usage; second failure stops, no whole-task replay.
+Fixed residual hardcoded30-success-cost stop to configured50; prior tests missed
+this path. Budget tests2 passed, related29 passed, SDK/local transport6 passed.
+Four old Trace cases13/20/25/31 will be re-diagnosed for development only under
+new O/A/I, never copied into reviewed training pool. New reviewed baseline follows.

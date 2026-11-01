@@ -55,7 +55,7 @@
     "seconds": 900
   },
   "search": {
-    "max_evals": 40,
+    "max_evals": 60,
     "minibatch": 3,
     "max_proposals": 6
   },
@@ -64,5 +64,6 @@
   "analysis_request_seconds": 90,
   "trials": 2,
   "tau_protocol": "reviewed-en-text",
-  "budget_predecessor": "../runs/semantic/semantic-study-002/budget.json"
+  "budget_predecessor": "../runs/semantic/semantic-study-002/budget.json",
+  "validation_trials": 2
 }

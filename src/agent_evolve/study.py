@@ -132,7 +132,9 @@ def load(filename):
         or not 1 <= config["task_limits"]["calls"] <= 64
         or not 30 <= config["task_limits"]["seconds"] <= 1200
         or not 2 <= config["search"]["minibatch"] <= 3
-        or not 25 <= config["search"]["max_evals"] <= 40
+        or not 25
+        <= config["search"]["max_evals"]
+        <= (60 if config.get("tau_protocol") == "reviewed-en-text" else 40)
         or not 2 <= config["search"]["max_proposals"] <= 8
         or not 1 <= config["trials"] <= 2
     ):
@@ -258,7 +260,12 @@ class StudyClient(WorkerClient):
             target = directory / "semantic-recovery"
         # Only observable content enters hosted diagnosis. Raw output remains private.
         phase = (
-            "baseline" if directory.is_relative_to(self.directory / "baseline") else "structured"
+            "baseline"
+            if any(
+                directory.is_relative_to(self.directory / name)
+                for name in ("baseline", "development")
+            )
+            else "structured"
         )
         self.execute(
             {
@@ -432,6 +439,31 @@ def run(config, *, live=False, resume=False):
         )
 
     try:
+        if config.get("tau_protocol") == "reviewed-en-text" and not resume:
+            for task_id in ("13", "20", "25", "31"):
+                source = ROOT / "runs/semantic/semantic-study-002/baseline" / task_id / "task"
+                target = directory / "development" / task_id
+                (target / "task").mkdir(parents=True, exist_ok=False)
+                write_json(target / "task/tools.json", read(source / "tools.json"))
+                result = read(source / f"{task_id}.json")
+                write_json(
+                    target / "origin.json",
+                    {
+                        "source": str(source.relative_to(ROOT)),
+                        "protocol": "legacy-registry",
+                        "source_trace_sha256": digest(
+                            (source / f"{task_id}.raw.json").read_text(encoding="utf-8")
+                        ),
+                        "training_evidence": False,
+                        "purpose": "Development counterexample only; "
+                        "never reused in new training pool",
+                    },
+                )
+                client.semantic_feedback(
+                    result, read(source / "prompt.json"), target, {"id": task_id, "split": "train"}
+                )
+            summary["development_cases"] = ["13", "20", "25", "31"]
+            save()
         for task_id in splits.train:
             target = directory / "baseline" / task_id
             if resume and target.exists():

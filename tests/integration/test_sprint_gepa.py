@@ -17,10 +17,30 @@ pytestmark = pytest.mark.skipif(
 
 
 @pytest.mark.parametrize("phase", ["basic", "structured"])
-def test_live_search_contract_with_synthetic_worker(tmp_path, phase):
+@pytest.mark.parametrize("reviewed", [False, True])
+def test_live_search_contract_with_synthetic_worker(tmp_path, phase, reviewed):
     class Client:
         directory = tmp_path
-        budget = Budget.create(tmp_path / "budget.json")
+        config = (
+            {
+                "tau_protocol": "reviewed-en-text",
+                "seed": 42,
+                "search": {"max_evals": 20, "minibatch": 1, "max_proposals": 1},
+            }
+            if reviewed
+            else {}
+        )
+        trial_seed = 42
+        budget = Budget.create(
+            tmp_path / "budget.json",
+            limit=5000,
+            cost_limit_rmb=50,
+            phase_limits={"basic": 5000, "structured": 5000},
+        )
+        validation_seeds = []
+
+        def reflection_episodes(self, messages):
+            return messages
 
         def execute(self, job):
             assert job["kind"] == "reflection"
@@ -34,6 +54,8 @@ def test_live_search_contract_with_synthetic_worker(tmp_path, phase):
         def task(self, candidate, task_id, phase, directory):
             assert task_id in {"1", "6", "7", "8", "10"}
             score = 0.0 if candidate == "seed" else 1.0
+            if task_id in {"8", "10"}:
+                self.validation_seeds.append((candidate, task_id, self.trial_seed))
             result = {
                 "messages": [],
                 "termination_reason": "user_stop",
@@ -48,12 +70,19 @@ def test_live_search_contract_with_synthetic_worker(tmp_path, phase):
                 {},
             )
 
+    client = Client()
     with deny_network():
         result = optimize_live(
-            Client(), phase, "seed", TaskSets(("1", "6", "7"), ("8", "10"), ("5", "9", "12"))
+            client, phase, "seed", TaskSets(("1", "6", "7"), ("8", "10"), ("5", "9", "12"))
         )
     assert result["summary"]["new_candidates_evaluated"] == 1
-    assert result["summary"]["evaluations"] == 6
+    assert result["summary"]["evaluations"] == (10 if reviewed else 6)
+    if reviewed:
+        for candidate in {"seed", "new instruction from synthetic provider"}:
+            for task_id in {"8", "10"}:
+                assert {
+                    s for c, t, s in client.validation_seeds if c == candidate and t == task_id
+                } == {42, 43}
     assert result["best"] == "new instruction from synthetic provider"
     records = [
         json.loads(s) for s in (tmp_path / phase / "evaluations.jsonl").read_text().splitlines()

@@ -28,3 +28,25 @@ def test_one_successor_inherits_usage_cost_and_keeps_predecessor_stop(tmp_path):
     assert new.begin("structured", "reflection", "fixture")["request"] == 756
     with pytest.raises(FileExistsError):
         Budget.carry_forward(tmp_path / "another.json", old.path, phase_limits={"structured": 5000})
+
+
+def test_configured_cost_threshold_and_unknown_retry_reserve(tmp_path):
+    from agent_evolve.baseline import ProviderError
+
+    budget = Budget.create(
+        tmp_path / "budget.json", limit=5000, cost_limit_rmb=50, phase_limits={"baseline": 5000}
+    )
+    state = budget.read()
+    state.update(cost_rmb=31, predecessor={"snapshot": "fixture"})
+    budget.save(state)
+    event = budget.begin("baseline", "agent", "fixture")
+    budget.finish(event, response={"usage": {"prompt_tokens": 1, "completion_tokens": 1}})
+    assert budget.read()["stopped"] is None
+    event = budget.begin("baseline", "agent", "fixture")
+    budget.finish(event, error="Synthetic503", status_code=503, retryable=True)
+    assert budget.read()["unknown_usage_requests"] == 1
+    assert budget.read()["cost_rmb"] > 35.8 and budget.read()["stopped"] is None
+    event = budget.begin("baseline", "agent", "last attempt")
+    with pytest.raises(ProviderError):
+        budget.finish(event, error="Synthetic503", status_code=503)
+    assert budget.read()["requests"] == 3 and budget.read()["stopped"]

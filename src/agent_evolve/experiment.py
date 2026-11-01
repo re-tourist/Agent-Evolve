@@ -59,6 +59,7 @@ def worker(job):
             limit=2,
             max_tokens=job.get("max_tokens", 1024),
             request_seconds=job.get("request_seconds", 30),
+            retry_5xx_once=job.get("tau_protocol") == "reviewed-en-text",
         ) as calls:
             token = ROLE.set(job["kind"])
             try:
@@ -189,6 +190,7 @@ def worker(job):
             job["association"],
             limit=limits.get("calls", 24),
             seconds=limits.get("seconds", 600),
+            retry_5xx_once=job.get("tau_protocol") == "reviewed-en-text",
         ),
     )
     if outcome["status"] == "infrastructure_error":
@@ -330,6 +332,7 @@ class LiveEvaluator:
     def __init__(self, client, phase, ledger, splits):
         self.client, self.phase, self.ledger, self.splits = client, phase, ledger, splits
         self.policy_hash = None
+        self.validation_repeats = {}
 
     def __call__(self, candidate, example):
         self.splits.check(example)
@@ -350,6 +353,15 @@ class LiveEvaluator:
             "status": "error",
         }
         try:
+            prior_seed = self.client.trial_seed if hasattr(self.client, "trial_seed") else None
+            paired = getattr(self.client, "config", {}).get("tau_protocol") == "reviewed-en-text"
+            if paired and example["split"] == "validation":
+                key = (sha, example["id"])
+                repeat = self.validation_repeats.get(key, 0)
+                self.validation_repeats[key] = repeat + 1
+                self.client.trial_seed = self.client.config["seed"] + repeat % 2
+                event["validation_trial"] = repeat % 2 + 1
+                event["trial_seed"] = self.client.trial_seed
             score, feedback, result, prompt, metadata = self.client.task(
                 candidate, example["id"], self.phase, directory
             )
@@ -384,6 +396,8 @@ class LiveEvaluator:
             event["error_type"] = type(exc).__name__
             raise
         finally:
+            if "prior_seed" in locals() and prior_seed is not None:
+                self.client.trial_seed = prior_seed
             # Child creates the evaluation directory only after admission.
             directory.mkdir(parents=True, exist_ok=True)
             write_json(directory / "evaluation.json", event)

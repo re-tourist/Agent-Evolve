@@ -15,6 +15,92 @@ pytestmark = pytest.mark.skipif(
 )
 
 
+def test_reviewed_diagnostic_retry_preserves_unknown_observation(tmp_path, monkeypatch):
+    from agent_evolve.live_runtime import ROLE
+
+    budget = Budget.create(
+        tmp_path / "budget.json", limit=5000, cost_limit_rmb=50, phase_limits={"baseline": 5000}
+    )
+    state = budget.read()
+    state["predecessor"] = {"snapshot": "synthetic"}
+    budget.save(state)
+    directory = tmp_path / "diagnostic"
+    directory.mkdir()
+    view = {
+        "policy": "Confirm changes.",
+        "messages": [
+            {"role": "user", "content": "Change it. ###STOP###"},
+            {"role": "tool", "content": "No subsequent Agent turn."},
+        ],
+    }
+    finding = {
+        "category": "termination_planning",
+        "observation": {
+            "fact": "User stopped before another Agent turn.",
+            "evidence": [{"pointer": "/messages/0/content", "quote": "###STOP###"}],
+        },
+        "attribution": {
+            "responsibility": "Simulator",
+            "certainty": "observed",
+            "hypothesis": None,
+            "agent_decision_pointer": None,
+            "alternatives": "Final business cause unknown.",
+            "reward_causality": "unknown",
+        },
+        "intervention": None,
+        "impact": "No next execution opportunity.",
+    }
+    with deny_network():
+        from litellm import ModelResponse
+        from tau2.utils import llm_utils
+
+        requests = []
+
+        class Temporary503(Exception):
+            status_code = 503
+
+        def fake(**kwargs):
+            requests.append(ROLE.get())
+            if len(requests) == 1:
+                raise Temporary503("Synthetic service fault")
+            return ModelResponse(
+                model=MODEL,
+                choices=[
+                    {
+                        "index": 0,
+                        "finish_reason": "stop",
+                        "message": {
+                            "role": "assistant",
+                            "content": json.dumps({"diagnostics": [finding]}),
+                        },
+                    }
+                ],
+                usage={"prompt_tokens": 20, "completion_tokens": 10, "total_tokens": 30},
+            )
+
+        monkeypatch.setattr(llm_utils, "completion", fake)
+        monkeypatch.setenv("DASHSCOPE_API_KEY", "private-fixture-key")
+        monkeypatch.setenv("DASHSCOPE_BASE_URL", "https://offline.example/v1")
+        worker(
+            {
+                "kind": "diagnostic",
+                "directory": str(directory),
+                "budget": str(budget.path),
+                "phase": "baseline",
+                "association": "fixture",
+                "tau_protocol": "reviewed-en-text",
+                "messages": [
+                    {"role": "system", "content": "fixture"},
+                    {"role": "user", "content": json.dumps(view)},
+                ],
+            }
+        )
+    result = json.loads(json.loads((directory / "output.json").read_text())["text"])
+    assert result["observations"] and not result["diagnostics"]
+    assert requests == ["diagnostic", "diagnostic"] and budget.read()["requests"] == 2
+    assert budget.read()["unknown_usage_requests"] == 1 and not budget.read()["stopped"]
+
+
 @pytest.mark.parametrize("kind", ["reflection", "diagnostic"])
 def test_reflection_worker_guarded_real_sdk_transport(tmp_path, monkeypatch, kind):
     budget = Budget.create(tmp_path / "budget.json")

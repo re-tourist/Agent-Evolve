@@ -305,6 +305,8 @@ def optimize_live(client, phase, seed, splits):
     settings = getattr(client, "config", {}).get("search", {})
     max_evals = settings.get("max_evals", 8)
     batch_size = settings.get("minibatch", 1)
+    paired = getattr(client, "config", {}).get("tau_protocol") == "reviewed-en-text"
+    validation_examples = splits.examples("validation") * (2 if paired else 1)
     proposals = settings.get("max_proposals", 2)
     reflection_options = {
         "reflection_lm": None,
@@ -330,14 +332,14 @@ def optimize_live(client, phase, seed, splits):
     def stop(state):
         budget = client.budget.read()
         return (
-            max_evals - ledger.attempts < 2 * batch_size + len(splits.validation)
+            max_evals - ledger.attempts < 2 * batch_size + len(validation_examples)
             or budget["stopped"] is not None
             or min(
                 budget["limit"] - budget["requests"],
                 budget.get("phase_limits", PHASE_LIMITS)[phase] - budget["phases"][phase],
             )
             < budget.get("task_calls", 24)
-            * (2 * batch_size + len(splits.validation) if settings else 1)
+            * (2 * batch_size + len(validation_examples) if settings else 1)
         )
 
     try:
@@ -345,7 +347,7 @@ def optimize_live(client, phase, seed, splits):
             seed_candidate=seed,
             evaluator=evaluator,
             dataset=splits.examples("train"),
-            valset=splits.examples("validation"),
+            valset=validation_examples,
             test_set=None,
             objective="Optimize Agent Instructions; respect fixed Policy, tools and scoring.",
             config=OptimizeAnythingConfig(
@@ -383,7 +385,7 @@ def optimize_live(client, phase, seed, splits):
         )
     if client.budget.read()["stopped"]:
         raise ProviderError("Shared budget stopped")
-    if len(result.val_subscores[result.best_idx]) != len(splits.validation):
+    if len(result.val_subscores[result.best_idx]) != len(validation_examples):
         raise ValueError("Best candidate does not have complete validation")
     export_result(result, directory)
     events = [

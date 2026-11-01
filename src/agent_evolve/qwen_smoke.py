@@ -197,7 +197,21 @@ def execute_task(config, *, live=False, approved=False, call_context=None, runti
                     excluded_from_task_metrics=True,
                 )
         except Exception as exc:
-            result = normalize({"termination_reason": "infrastructure_error"})
+            # Preserve observable progress without fabricating an official result/reward.
+            partial = {
+                "termination_reason": "infrastructure_error",
+                "messages": [
+                    m.model_dump(mode="json") for m in getattr(orchestrator, "trajectory", [])
+                ],
+            }
+            write_json(
+                directory / "partial_trace.json",
+                {
+                    "source": "partial orchestrator trajectory; not an official result",
+                    **partial,
+                },
+            )
+            result = normalize(partial)
             result["error"] = {"type": type(exc).__name__, "message": "Details withheld"}
         result.update(
             mode="real_api",
@@ -214,7 +228,7 @@ def execute_task(config, *, live=False, approved=False, call_context=None, runti
         # Observed order IDs only; no hidden target or whole-dataset DB export.
         order_ids = {
             call.get("arguments", {}).get("order_id")
-            for message in raw.get("messages", [])
+            for message in result.get("messages", [])
             for call in message.get("tool_calls") or []
         }
         write_json(

@@ -27,6 +27,12 @@ def read(path):
 def algorithm_evidence(directory):
     """A/B/C evidence from actual artifacts; a boolean summary alone is insufficient."""
     directory = Path(directory)
+    review_file = directory / "analysis/semantic_acceptance.json"
+    if not review_file.exists():
+        raise ValueError("GateA: a supported semantic case needs an explicit trace/Policy review")
+    review = read(review_file)
+    if review.get("status") != "supported" or not review.get("notes"):
+        raise ValueError("GateA: semantic acceptance is unproven")
     for phase in ("basic", "structured"):
         s = read(directory / phase / "summary.json")
         if (
@@ -46,6 +52,10 @@ def algorithm_evidence(directory):
         semantic = event.get("feedback", {}).get("structured_feedback", {})
         for d in semantic.get("diagnostics", []):
             if d.get("semantic_review") != "independent_second_pass" or d["category"] == "unknown":
+                continue
+            if review.get("source_evaluation") != str(
+                source_path.relative_to(directory)
+            ) or review.get("observation_sha256") != digest(d["observation"]):
                 continue
             for effective in sorted(
                 (directory / "structured").glob("reflection-*/effective_input.json")
@@ -385,14 +395,15 @@ def run(config, *, live=False, resume=False):
             summary["baseline"].append({"task_id": task_id, **client.pool[task_id]})
             save()
         write_json(directory / "failure_pool.json", client.pool)
-        summary["gates"]["A"] = any(
+        summary["baseline_semantic_candidates"] = any(
             x["reward"] < 1
             and any(d["category"] != "unknown" for d in x["diagnostic"]["diagnostics"])
             for x in client.pool.values()
         )
-        if not summary["gates"]["A"]:
+        summary["gates"]["A"] = False
+        if not any(x["reward"] < 1 for x in client.pool.values()):
             raise ValueError(
-                "No auditable semantic diagnosis of a real training failure; do not claim gateA"
+                "No real training failure; expand the permitted Train coverage, do not invent one"
             )
         basic = run_search(client, "basic", seed, splits)
         summary["search"]["basic"] = basic["summary"]
@@ -411,9 +422,7 @@ def run(config, *, live=False, resume=False):
                 and re.search(r"official_reward\s+0(?:\.0)?\b", text)
             ):
                 consumed.append(str(p.relative_to(directory)))
-        summary["gates"]["B"] = (
-            bool(consumed) and structured["summary"]["new_candidates_evaluated"] >= 2
-        )
+        summary["gates"]["B"] = False
         summary["reflection_failure_evidence"] = consumed
         summary["gates"]["C"] = all(
             s["summary"]["new_candidates_evaluated"] >= 2
@@ -421,6 +430,10 @@ def run(config, *, live=False, resume=False):
             and s["summary"]["best_complete_validation"]
             for s in (basic, structured)
         )
+        proof = algorithm_evidence(directory)
+        summary["gates"].update(A=True, B=True)
+        if not (directory / "algorithm_acceptance.json").exists():
+            write_json(directory / "algorithm_acceptance.json", proof)
         save()
         if not all(summary["gates"].values()):
             raise ValueError("Real semantic/search gates unproven; preserve evidence before Test")

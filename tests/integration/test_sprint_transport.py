@@ -240,3 +240,39 @@ def test_semantic_review_can_reject_grounded_but_unsupported_inference(tmp_path,
         json.loads(json.loads((directory / "output.json").read_text())["text"])["diagnostics"] == []
     )
     assert (directory / "raw_output.json").exists() and (directory / "review_raw.json").exists()
+
+
+def test_provider_failure_preserves_partial_trace_without_official_zero(tmp_path, monkeypatch):
+    from agent_evolve.baseline import ProviderError
+
+    budget = Budget.create(tmp_path / "budget.json")
+    directory = tmp_path / "partial"
+    directory.mkdir()
+
+    with deny_network():
+        from tau2.utils import llm_utils
+
+        def fail(**kwargs):
+            raise RuntimeError("Synthetic provider outage")
+
+        monkeypatch.setattr(llm_utils, "completion", fail)
+        monkeypatch.setenv("DASHSCOPE_API_KEY", "private-fixture-key")
+        monkeypatch.setenv("DASHSCOPE_BASE_URL", "https://offline.example/v1")
+        with pytest.raises(ProviderError):
+            worker(
+                {
+                    "kind": "task",
+                    "directory": str(directory),
+                    "budget": str(budget.path),
+                    "phase": "basic",
+                    "association": "fixture",
+                    "task_id": "1",
+                    "candidate": "seed",
+                    "limits": {"steps": 64},
+                }
+            )
+    trace = json.loads((directory / "task/partial_trace.json").read_text())
+    result = json.loads((directory / "task/1.json").read_text())
+    assert result["status"] == "infrastructure_error" and budget.read()["stopped"]
+    assert trace["messages"] and result["messages"] == trace["messages"]
+    assert result["official_task_reward"] is None and not (directory / "task/1.raw.json").exists()

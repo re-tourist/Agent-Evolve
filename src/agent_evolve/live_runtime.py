@@ -177,7 +177,7 @@ class Budget:
         with self.path.with_suffix(".jsonl").open("a", encoding="utf-8") as stream:
             stream.write(json.dumps(event, ensure_ascii=False, allow_nan=False) + "\n")
 
-    def finish(self, event, response=None, error=None, seconds=0):
+    def finish(self, event, response=None, error=None, seconds=0, status_code=None):
         state = self.read()
         if state["pending"] != event:
             raise ProviderError("Budget state mismatch")
@@ -194,6 +194,7 @@ class Budget:
             )
         ):
             record.update(status="error", error_type=error or "UsageUnavailable")
+            record["http_status"] = status_code if type(status_code) is int else "unavailable"
             state["stopped"] = error or "usage_unavailable"
         else:
             amount = estimate_rmb(usage["prompt_tokens"], usage["completion_tokens"])
@@ -243,7 +244,12 @@ def shared_calls(
         try:
             response = original(**kwargs)
         except Exception as exc:
-            budget.finish(event, error=type(exc).__name__, seconds=time.monotonic() - start)
+            budget.finish(
+                event,
+                error=type(exc).__name__,
+                seconds=time.monotonic() - start,
+                status_code=getattr(exc, "status_code", None),
+            )
             raise AssertionError("unreachable") from None
         if (response.get("model") or "").removeprefix("openai/") != MODEL.removeprefix("openai/"):
             budget.finish(event, error="UnexpectedResponseModel", seconds=time.monotonic() - start)

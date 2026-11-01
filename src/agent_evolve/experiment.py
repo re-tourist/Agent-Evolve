@@ -161,7 +161,7 @@ def worker(job):
         agent_args={"temperature": 0, "max_tokens": 1024, "timeout": 30, "num_retries": 0},
         user_args={"temperature": 0, "max_tokens": 1024, "timeout": 30, "num_retries": 0},
     )
-    qwen.execute_task(
+    outcome = qwen.execute_task(
         config,
         live=True,
         approved=True,
@@ -176,6 +176,8 @@ def worker(job):
             seconds=limits.get("seconds", 600),
         ),
     )
+    if outcome["status"] == "infrastructure_error":
+        raise ProviderError("Task infrastructure fault; partial evidence retained")
 
 
 class WorkerClient:

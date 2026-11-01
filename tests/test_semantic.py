@@ -91,6 +91,13 @@ def test_authorized_64_steps_constructs_m2_config():
     assert config.max_steps == 64
 
 
+def test_citation_or_summary_flag_alone_does_not_certify_semantic_acceptance(tmp_path):
+    from agent_evolve.study import algorithm_evidence
+
+    with pytest.raises(ValueError, match="GateA"):
+        algorithm_evidence(tmp_path)
+
+
 def test_new_shared_limits_and_diagnostic_role(tmp_path):
     budget = Budget.create(
         tmp_path / "budget.json",

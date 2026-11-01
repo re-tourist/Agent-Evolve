@@ -6,6 +6,10 @@ subproject is **GEPA × τ-bench: trace-grounded Prompt optimization for custome
 Agents**. PROJECT_PLAN.md v0.2 is the design baseline.
 
 ## Current scope: M4-A (offline trace diagnostics)
+Active authorization update: implement the approved continuous M3-B2 -> M4-B -> M5
+sprint, with one shared400-request/RMB30 estimated budget and fixed3/2/3 split.
+This supersedes the older no-next-task restrictions below only within that sprint.
+See docs/CORE_EXPERIMENT_RUNBOOK.md; do not add Task0 smoke or expand the budget.
 M3-A and Qwen single-task preparation are retained. Add four small evidence-linked
 diagnostic types and optional structured GEPA feedback using the same official
 Reward. No reference tool path, hidden target or test trace enters reflection.

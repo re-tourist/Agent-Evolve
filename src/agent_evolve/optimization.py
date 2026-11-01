@@ -14,6 +14,7 @@ from pathlib import Path
 from agent_evolve.baseline import (
     Config,
     LiveNotApprovedError,
+    ProviderError,
     deny_network,
     digest,
     git_info,
@@ -292,6 +293,104 @@ def main():
         )
     print(f"Artifacts: {directory}")
     return 0
+
+
+def optimize_live(client, phase, seed, splits):
+    """Authorized sprint-only entry; legacy standalone Live gate remains closed."""
+    from gepa.optimize_anything import OptimizeAnythingConfig, optimize_anything
+
+    from agent_evolve.experiment import LiveEvaluator, QwenReflection
+    from agent_evolve.live_runtime import PHASE_LIMITS, StageBudget
+
+    if phase not in {"basic", "structured"}:
+        raise ValueError("Invalid search phase")
+    directory = client.directory / phase
+    directory.mkdir(exist_ok=False)
+    ledger = CandidateLedger(directory)
+    ledger.candidate(seed)
+    evaluator = LiveEvaluator(client, phase, ledger, splits)
+    reflection = QwenReflection(client, phase, directory)
+
+    def stop(state):
+        budget = client.budget.read()
+        return (
+            8 - ledger.attempts < 4
+            or budget["stopped"] is not None
+            or PHASE_LIMITS[phase] - budget["phases"][phase] < 24
+        )
+
+    try:
+        result = optimize_anything(
+            seed_candidate=seed,
+            evaluator=evaluator,
+            dataset=splits.examples("train"),
+            valset=splits.examples("validation"),
+            test_set=None,
+            objective="Optimize Agent Instructions; respect fixed Policy, tools and scoring.",
+            config=OptimizeAnythingConfig(
+                engine="gepa",
+                max_evals=8,
+                max_concurrency=1,
+                name=phase,
+                output_dir=directory / "gepa",
+                run_dir=str(directory / "gepa_state"),
+                engine_config={
+                    "engine": {
+                        "seed": 42,
+                        "parallel": False,
+                        "use_cloudpickle": False,
+                        "raise_on_exception": True,
+                        "cache_evaluation": False,
+                        "max_candidate_proposals": 2,
+                        "acceptance_criterion": "strict_improvement",
+                    },
+                    "reflection": {
+                        "reflection_lm": reflection,
+                        "reflection_minibatch_size": 1,
+                        "skip_perfect_score": False,
+                    },
+                    "stop_callbacks": [stop],
+                },
+            ),
+        )
+    except StageBudget:
+        from gepa.core.result import GEPAResult
+        from gepa.core.state import GEPAState
+
+        state = GEPAState.load(str(directory / "gepa_state"))
+        result = GEPAResult.from_state(
+            state,
+            run_dir=str(directory / "gepa_state"),
+            seed=42,
+            str_candidate_key="current_candidate",
+        )
+    if client.budget.read()["stopped"]:
+        raise ProviderError("Shared budget stopped")
+    if len(result.val_subscores[result.best_idx]) != 2:
+        raise ValueError("Best candidate does not have complete validation")
+    export_result(result, directory)
+    events = [
+        json.loads(line) for line in (directory / "evaluations.jsonl").read_text().splitlines()
+    ]
+    scored = [event for event in events if event["status"] == "scored"]
+    new_hashes = {event["candidate_sha256"] for event in scored} - {digest(seed)}
+    summary = {
+        "phase": phase,
+        "evaluations": len(events),
+        "scored": len(scored),
+        "new_candidates_evaluated": len(new_hashes),
+        "unique_candidates_evaluated": len({event["candidate_sha256"] for event in scored}),
+        "accepted_candidates_including_seed": len(result.candidates),
+        "reflection_requests": reflection.calls,
+        "train_tasks_observed": sorted(
+            {event["example"]["id"] for event in scored if event["example"]["split"] == "train"}
+        ),
+        "best_sha256": digest(result.best_candidate),
+        "best_validation_score": result.best_score,
+        "best_complete_validation": True,
+    }
+    write_json(directory / "summary.json", summary)
+    return {"best": result.best_candidate, "summary": summary}
 
 
 if __name__ == "__main__":

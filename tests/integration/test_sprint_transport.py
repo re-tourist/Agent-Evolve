@@ -1,0 +1,142 @@
+"""Real pinned SDK, local mock HTTP; exercise the actual Reflection worker, no cloud."""
+
+import json
+import os
+
+import pytest
+
+from agent_evolve.baseline import deny_network
+from agent_evolve.experiment import worker
+from agent_evolve.live_runtime import Budget
+from agent_evolve.qwen_smoke import MODEL
+
+pytestmark = pytest.mark.skipif(
+    os.environ.get("AGENT_EVOLVE_TAU_TESTS") != "1", reason="pinned tau only"
+)
+
+
+def test_reflection_worker_guarded_real_sdk_transport(tmp_path, monkeypatch):
+    budget = Budget.create(tmp_path / "budget.json")
+    directory = tmp_path / "reflection"
+    directory.mkdir()
+    with deny_network():
+        import httpx
+        import litellm
+        from openai import OpenAI
+        from tau2.utils import llm_utils
+
+        requests = []
+
+        def handler(request):
+            body = json.loads(request.content)
+            requests.append(body)
+            assert body["enable_thinking"] is False and body["max_tokens"] == 1024
+            return httpx.Response(
+                200,
+                json={
+                    "id": "offline",
+                    "object": "chat.completion",
+                    "created": 1,
+                    "model": MODEL.split("/")[1],
+                    "choices": [
+                        {
+                            "index": 0,
+                            "finish_reason": "stop",
+                            "message": {
+                                "role": "assistant",
+                                "content": "real SDK mock transport output",
+                            },
+                        }
+                    ],
+                    "usage": {"prompt_tokens": 20, "completion_tokens": 5, "total_tokens": 25},
+                },
+            )
+
+        with httpx.Client(transport=httpx.MockTransport(handler)) as http:
+            api = OpenAI(
+                api_key="fake",
+                base_url="https://offline.example/v1",
+                http_client=http,
+                max_retries=0,
+            )
+            monkeypatch.setattr(
+                llm_utils, "completion", lambda **kwargs: litellm.completion(client=api, **kwargs)
+            )
+            monkeypatch.setenv("DASHSCOPE_API_KEY", "private-fixture-key")
+            monkeypatch.setenv("DASHSCOPE_BASE_URL", "https://offline.example/v1")
+            worker(
+                {
+                    "kind": "reflection",
+                    "directory": str(directory),
+                    "budget": str(budget.path),
+                    "phase": "basic",
+                    "association": 1,
+                    "messages": [{"role": "user", "content": "fixture"}],
+                }
+            )
+    assert len(requests) == budget.read()["requests"] == 1
+    output = json.loads((directory / "output.json").read_text())
+    assert output["text"] == "real SDK mock transport output"
+    assert "private-fixture-key" not in budget.path.with_suffix(".jsonl").read_text()
+
+
+def test_official_task_worker_shared_agent_simulator_accounting(tmp_path, monkeypatch):
+    from agent_evolve.live_runtime import ROLE
+
+    budget = Budget.create(tmp_path / "budget.json")
+    directory = tmp_path / "evaluation"
+    directory.mkdir()
+    with deny_network():
+        from litellm import ModelResponse
+        from tau2.user.user_simulator_base import STOP
+        from tau2.utils import llm_utils
+
+        counts = {"agent": 0, "simulator": 0}
+
+        def fake(**kwargs):
+            role = ROLE.get()
+            counts[role] += 1
+            message = {"role": "assistant", "content": "Inspection complete."}
+            finish = "stop"
+            if role == "simulator":
+                message["content"] = "Inspect my order." if counts[role] == 1 else STOP
+            elif counts[role] == 1:
+                message.update(
+                    content=None,
+                    tool_calls=[
+                        {
+                            "id": "probe",
+                            "type": "function",
+                            "function": {
+                                "name": "get_order_details",
+                                "arguments": '{"order_id":"#W2378156"}',
+                            },
+                        }
+                    ],
+                )
+                finish = "tool_calls"
+            return ModelResponse(
+                model=MODEL,
+                choices=[{"index": 0, "finish_reason": finish, "message": message}],
+                usage={"prompt_tokens": 20, "completion_tokens": 5, "total_tokens": 25},
+            )
+
+        monkeypatch.setattr(llm_utils, "completion", fake)
+        monkeypatch.setenv("DASHSCOPE_API_KEY", "private-fixture-key")
+        monkeypatch.setenv("DASHSCOPE_BASE_URL", "https://offline.example/v1")
+        worker(
+            {
+                "kind": "task",
+                "directory": str(directory),
+                "budget": str(budget.path),
+                "phase": "basic",
+                "association": "synthetic",
+                "task_id": "1",
+                "candidate": "seed",
+            }
+        )
+    result = json.loads((directory / "task/1.json").read_text())
+    assert result["official_raw_reward"] == 0.0
+    assert budget.read()["requests"] == sum(counts.values()) == 4
+    assert counts == {"agent": 2, "simulator": 2}
+    assert not budget.read()["stopped"]

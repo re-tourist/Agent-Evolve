@@ -1,0 +1,12 @@
+{
+  "run_id": "core-sprint-001",
+  "output_dir": "../runs/core",
+  "credentials_dir": "../docs/ali",
+  "gepa_checkout": "../.cache/gepa-source",
+  "tau_python": "../environments/tau/.venv/Scripts/python.exe",
+  "seed_file": "m2/instruction.txt",
+  "seed": 42,
+  "train": ["1", "6", "7"],
+  "validation": ["8", "10"],
+  "test": ["5", "9", "12"]
+}

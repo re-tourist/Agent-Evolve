@@ -111,11 +111,21 @@ def run(run_id, *, live=False, approved=False):
         agent_args={"max_tokens": 1024, "timeout": 30, "num_retries": 0, "temperature": 0},
         user_args={"max_tokens": 1024, "timeout": 30, "num_retries": 0, "temperature": 0},
     )
+    return execute_task(config, live=live, approved=approved)
+
+
+def execute_task(config, *, live=False, approved=False, call_context=None):
+    """Reusable official one-task execution; caller supplies only a bounded call context."""
+    if live and not approved:
+        raise LiveNotApprovedError("Explicit Live authorization required")
+    if config.backend != "tau" or len(config.task_ids) != 1:
+        raise ValueError("One official Retail task required")
+    task_id = config.task_ids[0]
     with deny_network():
         from agent_evolve.tau_backend import TauBackend, build_live_components
 
         backend = TauBackend(config.tau_checkout)
-        task = backend.tasks(("0",))[0]
+        task = backend.tasks((task_id,))[0]
         criteria = task.get("evaluation_criteria") or {}
         if criteria.get("nl_assertions") or "COMMUNICATE" in criteria.get("reward_basis", []):
             raise ValueError("Task requires a Judge; stop and review, preserve official scoring")
@@ -125,7 +135,7 @@ def run(run_id, *, live=False, approved=False):
         orchestrator.agent.get_init_state()
         orchestrator.user.get_init_state()
     if not live:
-        return {"status": "offline_preflight", "task": "0", "trials": 1, "model_calls": 0}
+        return {"status": "offline_preflight", "task": task_id, "trials": 1, "model_calls": 0}
     key = os.environ.get("DASHSCOPE_API_KEY", "").strip()
     if not key:
         raise ValueError("Set DASHSCOPE_API_KEY in the process environment")
@@ -141,9 +151,12 @@ def run(run_id, *, live=False, approved=False):
             "created_utc": datetime.now(UTC).isoformat(),
             "mode": "real_api",
             "trials": 1,
-            "task_id": "0",
+            "task_id": task_id,
             "upstream_sha": TAU_SHA,
             "data_identity": backend.data_identity,
+            "tools_sha256": digest(
+                canonical([t.openai_schema for t in orchestrator.environment.get_tools()])
+            ),
             "language_pack_sha256": hashlib.sha256(
                 (Path(config.tau_checkout) / "data/tau2/multilingual/en/pack.yaml").read_bytes()
             ).hexdigest(),
@@ -163,11 +176,11 @@ def run(run_id, *, live=False, approved=False):
     )
     from tau2.runner import run_simulation
 
-    with qwen_calls(directory, key) as calls:
+    with (call_context or qwen_calls)(directory, key) as calls:
         raw = {}
         try:
             raw = run_simulation(orchestrator).model_dump(mode="json")
-            write_json(directory / "0.raw.json", raw)
+            write_json(directory / f"{task_id}.raw.json", raw)
             result = normalize(raw)
             if calls.failed:
                 result.update(
@@ -180,13 +193,16 @@ def run(run_id, *, live=False, approved=False):
             result["error"] = {"type": type(exc).__name__, "message": "Details withheld"}
         result.update(
             mode="real_api",
+            task_id=task_id,
+            backend="tau",
+            prompt_sha256=digest(prompt.instruction),
             official_raw_reward=(raw.get("reward_info") or {}).get("reward"),
             model_calls=calls.count,
             reward_source="official_evaluator"
             if result["official_task_reward"] is not None
             else "unavailable",
         )
-        write_json(directory / "0.json", result)
+        write_json(directory / f"{task_id}.json", result)
         # Observed order IDs only; no hidden target or whole-dataset DB export.
         order_ids = {
             call.get("arguments", {}).get("order_id")

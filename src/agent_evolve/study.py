@@ -24,6 +24,82 @@ def read(path):
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
+def algorithm_evidence(directory):
+    """A/B/C evidence from actual artifacts; a boolean summary alone is insufficient."""
+    directory = Path(directory)
+    for phase in ("basic", "structured"):
+        s = read(directory / phase / "summary.json")
+        if (
+            s["new_candidates_evaluated"] < 2
+            or len(s["train_tasks_observed"]) < 3
+            or not s["best_complete_validation"]
+        ):
+            raise ValueError("GateC: insufficient real exploration/validation")
+    events = [
+        (p, read(p))
+        for p in sorted((directory / "structured/evaluations").glob("*/evaluation.json"))
+    ]
+    seed_sha = read(directory / "seed_prompt.json")["sha256"]
+    for source_path, event in events:
+        if event.get("score") != 0 or event["example"]["split"] != "train":
+            continue
+        semantic = event.get("feedback", {}).get("structured_feedback", {})
+        for d in semantic.get("diagnostics", []):
+            if d.get("semantic_review") != "independent_second_pass" or d["category"] == "unknown":
+                continue
+            for effective in sorted(
+                (directory / "structured").glob("reflection-*/effective_input.json")
+            ):
+                messages = read(effective)
+                actual = (
+                    messages
+                    if isinstance(messages, str)
+                    else "\n".join(m.get("content", "") for m in messages)
+                )
+                if d["observation"] not in actual or event["candidate_sha256"] not in actual:
+                    continue
+                output = effective.parent / "output.json"
+                generated = read(output)["text"]
+                subsequent = [
+                    e
+                    for p, e in events
+                    if e.get("status") == "scored"
+                    and e["candidate_sha256"] != seed_sha
+                    and p.stat().st_mtime > output.stat().st_mtime
+                    and read(
+                        directory / "structured/candidates" / (e["candidate_sha256"] + ".json")
+                    )["instruction"].strip()
+                    in generated
+                ]
+                if not subsequent:
+                    continue
+                return {
+                    "A": {
+                        "failed_evaluation": str(source_path.relative_to(directory)),
+                        "category": d["category"],
+                        "responsibility": d["responsibility"],
+                        "evidence_source": semantic["evidence_source"],
+                    },
+                    "B": {
+                        "actual_reflection_input": str(effective.relative_to(directory)),
+                        "candidate_evaluations": [
+                            {
+                                "candidate_sha256": e["candidate_sha256"],
+                                "task_id": e["example"]["id"],
+                                "official_reward": e["score"],
+                            }
+                            for e in subsequent
+                        ],
+                    },
+                    "C": {p: read(directory / p / "summary.json") for p in ("basic", "structured")},
+                    "limitation": "Evidence flow and citations verified; semantic correctness "
+                    "still needs human review.",
+                }
+    raise ValueError(
+        "GatesA/B: no reviewed real failure linked to actual Reflection and candidate evaluation"
+    )
+
+
 def load(filename):
     filename = Path(filename).resolve()
     config = read(filename)

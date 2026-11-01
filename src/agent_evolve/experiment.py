@@ -35,6 +35,14 @@ def worker(job):
     directory = Path(job["directory"])
     write_json(directory / "worker_source.json", git_info())
     budget = Budget(job["budget"])
+    if job["kind"] == "task" and job["phase"] == "test":
+        run_dir = Path(job["budget"]).parent
+        if json.loads((run_dir / "config.json").read_text(encoding="utf-8")).get("study"):
+            from agent_evolve.study import algorithm_evidence
+
+            evidence = algorithm_evidence(run_dir)
+            if not (run_dir / "algorithm_acceptance.json").exists():
+                write_json(run_dir / "algorithm_acceptance.json", evidence)
     qwen.BASE = os.environ["DASHSCOPE_BASE_URL"]
     key = os.environ["DASHSCOPE_API_KEY"]
     if job["kind"] in {"reflection", "diagnostic"}:

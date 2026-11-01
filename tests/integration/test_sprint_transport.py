@@ -160,3 +160,83 @@ def test_official_task_worker_shared_agent_simulator_accounting(tmp_path, monkey
     assert budget.read()["requests"] == sum(counts.values()) == 4
     assert counts == {"agent": 2, "simulator": 2}
     assert not budget.read()["stopped"]
+
+
+def test_semantic_review_can_reject_grounded_but_unsupported_inference(tmp_path, monkeypatch):
+    """Synthetic two-response diagnostic; no claim about hosted model quality."""
+    from agent_evolve.live_runtime import ROLE
+
+    budget = Budget.create(tmp_path / "budget.json")
+    directory = tmp_path / "semantic"
+    directory.mkdir()
+    finding = {
+        "category": "communication_confirmation",
+        "finding": "risk",
+        "observation": "A synthetic proposed inference.",
+        "hypothesis": "Unproven cause.",
+        "certainty": "plausible",
+        "responsibility": "Unknown",
+        "impact": "Unproven.",
+        "suggestion": "Check evidence before attributing a cause.",
+        "evidence": [
+            {"pointer": "/messages/0/content", "quote": "Please help."},
+            {"pointer": "/messages/1/content", "quote": "I will help."},
+        ],
+    }
+    payload = {
+        "messages": [
+            {"role": "user", "content": "Please help."},
+            {"role": "assistant", "content": "I will help."},
+        ]
+    }
+    seen = []
+    with deny_network():
+        from litellm import ModelResponse
+        from tau2.utils import llm_utils
+
+        def fake(**kwargs):
+            seen.append(kwargs)
+            assert ROLE.get() == "diagnostic" and kwargs["timeout"] == 90
+            if len(seen) == 2:
+                view = json.loads(kwargs["messages"][1]["content"])
+                assert view["messages"][0]["trace_pointer"] == "/messages/0"
+                assert view["proposed_findings"][0]["observation"] == finding["observation"]
+            return ModelResponse(
+                model=MODEL,
+                choices=[
+                    {
+                        "index": 0,
+                        "finish_reason": "stop",
+                        "message": {
+                            "role": "assistant",
+                            "content": json.dumps(
+                                {"diagnostics": [finding] if len(seen) == 1 else []}
+                            ),
+                        },
+                    }
+                ],
+                usage={"prompt_tokens": 20, "completion_tokens": 5, "total_tokens": 25},
+            )
+
+        monkeypatch.setattr(llm_utils, "completion", fake)
+        monkeypatch.setenv("DASHSCOPE_API_KEY", "private-fixture-key")
+        monkeypatch.setenv("DASHSCOPE_BASE_URL", "https://offline.example/v1")
+        worker(
+            {
+                "kind": "diagnostic",
+                "directory": str(directory),
+                "budget": str(budget.path),
+                "phase": "structured",
+                "association": "fixture",
+                "request_seconds": 90,
+                "messages": [
+                    {"role": "system", "content": "fixture"},
+                    {"role": "user", "content": json.dumps(payload)},
+                ],
+            }
+        )
+    assert len(seen) == budget.read()["requests"] == 2
+    assert (
+        json.loads(json.loads((directory / "output.json").read_text())["text"])["diagnostics"] == []
+    )
+    assert (directory / "raw_output.json").exists() and (directory / "review_raw.json").exists()

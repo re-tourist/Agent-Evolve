@@ -65,6 +65,7 @@ def algorithm_evidence(directory):
                     for p, e in events
                     if e.get("status") == "scored"
                     and e["candidate_sha256"] != seed_sha
+                    and e["candidate_sha256"] != event["candidate_sha256"]
                     and p.stat().st_mtime > output.stat().st_mtime
                     and read(
                         directory / "structured/candidates" / (e["candidate_sha256"] + ".json")

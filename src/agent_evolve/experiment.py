@@ -68,6 +68,14 @@ def worker(job):
 
                     messages[0]["content"] = SYSTEM
                     payload = json.loads(messages[1]["content"])
+                    payload["deterministic_observations"] = diagnose(
+                        {
+                            "messages": payload["messages"],
+                            "termination_reason": payload.get("termination_reason"),
+                            "official_task_reward": payload.get("official_reward"),
+                            "excluded_from_task_metrics": False,
+                        }
+                    )
                     for i, m in enumerate(payload["messages"]):
                         m["trace_pointer"] = f"/messages/{i}"
                     messages[1]["content"] = json.dumps(payload, ensure_ascii=False)

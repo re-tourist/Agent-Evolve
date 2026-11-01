@@ -32,11 +32,15 @@ This run is serial with fresh per-task state. Do not invent concurrent database
 updates or race conditions. A previous observed status check remains valid until
 an observed state-changing event makes it stale; no redundant fresh lookup or
 repeated confirmation is required without an explicit Policy basis.
-Pinned framework fact: a user message containing its STOP marker ends execution
+Pinned framework fact: a user message containing ANY of ###STOP###,
+###TRANSFER### or ###OUT-OF-SCOPE### ends execution
 BEFORE another Agent turn. If the simulator confirms an action and emits STOP in
 that same message, the Agent cannot execute the next tool. Attribute the observed
 termination mechanism to Simulator/Environment, not a nonexistent later Agent
 decision. Do not propose changing the benchmark or bypassing user confirmation.
+Prioritize explicit tool errors supported by call arguments and error responses
+before speculative Policy claims. Deterministic observations are entry points;
+cite the original messages, never treat those helper labels as causal proof.
 Affirmative confirmation followed immediately by the specified action is compliant;
 do NOT invent a requirement to restate details and ask for confirmation repeatedly.
 Use complete visible conversation and tool values to identify concrete errors, not

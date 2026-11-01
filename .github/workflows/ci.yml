@@ -1,0 +1,20 @@
+name: Offline foundation checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  lint-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.9.5"
+      - run: uv python install 3.12
+      - run: uv sync --frozen --group dev
+      # Provisioning uses the package registry; checks themselves are offline.
+      - run: uv run --offline --frozen ruff check .
+      - run: uv run --offline --frozen ruff format --check .
+      - run: uv run --offline --frozen python -m pytest
+      - run: uv run --offline --frozen python -c "import agent_evolve; print(agent_evolve.__version__)"

@@ -166,6 +166,23 @@ instead of reconstructing Python dictionaries or long JSON fragments.
 )
 
 
+OBSERVATION_SYSTEM = (
+    OAI_SYSTEM
+    + """
+This is the FIRST, observation-only pass. Do not decide blame or prescribe repairs.
+Extract up to THREE salient observable decisions, actions, tool errors, changes of
+user request or concrete commitments/promises in the actual conversation. Include
+important facts even if their correctness is unknown; do not require Reward causality.
+For a promise state exactly what was promised, not that it was allowed or forbidden.
+Prefer specific business choices to generic praise. Use the same schema, but
+attribution MUST have responsibility Unknown, certainty unknown, hypothesis null,
+agent_decision_pointer null, reward_causality unknown; intervention MUST be null.
+One exact citation is sufficient for an observed fact. No unsupported assumptions.
+The next pass checks each fact against Policy/tools.
+"""
+)
+
+
 def validate_interventions(text, view):
     """Structural evidence/control checks; not a claim of semantic causal truth."""
     fenced = re.fullmatch(r"\s*```(?:json)?\s*(.*?)\s*```\s*", text, re.S)
@@ -185,7 +202,13 @@ def validate_interventions(text, view):
                 "suggestion": "No intervention established.",
                 "evidence": observation["evidence"],
             }
-            checked = validate_analysis(json.dumps({"diagnostics": [flat]}), view)
+            if item["category"] not in CATEGORIES:
+                raise ValueError("Unknown category")
+            # Literal facts need one exact citation; interventions below still
+            # require full semantic/Policy grounding.
+            checked = validate_analysis(
+                json.dumps({"diagnostics": [dict(flat, category="termination_planning")]}), view
+            )
             if not checked["diagnostics"]:
                 raise ValueError("Observation lacks valid evidence")
             observations.append(

@@ -68,9 +68,9 @@ def worker(job):
                     from agent_evolve.semantic import SYSTEM
 
                     if job.get("tau_protocol") == "reviewed-en-text":
-                        from agent_evolve.semantic import OAI_SYSTEM
+                        from agent_evolve.semantic import OBSERVATION_SYSTEM
 
-                        SYSTEM = OAI_SYSTEM
+                        SYSTEM = OBSERVATION_SYSTEM
                     messages[0]["content"] = SYSTEM
                     payload = json.loads(messages[1]["content"])
                     payload["deterministic_observations"] = diagnose(
@@ -123,11 +123,19 @@ def worker(job):
                         verified = validate_analysis(text, payload)
                     except (ValueError, KeyError, TypeError):
                         verified = {"diagnostics": [], "rejected": [{"reason": "invalid_json"}]}
-                    if verified["diagnostics"]:
+                    if verified["diagnostics"] or (
+                        job.get("tau_protocol") == "reviewed-en-text"
+                        and verified.get("observations")
+                    ):
+                        review_system = SYSTEM
+                        if job.get("tau_protocol") == "reviewed-en-text":
+                            from agent_evolve.semantic import OAI_SYSTEM
+
+                            review_system = OAI_SYSTEM
                         review = [
                             {
                                 "role": "system",
-                                "content": SYSTEM + "\nReview the proposed findings "
+                                "content": review_system + "\nReview the proposed findings "
                                 "independently. Reject claims that do not follow from evidence, "
                                 "invent Policy requirements, blame Agent for Simulator/Environment "
                                 "events, call positive behavior an error, or invent mock bugs. "
@@ -140,7 +148,12 @@ def worker(job):
                                     dict(
                                         payload,
                                         proposed_findings=[
-                                            d.get("layers", d) for d in verified["diagnostics"]
+                                            d.get("layers", d)
+                                            for d in (
+                                                verified.get("observations", [])
+                                                if job.get("tau_protocol") == "reviewed-en-text"
+                                                else verified["diagnostics"]
+                                            )
                                         ],
                                     ),
                                     ensure_ascii=False,
@@ -163,6 +176,16 @@ def worker(job):
                                 "rejected": [{"reason": "invalid_review"}],
                             }
                     write_json(directory / "validation.json", verified)
+                    if job.get("tau_protocol") == "reviewed-en-text":
+                        verified["observations"] = [
+                            {
+                                "category": x["category"],
+                                "observation": x["observation"],
+                                "attribution_status": "Unproven unless supported "
+                                "by an admitted diagnostic",
+                            }
+                            for x in verified.get("observations", [])
+                        ]
                     text = json.dumps(verified, ensure_ascii=False)
                 write_json(directory / "output.json", {"text": text, "calls": calls.count})
             finally:

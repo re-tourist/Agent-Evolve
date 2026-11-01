@@ -67,3 +67,24 @@ Fixed residual hardcoded30-success-cost stop to configured50; prior tests missed
 this path. Budget tests2 passed, related29 passed, SDK/local transport6 passed.
 Four old Trace cases13/20/25/31 will be re-diagnosed for development only under
 new O/A/I, never copied into reviewed training pool. New reviewed baseline follows.
+
+Live reviewed-study-001 started atc137e5b; old ledger bytes/stop retained, successor
+began at755/RMB13.1905564. Four legacy development cases reviewed, not training.
+Task13 proposed valid refund principle but reviewer injected card fragment; rejected
+manually and guard944ed80 tightened. Two-stage Observation then Attribution/Intervention
+now replaces correlated full-verdict review, still max2 diagnosis calls. Observation
+may have one exact reference; actionable rules retain stricter grounded evidence.
+JSON mode added per official Qwen nonthinking support; exact message-content locator
+canonicalization does not repair fabricated quotations. Cases with no admitted
+intervention remain unproven, no success claim from labels/citations.
+
+Real transient500s recovered via counted single retries; original unknown reserves
+are NOT lowered. Future error reserves use buffered actual request-size estimate
+(double UTF8 payload bytes+1024/message/tool, highest price tier), not full model
+context for every small request. This is not a tokenizer/cloud guarantee; compare
+returned Usage against buffer and stop on insufficiency. Existing approximately
+23.5 cumulative occupancy retained, threshold50 unchanged. SDK legacy regression
+fromtools=None in estimator found by local transport test, fixed; rerun1 passed.
+No observed Live fault from that local issue. Relevant unit19/6 and transport6
+passed before that correction; final CI still required. Do not count incomplete
+search or Test as complete while the root process is live.

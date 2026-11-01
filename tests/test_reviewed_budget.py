@@ -50,3 +50,28 @@ def test_configured_cost_threshold_and_unknown_retry_reserve(tmp_path):
     with pytest.raises(ProviderError):
         budget.finish(event, error="Synthetic503", status_code=503)
     assert budget.read()["requests"] == 3 and budget.read()["stopped"]
+
+
+def test_buffered_request_reserve_does_not_rewrite_prior_occupancy(tmp_path):
+    budget = Budget.create(
+        tmp_path / "budget.json", limit=5000, cost_limit_rmb=50, phase_limits={"baseline": 5000}
+    )
+    state = budget.read()
+    state.update(
+        cost_rmb=23.5,
+        predecessor={"snapshot": "synthetic"},
+        unknown_cost_reserve_rmb=19.4,
+        unknown_usage_requests=4,
+    )
+    budget.save(state)
+    event = budget.begin("baseline", "agent", "fixture")
+    budget.finish(
+        event, error="Synthetic500", status_code=500, retryable=True, input_estimate=20_000
+    )
+    assert budget.read()["cost_rmb"] == pytest.approx(23.5 + 0.145152)
+    assert budget.read()["unknown_cost_reserve_rmb"] > 19.4
+    event = budget.begin("baseline", "agent", "fixture")
+    budget.finish(
+        event, response={"usage": {"prompt_tokens": 11, "completion_tokens": 1}}, input_estimate=10
+    )
+    assert budget.read()["stopped"] == "input_estimate_insufficient"

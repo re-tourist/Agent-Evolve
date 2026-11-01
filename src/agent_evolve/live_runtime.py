@@ -245,11 +245,14 @@ class Budget:
         status_code=None,
         retryable=False,
         output_limit=1024,
+        input_estimate=None,
     ):
         state = self.read()
         if state["pending"] != event:
             raise ProviderError("Budget state mismatch")
         record = dict(event, seconds=seconds)
+        if input_estimate is not None:
+            record["buffered_input_estimate_tokens"] = input_estimate
         usage = response.get("usage") if response is not None else None
         if usage is not None:
             usage = usage.model_dump(mode="json") if hasattr(usage, "model_dump") else dict(usage)
@@ -265,7 +268,9 @@ class Budget:
             record["http_status"] = status_code if type(status_code) is int else "unavailable"
             state["stopped"] = error or "usage_unavailable"
             if "predecessor" in state:
-                reserve = 4.8 + output_limit * 48 / 1_000_000
+                reserve = (
+                    input_estimate if input_estimate is not None else 1_000_000
+                ) * 4.8 / 1_000_000 + output_limit * 48 / 1_000_000
                 state["cost_rmb"] += reserve
                 state["unknown_usage_requests"] = state.get("unknown_usage_requests", 0) + 1
                 state["unknown_cost_reserve_rmb"] = (
@@ -283,6 +288,8 @@ class Budget:
             state["cost_rmb"] += amount
             state["input_tokens"] += usage["prompt_tokens"]
             state["output_tokens"] += usage["completion_tokens"]
+            if input_estimate is not None and usage["prompt_tokens"] > input_estimate:
+                state["stopped"] = "input_estimate_insufficient"
         if state["cost_rmb"] >= state.get("cost_limit_rmb", 30):
             state["stopped"] = "cost_limit"
         state["pending"] = None
@@ -321,6 +328,19 @@ def shared_calls(
         if kwargs.get("model") != MODEL:
             budget.stop("unexpected_model")
             raise ProviderError("Unexpected model refused")
+        payload = {
+            k: kwargs[k]
+            for k in ("messages", "tools", "functions", "tool_choice", "response_format")
+            if k in kwargs
+        }
+        byte_count = len(json.dumps(payload, ensure_ascii=False).encode("utf-8"))
+        # Buffered application estimate, NOT a provider tokenizer/billing guarantee.
+        # Two times all payload bytes plus generous per-message/tool framing.
+        input_estimate = min(
+            1_000_000,
+            2 * byte_count
+            + 1024 * (len(kwargs.get("messages") or []) + len(kwargs.get("tools") or []) + 1),
+        )
         for retry in range(2 if retry_5xx_once else 1):
             if attempts >= limit + (
                 1 if retry_5xx_once and (reflection or ROLE.get() == "diagnostic") else 0
@@ -341,11 +361,17 @@ def shared_calls(
                     status_code=getattr(exc, "status_code", None),
                     retryable=retry_5xx_once and retry == 0,
                     output_limit=max_tokens,
+                    input_estimate=input_estimate if retry_5xx_once else None,
                 )
                 time.sleep(1)  # One bounded request retry; never rerun a task.
         if (response.get("model") or "").removeprefix("openai/") != MODEL.removeprefix("openai/"):
             budget.finish(event, error="UnexpectedResponseModel", seconds=time.monotonic() - start)
-        budget.finish(event, response=response, seconds=time.monotonic() - start)
+        budget.finish(
+            event,
+            response=response,
+            seconds=time.monotonic() - start,
+            input_estimate=input_estimate if retry_5xx_once else None,
+        )
         write_json(Path(directory) / f"response-{event['request']:04d}.json", response.to_dict())
         if ROLE.get() == "agent":
             tool_calls = response.choices[0].message.tool_calls

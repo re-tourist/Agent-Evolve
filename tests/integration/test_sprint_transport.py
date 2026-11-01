@@ -97,7 +97,7 @@ def test_reviewed_diagnostic_retry_preserves_unknown_observation(tmp_path, monke
         )
     result = json.loads(json.loads((directory / "output.json").read_text())["text"])
     assert result["observations"] and not result["diagnostics"]
-    assert requests == ["diagnostic", "diagnostic"] and budget.read()["requests"] == 2
+    assert requests == ["diagnostic"] * 3 and budget.read()["requests"] == 3
     assert budget.read()["unknown_usage_requests"] == 1 and not budget.read()["stopped"]
 
 

@@ -319,7 +319,8 @@
       "source_commit": {
         "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
         "dirty": false
-      }
+      },
+      "diagnostic_source": "basic/evaluations/000001/task/8.json"
     },
     {
       "path": "basic/evaluations/000002/task",
@@ -445,7 +446,8 @@
       "source_commit": {
         "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
         "dirty": false
-      }
+      },
+      "diagnostic_source": "basic/evaluations/000002/task/10.json"
     },
     {
       "path": "basic/evaluations/000003/task",
@@ -578,7 +580,8 @@
       "source_commit": {
         "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
         "dirty": false
-      }
+      },
+      "diagnostic_source": "basic/evaluations/000003/task/7.json"
     },
     {
       "path": "basic/evaluations/000004/task",
@@ -711,7 +714,8 @@
       "source_commit": {
         "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
         "dirty": false
-      }
+      },
+      "diagnostic_source": "basic/evaluations/000004/task/7.json"
     },
     {
       "path": "structured/evaluations/000001/task",
@@ -880,7 +884,8 @@
       "source_commit": {
         "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
         "dirty": false
-      }
+      },
+      "diagnostic_source": "structured/evaluations/000001/task/8.json"
     },
     {
       "path": "structured/evaluations/000002/task",
@@ -1022,7 +1027,8 @@
       "source_commit": {
         "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
         "dirty": false
-      }
+      },
+      "diagnostic_source": "structured/evaluations/000002/task/10.json"
     },
     {
       "path": "structured/evaluations/000003/task",
@@ -1171,7 +1177,8 @@
       "source_commit": {
         "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
         "dirty": false
-      }
+      },
+      "diagnostic_source": "structured/evaluations/000003/task/7.json"
     },
     {
       "path": "structured/evaluations/000004/task",
@@ -1322,7 +1329,8 @@
       "source_commit": {
         "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
         "dirty": false
-      }
+      },
+      "diagnostic_source": "structured/evaluations/000004/task/7.json"
     },
     {
       "path": "test/5-baseline/task",
@@ -1437,7 +1445,8 @@
       "source_commit": {
         "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
         "dirty": false
-      }
+      },
+      "diagnostic_source": "test/5-baseline/task/5.json"
     },
     {
       "path": "test/5-basic/task",
@@ -1525,7 +1534,8 @@
       "source_commit": {
         "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
         "dirty": false
-      }
+      },
+      "diagnostic_source": "analysis/5-basic.formal.json"
     },
     {
       "path": "test/5-structured/task",
@@ -1639,7 +1649,8 @@
       "source_commit": {
         "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
         "dirty": false
-      }
+      },
+      "diagnostic_source": "test/5-structured/task/5.json"
     },
     {
       "path": "test/9-baseline/task",
@@ -1758,7 +1769,8 @@
       "source_commit": {
         "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
         "dirty": false
-      }
+      },
+      "diagnostic_source": "test/9-baseline/task/9.json"
     },
     {
       "path": "test/9-basic/task",
@@ -1846,7 +1858,8 @@
       "source_commit": {
         "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
         "dirty": false
-      }
+      },
+      "diagnostic_source": "analysis/9-basic.formal.json"
     },
     {
       "path": "test/9-structured/task",
@@ -1935,7 +1948,8 @@
       "source_commit": {
         "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
         "dirty": false
-      }
+      },
+      "diagnostic_source": "analysis/9-structured.formal.json"
     },
     {
       "path": "test/12-baseline/task",
@@ -2043,7 +2057,8 @@
       "source_commit": {
         "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
         "dirty": false
-      }
+      },
+      "diagnostic_source": "test/12-baseline/task/12.json"
     },
     {
       "path": "test/12-basic/task",
@@ -2154,7 +2169,8 @@
       "source_commit": {
         "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
         "dirty": false
-      }
+      },
+      "diagnostic_source": "test/12-basic/task/12.json"
     },
     {
       "path": "test/12-structured/task",
@@ -2263,7 +2279,8 @@
       "source_commit": {
         "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
         "dirty": false
-      }
+      },
+      "diagnostic_source": "test/12-structured/task/12.json"
     }
   ],
   "test_aggregates": {
@@ -2303,9 +2320,14 @@
     }
   },
   "secret_scan": {
-    "private_file_count": 848,
+    "private_file_count": 851,
     "exact_key_hits": 0,
     "csv_tracked": false,
     "csv_ignored": true
+  },
+  "analysis_views": {
+    "created_after_run": true,
+    "count": 3,
+    "purpose": "resolve diagnostics against formal raw-zero view; original smoke files untouched"
   }
 }

@@ -128,6 +128,8 @@ Step截断时上游直接给官方0，DB/Action/NL明细未执行而为 unavaila
   后Agent继续客套，仍无STOP而截断。原始官方0全部计入三任务分母；不以DB操作成功改为1。
   Step计数是官方orchestrator循环，包含用户/工具交互；导出列表还含初始消息，不能把
   消息条数等同于模型请求数或Steps。详细Trace位置见JSON的path字段。
+  原smoke规范化文件仍保留null注释；运行后另存3份formal分析视图，以原始官方0解析
+  M4的证据指针，JSON的diagnostic_source明确指向该视图；不改写原始文件或评分。
 - **官方满分仍存在Policy问题，Test12 Baseline**：用户要求人工服务后Agent直接调用
   transfer，没有先认证。固定Retail Policy要求对话开始定位用户身份；人工审查据此
   标注遗漏。该任务官方Reward仍为1，Action只匹配1/5，未改分或新建付费Judge。
@@ -182,10 +184,10 @@ environments/gepa/.venv/Scripts/python.exe -m agent_evolve.experiment --config e
 未来复现实验需要新审查的预算/ID。默认不带`--live`仅验证配置、零模型请求。
 安装/固定源码见 [runbook](../CORE_EXPERIMENT_RUNBOOK.md) 与已有M2/M3环境说明。
 
-- 私有完整记录：`runs/core/core-sprint-001/`，含预算事件、848个文件、原始反思、
+- 私有完整记录：`runs/core/core-sprint-001/`，含预算事件、848个原始运行文件及3份派生分析视图、原始反思、
   每任务配置/Prompt/Trace/RewardInfo/最终状态和调用日志；全部保持Git忽略。
 - 公开：经审查的 [标量与诊断](core-sprint-001/results.json)、
-  [实际候选文本](core-sprint-001/prompts.json)、[116项产物哈希](core-sprint-001/manifest.json)
+  [实际候选文本](core-sprint-001/prompts.json)、[119项产物哈希](core-sprint-001/manifest.json)
   与环境快照。无客户完整信息、凭据CSV、原始鉴权字段或完整对话/反思日志。
 - 离线检查及实际命令见 [validation](../validation/CORE_SPRINT_VALIDATION.md)。
   真实模型结果与合成测试成绩严格区分；测试不替代正式效果证据。
@@ -193,6 +195,10 @@ environments/gepa/.venv/Scripts/python.exe -m agent_evolve.experiment --config e
   M4验收：同条件独立Basic/Structured比较与反馈局限，完成。
   M5实验：9/9最终试验、成本、失败与人工审查，完成；GitHub交付独立分支/PR待审查，
   不合并main、不发布Release。
+
+代码及脱敏证据已推送独立 `codex/core-experiment-sprint` 分支，
+[PR #21](https://github.com/re-tourist/Agent-Evolve/pull/21) 待审查。
+报告提交cebe222的远端 lint-test、gepa-offline 均通过；本次尾部记录只补充交付证据。
 
 下一步最有价值的是审查“反思只看到成功样本”与终止/Simulator波动如何影响可用反馈，
 再另行设计一个有明确失败证据、仍隔离Test的小预算实验。本轮不继续搜索或追加任务。

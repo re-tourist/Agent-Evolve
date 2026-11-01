@@ -117,6 +117,9 @@
     "test/9-structured/task/final_state.json": "809d618304da6f09ab1e9e40bda1ff44eb29def2b2c0889546443b6290a7762a",
     "test/9-structured/task/metadata.json": "6e5889e711e2b37da496dfc7c7776c44440e6920798f7cf536ba549cc5ed41e7",
     "test/9-structured/task/prompt.json": "2d044912f75ee74e823f9549c62b8dd15698185599a3d3bae2664b8a5b4d58b4",
-    "test/9-structured/task/summary.json": "0b65274575105fe12cf63d4aafec1ff994f7c55fb77a03c9dd30c56313f9c85e"
+    "test/9-structured/task/summary.json": "0b65274575105fe12cf63d4aafec1ff994f7c55fb77a03c9dd30c56313f9c85e",
+    "analysis/5-basic.formal.json": "fc9542fa88eba582278cc0b80d4036fbaa2ad43a55839f5015e57fa955d91632",
+    "analysis/9-basic.formal.json": "9af9d7a5176fcaced0493b44eae130f1c517ab14df0eba116cd04b5accf7768b",
+    "analysis/9-structured.formal.json": "a468b5deda542cdefc8ace422db077c2c43e50fcde4c2c4a0efcad6c39c663e8"
   }
 }

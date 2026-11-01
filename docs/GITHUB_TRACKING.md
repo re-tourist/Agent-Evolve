@@ -106,3 +106,9 @@ Evidence: `experiments/CORE_EXPERIMENT_REPORT.md`, reviewed scalar/candidate/man
 JSON, `validation/CORE_SPRINT_VALIDATION.md`. Relevant Issue acceptance/evidence
 is updated for review. Branch `codex/core-experiment-sprint` is the authorized
 publication target; review remains open, no main merge or Release.
+
+Publication verified: independent branch pushed,
+[PR #21](https://github.com/re-tourist/Agent-Evolve/pull/21) open against main.
+Issues13–20 were read/updated in place with checked actual-scope criteria and
+immutable report/validation links; all remain open pending review. Both offline
+GitHub jobs passed on report commitcebe222. No default-branch change or Release.

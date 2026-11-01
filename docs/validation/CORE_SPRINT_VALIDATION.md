@@ -55,12 +55,25 @@ global budget stop. Three official step-limit zeros retained; no infrastructure
 error was inserted as a task score. No more requests after the ninth final trial.
 
 The private append-log and all response IDs reconcile306=304task+2reflection.
-848 private output files scanned against the exact credential:0 hits. Published
+848 original outputs plus3 post-run formal analysis views scanned against the
+exact credential:0 hits. The views resolve M4 raw-zero evidence pointers while
+leaving the original smoke null annotations/raw files unchanged. All diagnostic
+pointers were checked against their documented diagnostic_source. Published
 results omit raw customer data/endpoint IDs/auth material. Credential CSV remains
 ignored/untracked and its SHA256 unchanged. Historical smoke recorded18/21
 artifact hashes remain identical, raw official0/1 preserved.
 
-Actual scalar evidence, candidates and a116-entry private artifact hash manifest:
+Actual scalar evidence, candidates and a119-entry private artifact hash manifest:
 `docs/experiments/core-sprint-001/`. Review/publish scan covers the outgoing Git
 objects and public working files; no raw trace/CSV is intended for upload.
 Remote CI results are separate from these local checks and recorded with the PR.
+
+## Publication evidence
+
+Independent branch pushed; [PR21](https://github.com/re-tourist/Agent-Evolve/pull/21)
+is open, not merged. Report commitcebe222 passed both lint-test and gepa-offline
+on GitHub (push and PR checks). Original M3 Issues13–18 and M4/M5 Issues19–20 now
+include actual acceptance evidence and PR links, still open pending user review.
+Outgoing160 blob objects atcebe222 and all public files scanned: no exact Key,
+secret-token pattern or forbidden raw-run/credential path. Closure documentation
+is scanned again before its own push. No main change or Release.

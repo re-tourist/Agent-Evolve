@@ -17,7 +17,7 @@ separate, only after both Best prompts frozen. Never send gold details to GEPA.
 - [x] Live GEPA evaluator/reflection and one continuous entry; offline checks.
 - [x] Freeze source/config before paid work; Basic then Structured then9 Test trials.
 - [x] All raw official failures retained; analyse real feedback/candidates/costs.
-- [ ] Sanitize evidence/history; original Milestone Issues, branch push and review PR.
+- [x] Sanitize evidence/history; original Milestone Issues, branch push and review PR.
 
 API/permission/network/missing usage/unknown model/loop/global budget stop all sends.
 Preserve checkpoints/partial results, no invented score or candidate. Stage request
@@ -37,3 +37,10 @@ both Best=Seed, complete Validation mean0.5, Train coverage7 only. Whole-task
 Baseline3/3, Basic1/3, Structured2/3; all prompts identical, three max_steps zeros
 retained. No improvement claim. Requests306/400, Tokens1,571,250, estimatedRMB1.293252,
 all Usage reconciled, zero provider errors. No additional real calls after completion.
+
+Published reviewed code/evidence on codex/core-experiment-sprint, PR21 open for
+review, no merge/Release. Reused M3 Issues13–18; only necessary M4/M5 Issues19/20
+created under original Milestones, all acceptance evidence updated and Issues
+left open for user review. Report commitcebe222 GitHub lint-test/gepa-offline passed.
+Original raw artifacts preserved; post-run formal score views make diagnostic
+pointers resolvable without editing the old smoke null annotations.

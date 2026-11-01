@@ -129,9 +129,9 @@ def worker(job):
                     ):
                         review_system = SYSTEM
                         if job.get("tau_protocol") == "reviewed-en-text":
-                            from agent_evolve.semantic import OAI_SYSTEM
+                            from agent_evolve.semantic import ATTRIBUTION_TASK, OAI_SYSTEM
 
-                            review_system = OAI_SYSTEM
+                            review_system = OAI_SYSTEM + ATTRIBUTION_TASK
                         review = [
                             {
                                 "role": "system",

@@ -183,6 +183,18 @@ The next pass checks each fact against Policy/tools.
 )
 
 
+ATTRIBUTION_TASK = """
+This is the SECOND attribution/intervention pass. The first pass's Unknown/null
+fields are intentional placeholders, not conclusions. Do not merely copy them.
+Check each observation against the complete trace, Policy and tools. Determine
+actual control/opportunity and synthesize a conditional decision rule IF an Agent
+error is supported. A proposed plan may be wrong before execution: assess its
+business parameters too. If behavior is correct or responsibility is uncertain,
+retain null intervention. Never manufacture an error to produce advice.
+Distinguish process errors from causes of final Reward.
+"""
+
+
 def validate_interventions(text, view):
     """Structural evidence/control checks; not a claim of semantic causal truth."""
     fenced = re.fullmatch(r"\s*```(?:json)?\s*(.*?)\s*```\s*", text, re.S)

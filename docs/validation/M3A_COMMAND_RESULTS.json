@@ -1,0 +1,44 @@
+[
+  {
+    "command": "uv --cache-dir .cache/uv run --offline --frozen python -m pytest --basetemp=.cache/pytest-m3-all-final -q",
+    "exit": 0,
+    "key_output": "76 passed, 13 skipped in 4.82s"
+  },
+  {
+    "command": "uv --cache-dir .cache/uv run --offline --frozen ruff check .",
+    "exit": 0,
+    "key_output": "All checks passed!"
+  },
+  {
+    "command": "uv --cache-dir .cache/uv run --offline --frozen ruff format --check .",
+    "exit": 0,
+    "key_output": "13 files already formatted"
+  },
+  {
+    "command": "AGENT_EVOLVE_GEPA_TESTS=1 AGENT_EVOLVE_TAU_WORKER_TESTS=1 environments/gepa/.venv/Scripts/python.exe -m pytest tests/integration/test_gepa.py --basetemp=.cache/pytest-m3-contract-final -q",
+    "exit": 0,
+    "key_output": "6 passed in 28.38s"
+  },
+  {
+    "command": "AGENT_EVOLVE_TAU_TESTS=1 environments/tau/.venv/Scripts/python.exe -m pytest tests/integration/test_tau.py tests/integration/test_gepa_tau.py --basetemp=.cache/pytest-m3-tau-regression -q",
+    "exit": 0,
+    "key_output": "7 passed, 1 warning in 31.49s"
+  },
+  {
+    "command": "AGENT_EVOLVE_GEPA_TESTS=1 uv --cache-dir .cache/uv run --project environments/gepa --offline --frozen python -m pytest tests/integration/test_gepa.py --basetemp=.cache/pytest-m3-ci-equivalent -q",
+    "exit": 0,
+    "key_output": "5 passed, 1 skipped in 2.22s"
+  },
+  {
+    "command": "uv run --offline --frozen python -c \"import agent_evolve.optimization, agent_evolve.gepa_adapter; print('M3 import OK')\"",
+    "exit": 0,
+    "key_output": "M3 import OK"
+  },
+  {
+    "command": "\"<repo>\\environments\\gepa\\.venv\\Scripts\\python.exe\" -m agent_evolve.optimization --config .cache/m3_final_config.json",
+    "exit": 0,
+    "seconds": 84.234,
+    "stdout": "Iteration 0: Base program full valset score: 0.0 over 1 / 1 examples\nIteration 1: Selected program 0 score: 0.0\nIteration 1: Proposed new text for current_candidate: You are a customer service agent. Follow the fixed domain Policy. Inspect tool results carefully, ask for required information, and confirm changes with the user.\n\nOffline revision 1: inspect tool results carefully.\nIteration 1: New subsample score 0.0 is not better than old score 0.0, skipping\nArtifacts: <repo>\\runs\\m3\\gepa-offline-002\n",
+    "stderr": ""
+  }
+]

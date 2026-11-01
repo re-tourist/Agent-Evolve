@@ -1,0 +1,13 @@
+{
+  "created_utc": "2026-11-01T10:18:57.513193+00:00",
+  "python": "3.12.8",
+  "system": "Windows",
+  "release": "11",
+  "machine": "AMD64",
+  "git_commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
+  "packages": {
+    "agent-evolve": "0.1.0",
+    "pytest": "8.4.2",
+    "ruff": "0.14.14"
+  }
+}

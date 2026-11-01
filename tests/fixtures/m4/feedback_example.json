@@ -1,0 +1,34 @@
+{
+  "source": "runs/m3/gepa-offline-002/evaluations/000002/m2/0.json",
+  "source_sha256": "8a8ea3a06f5fe58a1bd5130500a1173736f3403f9fdcf3404d7f59df465bfd58",
+  "classification": "actual framework scripted trace; not real LLM",
+  "projection": "observable structural fields only; original event indices preserved",
+  "tau_sha": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+  "feedback": {
+    "schema_version": 1,
+    "diagnostics": [
+      {
+        "type": "task_completion",
+        "certain": true,
+        "explanation": "A participant stopped; early termination or business completion cannot be inferred.",
+        "evidence": [
+          {
+            "pointer": "/termination_reason",
+            "value": "user_stop"
+          }
+        ]
+      },
+      {
+        "type": "uncertain_failure",
+        "certain": false,
+        "explanation": "Official Reward is below 1. Trace observations do not establish the cause; do not infer a required tool path.",
+        "evidence": [
+          {
+            "pointer": "/official_task_reward",
+            "value": 0.0
+          }
+        ]
+      }
+    ]
+  }
+}

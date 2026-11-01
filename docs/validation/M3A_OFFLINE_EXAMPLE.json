@@ -1,0 +1,152 @@
+{
+  "run_id": "gepa-offline-002",
+  "classification": "real GEPA engine; scripted Retail; fake reflection",
+  "summary": {
+    "status": "complete",
+    "engine": "real_gepa_offline",
+    "best_candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+    "best_score": 0.0,
+    "evaluations": 3,
+    "gepa_total_evals": 3,
+    "budget": {
+      "exhausted": false,
+      "max_evals": 4,
+      "used": 3,
+      "remaining_evals": 1
+    },
+    "stop_reason": "proposal_limit_or_engine_stop; see GEPA state",
+    "reflection_calls": 1,
+    "test_evaluated": false,
+    "real_model_calls": 0,
+    "token_usage": "unavailable",
+    "benchmark_claim": false,
+    "seconds": 82.90600000000268
+  },
+  "candidate_records": [
+    {
+      "sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "instruction": "You are a customer service agent. Follow the fixed domain Policy. Inspect tool results carefully, ask for required information, and confirm changes with the user.\n",
+      "lineage": "unavailable in callback; see official candidate_pool.json"
+    },
+    {
+      "sha256": "dc689b44f7aa7369e07c47b3014ae7898bdc765eabf351d1de20bf90ed12f057",
+      "instruction": "You are a customer service agent. Follow the fixed domain Policy. Inspect tool results carefully, ask for required information, and confirm changes with the user.\n\nOffline revision 1: inspect tool results carefully.",
+      "lineage": "unavailable in callback; see official candidate_pool.json"
+    }
+  ],
+  "evaluations": [
+    {
+      "sequence": 1,
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "example": {
+        "id": "1",
+        "split": "validation"
+      },
+      "transport": "official_m2_subprocess",
+      "score": 0.0,
+      "status": "scored",
+      "feedback": {
+        "task_id": "1",
+        "status": "task_failure",
+        "score_source": "official_m2_subprocess",
+        "official_reward": 0.0,
+        "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+        "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+        "trace_path": "evaluations\\000001\\m2",
+        "termination_reason": "user_stop",
+        "message_count": 6,
+        "tool_names": [
+          "get_order_details"
+        ],
+        "model_execution": "scripted; no real LLM",
+        "usage": {
+          "agent": null,
+          "user": null
+        }
+      },
+      "seconds": 27.45300000000134
+    },
+    {
+      "sequence": 2,
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "example": {
+        "id": "0",
+        "split": "train"
+      },
+      "transport": "official_m2_subprocess",
+      "score": 0.0,
+      "status": "scored",
+      "feedback": {
+        "task_id": "0",
+        "status": "task_failure",
+        "score_source": "official_m2_subprocess",
+        "official_reward": 0.0,
+        "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+        "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+        "trace_path": "evaluations\\000002\\m2",
+        "termination_reason": "user_stop",
+        "message_count": 6,
+        "tool_names": [
+          "get_order_details"
+        ],
+        "model_execution": "scripted; no real LLM",
+        "usage": {
+          "agent": null,
+          "user": null
+        }
+      },
+      "seconds": 27.75
+    },
+    {
+      "sequence": 3,
+      "candidate_sha256": "dc689b44f7aa7369e07c47b3014ae7898bdc765eabf351d1de20bf90ed12f057",
+      "example": {
+        "id": "0",
+        "split": "train"
+      },
+      "transport": "official_m2_subprocess",
+      "score": 0.0,
+      "status": "scored",
+      "feedback": {
+        "task_id": "0",
+        "status": "task_failure",
+        "score_source": "official_m2_subprocess",
+        "official_reward": 0.0,
+        "candidate_sha256": "dc689b44f7aa7369e07c47b3014ae7898bdc765eabf351d1de20bf90ed12f057",
+        "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+        "trace_path": "evaluations\\000003\\m2",
+        "termination_reason": "user_stop",
+        "message_count": 6,
+        "tool_names": [
+          "get_order_details"
+        ],
+        "model_execution": "scripted; no real LLM",
+        "usage": {
+          "agent": null,
+          "user": null
+        }
+      },
+      "seconds": 27.65599999999904
+    }
+  ],
+  "best": {
+    "instruction": "You are a customer service agent. Follow the fixed domain Policy. Inspect tool results carefully, ask for required information, and confirm changes with the user.\n",
+    "sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+    "best_index": 0,
+    "validation_score": 0.0,
+    "basis": "official GEPA validation selection"
+  },
+  "accepted_pool": [
+    {
+      "index": 0,
+      "candidate": {
+        "current_candidate": "You are a customer service agent. Follow the fixed domain Policy. Inspect tool results carefully, ask for required information, and confirm changes with the user.\n"
+      },
+      "parents": [
+        null
+      ],
+      "validation_score": 0.0
+    }
+  ],
+  "full_local_artifacts": "runs/m3/gepa-offline-002"
+}

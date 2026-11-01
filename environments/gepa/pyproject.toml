@@ -1,0 +1,10 @@
+[project]
+name = "agent-evolve-gepa-env"
+version = "0.0.0"
+requires-python = ">=3.12,<3.13"
+dependencies = ["agent-evolve", "gepa==0.1.4", "pytest>=8.3,<9"]
+
+[tool.uv.sources]
+agent-evolve = { path = "../..", editable = true }
+# Expected ignored source checkout; runtime validates exact SHA/clean tracked tree.
+gepa = { path = "../../.cache/gepa-source", editable = true }

@@ -1,0 +1,61 @@
+{
+  "timestamp_utc": "2026-11-01T03:19:10.189569+00:00",
+  "checks": [
+    {
+      "command": "uv --cache-dir .cache/uv run --offline --frozen python -m pytest tests/test_smoke.py -q",
+      "exit": 0,
+      "seconds": 0.766,
+      "stdout": ".                                                                        [100%]\n1 passed in 0.03s\n",
+      "stderr": ""
+    },
+    {
+      "command": "uv --cache-dir .cache/uv run --offline --frozen ruff check .",
+      "exit": 0,
+      "seconds": 0.094,
+      "stdout": "All checks passed!\n",
+      "stderr": ""
+    },
+    {
+      "command": "uv --cache-dir .cache/uv run --offline --frozen ruff format --check .",
+      "exit": 0,
+      "seconds": 0.109,
+      "stdout": "4 files already formatted\n",
+      "stderr": ""
+    },
+    {
+      "command": "uv --cache-dir .cache/uv run --offline --frozen python -m pytest --basetemp=.cache/pytest-m1 -q",
+      "exit": 0,
+      "seconds": 3.484,
+      "stdout": "..                                                                       [100%]\n2 passed in 2.35s\n",
+      "stderr": ""
+    },
+    {
+      "command": "uv --cache-dir .cache/uv run --offline --frozen python -c \"import agent_evolve; print(agent_evolve.__version__)\"",
+      "exit": 0,
+      "seconds": 0.203,
+      "stdout": "0.1.0\n",
+      "stderr": ""
+    },
+    {
+      "command": "uv --cache-dir .cache/uv run --offline --frozen python tools/capture_environment.py --output runs/m1-final-check/environment.json",
+      "exit": 0,
+      "seconds": 0.829,
+      "stdout": "Environment snapshot written\n",
+      "stderr": ""
+    },
+    {
+      "command": "uv --cache-dir .cache/uv sync --offline --frozen --group dev",
+      "exit": 0,
+      "seconds": 0.078,
+      "stdout": "",
+      "stderr": "Audited 8 packages in 2ms\n"
+    },
+    {
+      "command": "UV_PROJECT_ENVIRONMENT=.cache/clean-env uv --cache-dir .cache/uv sync --offline --frozen --group dev",
+      "exit": 0,
+      "seconds": 0.125,
+      "stdout": "",
+      "stderr": "Audited 8 packages in 2ms\n"
+    }
+  ]
+}

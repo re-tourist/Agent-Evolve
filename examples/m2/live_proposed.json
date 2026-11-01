@@ -1,0 +1,16 @@
+{
+  "mode": "live",
+  "backend": "tau",
+  "task_ids": ["0"],
+  "num_tasks": 1,
+  "seed": 42,
+  "max_steps": 12,
+  "agent_model": "openai/deepseek-flash",
+  "user_model": "openai/deepseek-flash",
+  "agent_args": {"temperature": 0, "max_tokens": 512, "timeout": 30, "num_retries": 0},
+  "user_args": {"temperature": 0, "max_tokens": 512, "timeout": 30, "num_retries": 0},
+  "instruction_file": "instruction.txt",
+  "tau_checkout": "../../.cache/tau2-source",
+  "output_dir": "../../runs/m2",
+  "run_id": "live-retail-0-trial-0-PENDING-APPROVAL"
+}

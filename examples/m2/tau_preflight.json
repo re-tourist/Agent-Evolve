@@ -1,0 +1,14 @@
+{
+  "mode": "offline",
+  "backend": "tau",
+  "task_ids": ["0"],
+  "num_tasks": 1,
+  "seed": 42,
+  "max_steps": 12,
+  "agent_model": "mock/agent",
+  "user_model": "mock/user",
+  "instruction_file": "instruction.txt",
+  "tau_checkout": "../../.cache/tau2-source",
+  "output_dir": "../../runs/m2",
+  "run_id": "tau-preflight-001"
+}

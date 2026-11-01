@@ -1,0 +1,2333 @@
+{
+  "classification": "real_api; exploratory judge-free Retail subset; no demonstrated improvement",
+  "run_id": "core-sprint-001",
+  "status": "complete",
+  "source_commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
+  "gepa": {
+    "version": "0.1.4",
+    "sha": "8c7b697a71977980afc7537dac0881e784eef99f"
+  },
+  "tau": {
+    "version": "2.0.0",
+    "sha": "da0835f6c67baef58bdda18f2a3b037dfb3a1754"
+  },
+  "model": "qwen-plus-2025-12-01",
+  "region": "Beijing",
+  "judge": "none",
+  "seed": 42,
+  "split": {
+    "train": [
+      "1",
+      "6",
+      "7"
+    ],
+    "validation": [
+      "8",
+      "10"
+    ],
+    "test": [
+      "5",
+      "9",
+      "12"
+    ]
+  },
+  "request_limit": 400,
+  "estimated_rmb_stop_threshold": 30,
+  "phase_request_limits": {
+    "basic": 92,
+    "structured": 92,
+    "test": 216
+  },
+  "budget": {
+    "limit": 400,
+    "cost_limit_rmb": 30,
+    "requests": 306,
+    "cost_rmb": 1.2932520000000005,
+    "input_tokens": 1541040,
+    "output_tokens": 30210,
+    "phases": {
+      "basic": 74,
+      "structured": 70,
+      "test": 162
+    },
+    "stopped": null,
+    "pending": null
+  },
+  "ledger_reconciliation": {
+    "admitted": 306,
+    "returned": 306,
+    "errors": [],
+    "unique_response_ids": 306,
+    "accounted_task_responses": 304,
+    "reflection_responses": 2
+  },
+  "usage": {
+    "requests": 306,
+    "input_tokens": 1541040,
+    "output_tokens": 30210,
+    "estimated_rmb": 1.293252,
+    "provider_seconds": 816.1449999999822
+  },
+  "usage_by_phase": {
+    "basic": {
+      "requests": 74,
+      "input_tokens": 363051,
+      "output_tokens": 7305,
+      "estimated_rmb": 0.3050508,
+      "provider_seconds": 199.54400000002352
+    },
+    "structured": {
+      "requests": 70,
+      "input_tokens": 329728,
+      "output_tokens": 6893,
+      "estimated_rmb": 0.2775684,
+      "provider_seconds": 187.27999999998428
+    },
+    "test": {
+      "requests": 162,
+      "input_tokens": 848261,
+      "output_tokens": 16012,
+      "estimated_rmb": 0.7106328000000001,
+      "provider_seconds": 429.32099999997445
+    }
+  },
+  "usage_by_role": {
+    "agent": {
+      "requests": 196,
+      "input_tokens": 1412448,
+      "output_tokens": 26311,
+      "estimated_rmb": 1.1825804,
+      "provider_seconds": 674.3849999999802
+    },
+    "simulator": {
+      "requests": 108,
+      "input_tokens": 127648,
+      "output_tokens": 3633,
+      "estimated_rmb": 0.1093844,
+      "provider_seconds": 134.01000000000204
+    },
+    "reflection": {
+      "requests": 2,
+      "input_tokens": 944,
+      "output_tokens": 266,
+      "estimated_rmb": 0.0012872,
+      "provider_seconds": 7.75
+    }
+  },
+  "searches": {
+    "basic": {
+      "phase": "basic",
+      "evaluations": 4,
+      "scored": 4,
+      "new_candidates_evaluated": 1,
+      "unique_candidates_evaluated": 2,
+      "accepted_candidates_including_seed": 1,
+      "reflection_requests": 1,
+      "train_tasks_observed": [
+        "7"
+      ],
+      "best_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "best_validation_score": 0.5,
+      "best_complete_validation": true
+    },
+    "structured": {
+      "phase": "structured",
+      "evaluations": 4,
+      "scored": 4,
+      "new_candidates_evaluated": 1,
+      "unique_candidates_evaluated": 2,
+      "accepted_candidates_including_seed": 1,
+      "reflection_requests": 1,
+      "train_tasks_observed": [
+        "7"
+      ],
+      "best_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "best_validation_score": 0.5,
+      "best_complete_validation": true
+    }
+  },
+  "reflection": {
+    "basic": {
+      "usage": {
+        "requests": 1,
+        "input_tokens": 439,
+        "output_tokens": 126,
+        "estimated_rmb": 0.0006032,
+        "provider_seconds": 3.7189999999973224
+      },
+      "finish_reasons": {
+        "stop": 1
+      }
+    },
+    "structured": {
+      "usage": {
+        "requests": 1,
+        "input_tokens": 505,
+        "output_tokens": 140,
+        "estimated_rmb": 0.000684,
+        "provider_seconds": 4.0310000000026776
+      },
+      "finish_reasons": {
+        "stop": 1
+      }
+    }
+  },
+  "trials": [
+    {
+      "path": "basic/evaluations/000001/task",
+      "phase": "basic",
+      "task_id": "8",
+      "arm": "basic",
+      "evaluation": 1,
+      "split": "validation",
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "official_reward": 0.0,
+      "termination_reason": "user_stop",
+      "status": "task_failure",
+      "message_count": 30,
+      "db_check": {
+        "db_match": false,
+        "db_reward": 0.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 0.0,
+        "NL_ASSERTION": 1.0
+      },
+      "actions": {
+        "count": 6,
+        "outcomes": [
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": false,
+            "action_reward": 0.0,
+            "tool_type": "write"
+          }
+        ]
+      },
+      "env_assertions": {
+        "count": 0,
+        "outcomes": []
+      },
+      "nl_assertions": {
+        "count": 0,
+        "outcomes": []
+      },
+      "communicate_checks": {
+        "availability": "unavailable"
+      },
+      "tool_names": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ],
+      "tool_error_count": 0,
+      "finish_reasons": {
+        "stop": 13,
+        "tool_calls": 8
+      },
+      "duration_seconds": 64.27740379999886,
+      "worker_seconds": 89.96899999999732,
+      "usage": {
+        "requests": 21,
+        "input_tokens": 113079,
+        "output_tokens": 2320,
+        "estimated_rmb": 0.09510320000000001,
+        "provider_seconds": 63.04400000001624
+      },
+      "roles": {
+        "agent": 14,
+        "simulator": 7
+      },
+      "diagnostics": {
+        "schema_version": 1,
+        "diagnostics": [
+          {
+            "type": "task_completion",
+            "certain": true,
+            "explanation": "A participant stopped; early termination or business completion cannot be inferred.",
+            "evidence": [
+              {
+                "pointer": "/termination_reason",
+                "value": "user_stop"
+              }
+            ]
+          },
+          {
+            "type": "uncertain_failure",
+            "certain": false,
+            "explanation": "Official Reward is below 1. Trace observations do not establish the cause; do not infer a required tool path.",
+            "evidence": [
+              {
+                "pointer": "/official_task_reward",
+                "value": 0.0
+              }
+            ]
+          }
+        ]
+      },
+      "feedback": {
+        "task_id": "8",
+        "official_reward": 0.0,
+        "status": "task_failure",
+        "termination_reason": "user_stop",
+        "message_count": 30,
+        "tool_names": [
+          "find_user_id_by_name_zip",
+          "get_user_details",
+          "get_order_details",
+          "get_order_details",
+          "get_order_details",
+          "get_product_details",
+          "get_product_details",
+          "exchange_delivered_order_items"
+        ],
+        "trace_path": "basic\\evaluations\\000001\\task"
+      },
+      "source_commit": {
+        "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
+        "dirty": false
+      },
+      "diagnostic_source": "basic/evaluations/000001/task/8.json"
+    },
+    {
+      "path": "basic/evaluations/000002/task",
+      "phase": "basic",
+      "task_id": "10",
+      "arm": "basic",
+      "evaluation": 2,
+      "split": "validation",
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "official_reward": 1.0,
+      "termination_reason": "user_stop",
+      "status": "task_success",
+      "message_count": 20,
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "actions": {
+        "count": 5,
+        "outcomes": [
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "generic"
+          }
+        ]
+      },
+      "env_assertions": {
+        "count": 0,
+        "outcomes": []
+      },
+      "nl_assertions": {
+        "count": 0,
+        "outcomes": []
+      },
+      "communicate_checks": {
+        "availability": "unavailable"
+      },
+      "tool_names": [
+        "find_user_id_by_email",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "transfer_to_human_agents"
+      ],
+      "tool_error_count": 0,
+      "finish_reasons": {
+        "stop": 9,
+        "tool_calls": 5
+      },
+      "duration_seconds": 30.75830380000116,
+      "worker_seconds": 57.859000000004016,
+      "usage": {
+        "requests": 14,
+        "input_tokens": 57589,
+        "output_tokens": 1083,
+        "estimated_rmb": 0.0482372,
+        "provider_seconds": 29.85900000001857
+      },
+      "roles": {
+        "agent": 9,
+        "simulator": 5
+      },
+      "diagnostics": {
+        "schema_version": 1,
+        "diagnostics": [
+          {
+            "type": "task_completion",
+            "certain": true,
+            "explanation": "A participant stopped; early termination or business completion cannot be inferred.",
+            "evidence": [
+              {
+                "pointer": "/termination_reason",
+                "value": "user_stop"
+              }
+            ]
+          }
+        ]
+      },
+      "feedback": {
+        "task_id": "10",
+        "official_reward": 1.0,
+        "status": "task_success",
+        "termination_reason": "user_stop",
+        "message_count": 20,
+        "tool_names": [
+          "find_user_id_by_email",
+          "get_user_details",
+          "get_order_details",
+          "get_order_details",
+          "transfer_to_human_agents"
+        ],
+        "trace_path": "basic\\evaluations\\000002\\task"
+      },
+      "source_commit": {
+        "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
+        "dirty": false
+      },
+      "diagnostic_source": "basic/evaluations/000002/task/10.json"
+    },
+    {
+      "path": "basic/evaluations/000003/task",
+      "phase": "basic",
+      "task_id": "7",
+      "arm": "basic",
+      "evaluation": 3,
+      "split": "train",
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "official_reward": 1.0,
+      "termination_reason": "user_stop",
+      "status": "task_success",
+      "message_count": 26,
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "actions": {
+        "count": 6,
+        "outcomes": [
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "write"
+          }
+        ]
+      },
+      "env_assertions": {
+        "count": 0,
+        "outcomes": []
+      },
+      "nl_assertions": {
+        "count": 0,
+        "outcomes": []
+      },
+      "communicate_checks": {
+        "availability": "unavailable"
+      },
+      "tool_names": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ],
+      "tool_error_count": 0,
+      "finish_reasons": {
+        "stop": 13,
+        "tool_calls": 6
+      },
+      "duration_seconds": 53.632139099994674,
+      "worker_seconds": 79.5,
+      "usage": {
+        "requests": 19,
+        "input_tokens": 95848,
+        "output_tokens": 1930,
+        "estimated_rmb": 0.08053840000000001,
+        "provider_seconds": 52.36000000000786
+      },
+      "roles": {
+        "agent": 12,
+        "simulator": 7
+      },
+      "diagnostics": {
+        "schema_version": 1,
+        "diagnostics": [
+          {
+            "type": "task_completion",
+            "certain": true,
+            "explanation": "A participant stopped; early termination or business completion cannot be inferred.",
+            "evidence": [
+              {
+                "pointer": "/termination_reason",
+                "value": "user_stop"
+              }
+            ]
+          }
+        ]
+      },
+      "feedback": {
+        "task_id": "7",
+        "official_reward": 1.0,
+        "status": "task_success",
+        "termination_reason": "user_stop",
+        "message_count": 26,
+        "tool_names": [
+          "find_user_id_by_name_zip",
+          "get_user_details",
+          "get_order_details",
+          "get_product_details",
+          "get_product_details",
+          "exchange_delivered_order_items"
+        ],
+        "trace_path": "basic\\evaluations\\000003\\task"
+      },
+      "source_commit": {
+        "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
+        "dirty": false
+      },
+      "diagnostic_source": "basic/evaluations/000003/task/7.json"
+    },
+    {
+      "path": "basic/evaluations/000004/task",
+      "phase": "basic",
+      "task_id": "7",
+      "arm": "basic",
+      "evaluation": 4,
+      "split": "train",
+      "candidate_sha256": "75a246d8393fe2af3b8ae37f82b0142db7ce11295721469417e86b3339d2c9f8",
+      "official_reward": 1.0,
+      "termination_reason": "user_stop",
+      "status": "task_success",
+      "message_count": 26,
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "actions": {
+        "count": 6,
+        "outcomes": [
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "write"
+          }
+        ]
+      },
+      "env_assertions": {
+        "count": 0,
+        "outcomes": []
+      },
+      "nl_assertions": {
+        "count": 0,
+        "outcomes": []
+      },
+      "communicate_checks": {
+        "availability": "unavailable"
+      },
+      "tool_names": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ],
+      "tool_error_count": 0,
+      "finish_reasons": {
+        "stop": 13,
+        "tool_calls": 6
+      },
+      "duration_seconds": 51.82222119999642,
+      "worker_seconds": 77.79699999999866,
+      "usage": {
+        "requests": 19,
+        "input_tokens": 96096,
+        "output_tokens": 1846,
+        "estimated_rmb": 0.0805688,
+        "provider_seconds": 50.56199999998353
+      },
+      "roles": {
+        "agent": 12,
+        "simulator": 7
+      },
+      "diagnostics": {
+        "schema_version": 1,
+        "diagnostics": [
+          {
+            "type": "task_completion",
+            "certain": true,
+            "explanation": "A participant stopped; early termination or business completion cannot be inferred.",
+            "evidence": [
+              {
+                "pointer": "/termination_reason",
+                "value": "user_stop"
+              }
+            ]
+          }
+        ]
+      },
+      "feedback": {
+        "task_id": "7",
+        "official_reward": 1.0,
+        "status": "task_success",
+        "termination_reason": "user_stop",
+        "message_count": 26,
+        "tool_names": [
+          "find_user_id_by_name_zip",
+          "get_user_details",
+          "get_order_details",
+          "get_product_details",
+          "get_product_details",
+          "exchange_delivered_order_items"
+        ],
+        "trace_path": "basic\\evaluations\\000004\\task"
+      },
+      "source_commit": {
+        "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
+        "dirty": false
+      },
+      "diagnostic_source": "basic/evaluations/000004/task/7.json"
+    },
+    {
+      "path": "structured/evaluations/000001/task",
+      "phase": "structured",
+      "task_id": "8",
+      "arm": "structured",
+      "evaluation": 1,
+      "split": "validation",
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "official_reward": 0.0,
+      "termination_reason": "user_stop",
+      "status": "task_failure",
+      "message_count": 22,
+      "db_check": {
+        "db_match": false,
+        "db_reward": 0.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 0.0,
+        "NL_ASSERTION": 1.0
+      },
+      "actions": {
+        "count": 6,
+        "outcomes": [
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": false,
+            "action_reward": 0.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": false,
+            "action_reward": 0.0,
+            "tool_type": "write"
+          }
+        ]
+      },
+      "env_assertions": {
+        "count": 0,
+        "outcomes": []
+      },
+      "nl_assertions": {
+        "count": 0,
+        "outcomes": []
+      },
+      "communicate_checks": {
+        "availability": "unavailable"
+      },
+      "tool_names": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ],
+      "tool_error_count": 0,
+      "finish_reasons": {
+        "stop": 11,
+        "tool_calls": 5
+      },
+      "duration_seconds": 48.04742370000167,
+      "worker_seconds": 74.40600000000268,
+      "usage": {
+        "requests": 16,
+        "input_tokens": 70459,
+        "output_tokens": 1798,
+        "estimated_rmb": 0.0599632,
+        "provider_seconds": 46.937999999994645
+      },
+      "roles": {
+        "agent": 10,
+        "simulator": 6
+      },
+      "diagnostics": {
+        "schema_version": 1,
+        "diagnostics": [
+          {
+            "type": "task_completion",
+            "certain": true,
+            "explanation": "A participant stopped; early termination or business completion cannot be inferred.",
+            "evidence": [
+              {
+                "pointer": "/termination_reason",
+                "value": "user_stop"
+              }
+            ]
+          },
+          {
+            "type": "uncertain_failure",
+            "certain": false,
+            "explanation": "Official Reward is below 1. Trace observations do not establish the cause; do not infer a required tool path.",
+            "evidence": [
+              {
+                "pointer": "/official_task_reward",
+                "value": 0.0
+              }
+            ]
+          }
+        ]
+      },
+      "feedback": {
+        "task_id": "8",
+        "official_reward": 0.0,
+        "status": "task_failure",
+        "termination_reason": "user_stop",
+        "message_count": 22,
+        "tool_names": [
+          "find_user_id_by_name_zip",
+          "get_user_details",
+          "get_order_details",
+          "get_product_details",
+          "exchange_delivered_order_items"
+        ],
+        "trace_path": "structured\\evaluations\\000001\\task",
+        "structured_feedback": {
+          "schema_version": 1,
+          "diagnostics": [
+            {
+              "type": "task_completion",
+              "certain": true,
+              "explanation": "A participant stopped; early termination or business completion cannot be inferred.",
+              "evidence": [
+                {
+                  "pointer": "/termination_reason",
+                  "value": "user_stop"
+                }
+              ]
+            },
+            {
+              "type": "uncertain_failure",
+              "certain": false,
+              "explanation": "Official Reward is below 1. Trace observations do not establish the cause; do not infer a required tool path.",
+              "evidence": [
+                {
+                  "pointer": "/official_task_reward",
+                  "value": 0.0
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "source_commit": {
+        "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
+        "dirty": false
+      },
+      "diagnostic_source": "structured/evaluations/000001/task/8.json"
+    },
+    {
+      "path": "structured/evaluations/000002/task",
+      "phase": "structured",
+      "task_id": "10",
+      "arm": "structured",
+      "evaluation": 2,
+      "split": "validation",
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "official_reward": 1.0,
+      "termination_reason": "user_stop",
+      "status": "task_success",
+      "message_count": 20,
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "actions": {
+        "count": 5,
+        "outcomes": [
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "generic"
+          }
+        ]
+      },
+      "env_assertions": {
+        "count": 0,
+        "outcomes": []
+      },
+      "nl_assertions": {
+        "count": 0,
+        "outcomes": []
+      },
+      "communicate_checks": {
+        "availability": "unavailable"
+      },
+      "tool_names": [
+        "find_user_id_by_email",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "transfer_to_human_agents"
+      ],
+      "tool_error_count": 0,
+      "finish_reasons": {
+        "stop": 9,
+        "tool_calls": 5
+      },
+      "duration_seconds": 33.41567819999909,
+      "worker_seconds": 57.75,
+      "usage": {
+        "requests": 14,
+        "input_tokens": 57536,
+        "output_tokens": 1130,
+        "estimated_rmb": 0.0482888,
+        "provider_seconds": 32.3920000000071
+      },
+      "roles": {
+        "agent": 9,
+        "simulator": 5
+      },
+      "diagnostics": {
+        "schema_version": 1,
+        "diagnostics": [
+          {
+            "type": "task_completion",
+            "certain": true,
+            "explanation": "A participant stopped; early termination or business completion cannot be inferred.",
+            "evidence": [
+              {
+                "pointer": "/termination_reason",
+                "value": "user_stop"
+              }
+            ]
+          }
+        ]
+      },
+      "feedback": {
+        "task_id": "10",
+        "official_reward": 1.0,
+        "status": "task_success",
+        "termination_reason": "user_stop",
+        "message_count": 20,
+        "tool_names": [
+          "find_user_id_by_email",
+          "get_user_details",
+          "get_order_details",
+          "get_order_details",
+          "transfer_to_human_agents"
+        ],
+        "trace_path": "structured\\evaluations\\000002\\task",
+        "structured_feedback": {
+          "schema_version": 1,
+          "diagnostics": [
+            {
+              "type": "task_completion",
+              "certain": true,
+              "explanation": "A participant stopped; early termination or business completion cannot be inferred.",
+              "evidence": [
+                {
+                  "pointer": "/termination_reason",
+                  "value": "user_stop"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "source_commit": {
+        "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
+        "dirty": false
+      },
+      "diagnostic_source": "structured/evaluations/000002/task/10.json"
+    },
+    {
+      "path": "structured/evaluations/000003/task",
+      "phase": "structured",
+      "task_id": "7",
+      "arm": "structured",
+      "evaluation": 3,
+      "split": "train",
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "official_reward": 1.0,
+      "termination_reason": "user_stop",
+      "status": "task_success",
+      "message_count": 26,
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "actions": {
+        "count": 6,
+        "outcomes": [
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "write"
+          }
+        ]
+      },
+      "env_assertions": {
+        "count": 0,
+        "outcomes": []
+      },
+      "nl_assertions": {
+        "count": 0,
+        "outcomes": []
+      },
+      "communicate_checks": {
+        "availability": "unavailable"
+      },
+      "tool_names": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ],
+      "tool_error_count": 0,
+      "finish_reasons": {
+        "stop": 13,
+        "tool_calls": 6
+      },
+      "duration_seconds": 51.180650300004345,
+      "worker_seconds": 76.29699999999866,
+      "usage": {
+        "requests": 19,
+        "input_tokens": 95181,
+        "output_tokens": 1889,
+        "estimated_rmb": 0.0799228,
+        "provider_seconds": 49.919999999998254
+      },
+      "roles": {
+        "agent": 12,
+        "simulator": 7
+      },
+      "diagnostics": {
+        "schema_version": 1,
+        "diagnostics": [
+          {
+            "type": "task_completion",
+            "certain": true,
+            "explanation": "A participant stopped; early termination or business completion cannot be inferred.",
+            "evidence": [
+              {
+                "pointer": "/termination_reason",
+                "value": "user_stop"
+              }
+            ]
+          }
+        ]
+      },
+      "feedback": {
+        "task_id": "7",
+        "official_reward": 1.0,
+        "status": "task_success",
+        "termination_reason": "user_stop",
+        "message_count": 26,
+        "tool_names": [
+          "find_user_id_by_name_zip",
+          "get_user_details",
+          "get_order_details",
+          "get_product_details",
+          "get_product_details",
+          "exchange_delivered_order_items"
+        ],
+        "trace_path": "structured\\evaluations\\000003\\task",
+        "structured_feedback": {
+          "schema_version": 1,
+          "diagnostics": [
+            {
+              "type": "task_completion",
+              "certain": true,
+              "explanation": "A participant stopped; early termination or business completion cannot be inferred.",
+              "evidence": [
+                {
+                  "pointer": "/termination_reason",
+                  "value": "user_stop"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "source_commit": {
+        "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
+        "dirty": false
+      },
+      "diagnostic_source": "structured/evaluations/000003/task/7.json"
+    },
+    {
+      "path": "structured/evaluations/000004/task",
+      "phase": "structured",
+      "task_id": "7",
+      "arm": "structured",
+      "evaluation": 4,
+      "split": "train",
+      "candidate_sha256": "67cb3986561488a14cdc9d44b474e0e487119f6c89dcb19f04ab9d6c6e9d8fa2",
+      "official_reward": 1.0,
+      "termination_reason": "user_stop",
+      "status": "task_success",
+      "message_count": 28,
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "actions": {
+        "count": 6,
+        "outcomes": [
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "write"
+          }
+        ]
+      },
+      "env_assertions": {
+        "count": 0,
+        "outcomes": []
+      },
+      "nl_assertions": {
+        "count": 0,
+        "outcomes": []
+      },
+      "communicate_checks": {
+        "availability": "unavailable"
+      },
+      "tool_names": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ],
+      "tool_error_count": 0,
+      "finish_reasons": {
+        "stop": 13,
+        "tool_calls": 7
+      },
+      "duration_seconds": 55.41881909999938,
+      "worker_seconds": 81.29699999999866,
+      "usage": {
+        "requests": 20,
+        "input_tokens": 106047,
+        "output_tokens": 1936,
+        "estimated_rmb": 0.08870960000000001,
+        "provider_seconds": 53.998999999981606
+      },
+      "roles": {
+        "agent": 13,
+        "simulator": 7
+      },
+      "diagnostics": {
+        "schema_version": 1,
+        "diagnostics": [
+          {
+            "type": "task_completion",
+            "certain": true,
+            "explanation": "A participant stopped; early termination or business completion cannot be inferred.",
+            "evidence": [
+              {
+                "pointer": "/termination_reason",
+                "value": "user_stop"
+              }
+            ]
+          }
+        ]
+      },
+      "feedback": {
+        "task_id": "7",
+        "official_reward": 1.0,
+        "status": "task_success",
+        "termination_reason": "user_stop",
+        "message_count": 28,
+        "tool_names": [
+          "find_user_id_by_name_zip",
+          "get_user_details",
+          "get_order_details",
+          "get_order_details",
+          "get_product_details",
+          "get_product_details",
+          "exchange_delivered_order_items"
+        ],
+        "trace_path": "structured\\evaluations\\000004\\task",
+        "structured_feedback": {
+          "schema_version": 1,
+          "diagnostics": [
+            {
+              "type": "task_completion",
+              "certain": true,
+              "explanation": "A participant stopped; early termination or business completion cannot be inferred.",
+              "evidence": [
+                {
+                  "pointer": "/termination_reason",
+                  "value": "user_stop"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "source_commit": {
+        "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
+        "dirty": false
+      },
+      "diagnostic_source": "structured/evaluations/000004/task/7.json"
+    },
+    {
+      "path": "test/5-baseline/task",
+      "phase": "test",
+      "task_id": "5",
+      "arm": "baseline",
+      "evaluation": null,
+      "split": "test",
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "official_reward": 1.0,
+      "termination_reason": "user_stop",
+      "status": "task_success",
+      "message_count": 32,
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "actions": {
+        "count": 5,
+        "outcomes": [
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "write"
+          }
+        ]
+      },
+      "env_assertions": {
+        "count": 0,
+        "outcomes": []
+      },
+      "nl_assertions": {
+        "count": 0,
+        "outcomes": []
+      },
+      "communicate_checks": {
+        "availability": "unavailable"
+      },
+      "tool_names": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "return_delivered_order_items"
+      ],
+      "tool_error_count": 0,
+      "finish_reasons": {
+        "stop": 15,
+        "tool_calls": 8
+      },
+      "duration_seconds": 67.92454100000032,
+      "worker_seconds": 93.29699999999866,
+      "usage": {
+        "requests": 23,
+        "input_tokens": 126187,
+        "output_tokens": 2521,
+        "estimated_rmb": 0.1059916,
+        "provider_seconds": 66.45000000001164
+      },
+      "roles": {
+        "agent": 15,
+        "simulator": 8
+      },
+      "diagnostics": {
+        "schema_version": 1,
+        "diagnostics": [
+          {
+            "type": "task_completion",
+            "certain": true,
+            "explanation": "A participant stopped; early termination or business completion cannot be inferred.",
+            "evidence": [
+              {
+                "pointer": "/termination_reason",
+                "value": "user_stop"
+              }
+            ]
+          }
+        ]
+      },
+      "feedback": null,
+      "source_commit": {
+        "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
+        "dirty": false
+      },
+      "diagnostic_source": "test/5-baseline/task/5.json"
+    },
+    {
+      "path": "test/5-basic/task",
+      "phase": "test",
+      "task_id": "5",
+      "arm": "basic",
+      "evaluation": null,
+      "split": "test",
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "official_reward": 0.0,
+      "termination_reason": "max_steps",
+      "status": "step_limit",
+      "message_count": 33,
+      "db_check": null,
+      "reward_basis": null,
+      "reward_breakdown": null,
+      "actions": {
+        "availability": "unavailable"
+      },
+      "env_assertions": {
+        "availability": "unavailable"
+      },
+      "nl_assertions": {
+        "availability": "unavailable"
+      },
+      "communicate_checks": {
+        "availability": "unavailable"
+      },
+      "tool_names": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "return_delivered_order_items"
+      ],
+      "tool_error_count": 0,
+      "finish_reasons": {
+        "stop": 16,
+        "tool_calls": 8
+      },
+      "duration_seconds": 60.38291520000348,
+      "worker_seconds": 84.625,
+      "usage": {
+        "requests": 24,
+        "input_tokens": 134084,
+        "output_tokens": 2152,
+        "estimated_rmb": 0.11157120000000001,
+        "provider_seconds": 58.71499999998923
+      },
+      "roles": {
+        "agent": 16,
+        "simulator": 8
+      },
+      "diagnostics": {
+        "schema_version": 1,
+        "diagnostics": [
+          {
+            "type": "task_completion",
+            "certain": true,
+            "explanation": "The recorded run terminated abnormally; this does not establish an Agent business failure.",
+            "evidence": [
+              {
+                "pointer": "/termination_reason",
+                "value": "max_steps"
+              }
+            ]
+          },
+          {
+            "type": "uncertain_failure",
+            "certain": false,
+            "explanation": "Official Reward is below 1. Trace observations do not establish the cause; do not infer a required tool path.",
+            "evidence": [
+              {
+                "pointer": "/official_task_reward",
+                "value": 0.0
+              }
+            ]
+          }
+        ]
+      },
+      "feedback": null,
+      "source_commit": {
+        "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
+        "dirty": false
+      },
+      "diagnostic_source": "analysis/5-basic.formal.json"
+    },
+    {
+      "path": "test/5-structured/task",
+      "phase": "test",
+      "task_id": "5",
+      "arm": "structured",
+      "evaluation": null,
+      "split": "test",
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "official_reward": 1.0,
+      "termination_reason": "user_stop",
+      "status": "task_success",
+      "message_count": 32,
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "actions": {
+        "count": 5,
+        "outcomes": [
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "write"
+          }
+        ]
+      },
+      "env_assertions": {
+        "count": 0,
+        "outcomes": []
+      },
+      "nl_assertions": {
+        "count": 0,
+        "outcomes": []
+      },
+      "communicate_checks": {
+        "availability": "unavailable"
+      },
+      "tool_names": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "return_delivered_order_items"
+      ],
+      "tool_error_count": 0,
+      "finish_reasons": {
+        "stop": 17,
+        "tool_calls": 7
+      },
+      "duration_seconds": 61.3603884999975,
+      "worker_seconds": 88.42199999999866,
+      "usage": {
+        "requests": 24,
+        "input_tokens": 126430,
+        "output_tokens": 2194,
+        "estimated_rmb": 0.10553200000000001,
+        "provider_seconds": 59.844999999964784
+      },
+      "roles": {
+        "agent": 15,
+        "simulator": 9
+      },
+      "diagnostics": {
+        "schema_version": 1,
+        "diagnostics": [
+          {
+            "type": "task_completion",
+            "certain": true,
+            "explanation": "A participant stopped; early termination or business completion cannot be inferred.",
+            "evidence": [
+              {
+                "pointer": "/termination_reason",
+                "value": "user_stop"
+              }
+            ]
+          }
+        ]
+      },
+      "feedback": null,
+      "source_commit": {
+        "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
+        "dirty": false
+      },
+      "diagnostic_source": "test/5-structured/task/5.json"
+    },
+    {
+      "path": "test/9-baseline/task",
+      "phase": "test",
+      "task_id": "9",
+      "arm": "baseline",
+      "evaluation": null,
+      "split": "test",
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "official_reward": 1.0,
+      "termination_reason": "user_stop",
+      "status": "task_success",
+      "message_count": 30,
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "actions": {
+        "count": 6,
+        "outcomes": [
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "write"
+          }
+        ]
+      },
+      "env_assertions": {
+        "count": 0,
+        "outcomes": []
+      },
+      "nl_assertions": {
+        "count": 0,
+        "outcomes": []
+      },
+      "communicate_checks": {
+        "availability": "unavailable"
+      },
+      "tool_names": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ],
+      "tool_error_count": 0,
+      "finish_reasons": {
+        "stop": 15,
+        "tool_calls": 7
+      },
+      "duration_seconds": 64.11985429999913,
+      "worker_seconds": 89.42200000000594,
+      "usage": {
+        "requests": 22,
+        "input_tokens": 112824,
+        "output_tokens": 2372,
+        "estimated_rmb": 0.09500320000000001,
+        "provider_seconds": 62.653000000005704
+      },
+      "roles": {
+        "agent": 14,
+        "simulator": 8
+      },
+      "diagnostics": {
+        "schema_version": 1,
+        "diagnostics": [
+          {
+            "type": "task_completion",
+            "certain": true,
+            "explanation": "A participant stopped; early termination or business completion cannot be inferred.",
+            "evidence": [
+              {
+                "pointer": "/termination_reason",
+                "value": "user_stop"
+              }
+            ]
+          }
+        ]
+      },
+      "feedback": null,
+      "source_commit": {
+        "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
+        "dirty": false
+      },
+      "diagnostic_source": "test/9-baseline/task/9.json"
+    },
+    {
+      "path": "test/9-basic/task",
+      "phase": "test",
+      "task_id": "9",
+      "arm": "basic",
+      "evaluation": null,
+      "split": "test",
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "official_reward": 0.0,
+      "termination_reason": "max_steps",
+      "status": "step_limit",
+      "message_count": 33,
+      "db_check": null,
+      "reward_basis": null,
+      "reward_breakdown": null,
+      "actions": {
+        "availability": "unavailable"
+      },
+      "env_assertions": {
+        "availability": "unavailable"
+      },
+      "nl_assertions": {
+        "availability": "unavailable"
+      },
+      "communicate_checks": {
+        "availability": "unavailable"
+      },
+      "tool_names": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ],
+      "tool_error_count": 0,
+      "finish_reasons": {
+        "stop": 16,
+        "tool_calls": 8
+      },
+      "duration_seconds": 64.17930780000461,
+      "worker_seconds": 88.20300000000134,
+      "usage": {
+        "requests": 24,
+        "input_tokens": 132696,
+        "output_tokens": 2346,
+        "estimated_rmb": 0.11084880000000001,
+        "provider_seconds": 62.516000000010536
+      },
+      "roles": {
+        "agent": 16,
+        "simulator": 8
+      },
+      "diagnostics": {
+        "schema_version": 1,
+        "diagnostics": [
+          {
+            "type": "task_completion",
+            "certain": true,
+            "explanation": "The recorded run terminated abnormally; this does not establish an Agent business failure.",
+            "evidence": [
+              {
+                "pointer": "/termination_reason",
+                "value": "max_steps"
+              }
+            ]
+          },
+          {
+            "type": "uncertain_failure",
+            "certain": false,
+            "explanation": "Official Reward is below 1. Trace observations do not establish the cause; do not infer a required tool path.",
+            "evidence": [
+              {
+                "pointer": "/official_task_reward",
+                "value": 0.0
+              }
+            ]
+          }
+        ]
+      },
+      "feedback": null,
+      "source_commit": {
+        "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
+        "dirty": false
+      },
+      "diagnostic_source": "analysis/9-basic.formal.json"
+    },
+    {
+      "path": "test/9-structured/task",
+      "phase": "test",
+      "task_id": "9",
+      "arm": "structured",
+      "evaluation": null,
+      "split": "test",
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "official_reward": 0.0,
+      "termination_reason": "max_steps",
+      "status": "step_limit",
+      "message_count": 33,
+      "db_check": null,
+      "reward_basis": null,
+      "reward_breakdown": null,
+      "actions": {
+        "availability": "unavailable"
+      },
+      "env_assertions": {
+        "availability": "unavailable"
+      },
+      "nl_assertions": {
+        "availability": "unavailable"
+      },
+      "communicate_checks": {
+        "availability": "unavailable"
+      },
+      "tool_names": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "list_all_product_types",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ],
+      "tool_error_count": 0,
+      "finish_reasons": {
+        "stop": 14,
+        "tool_calls": 9
+      },
+      "duration_seconds": 63.59024219999992,
+      "worker_seconds": 89.0,
+      "usage": {
+        "requests": 23,
+        "input_tokens": 137908,
+        "output_tokens": 2320,
+        "estimated_rmb": 0.1149664,
+        "provider_seconds": 61.984999999993306
+      },
+      "roles": {
+        "agent": 16,
+        "simulator": 7
+      },
+      "diagnostics": {
+        "schema_version": 1,
+        "diagnostics": [
+          {
+            "type": "task_completion",
+            "certain": true,
+            "explanation": "The recorded run terminated abnormally; this does not establish an Agent business failure.",
+            "evidence": [
+              {
+                "pointer": "/termination_reason",
+                "value": "max_steps"
+              }
+            ]
+          },
+          {
+            "type": "uncertain_failure",
+            "certain": false,
+            "explanation": "Official Reward is below 1. Trace observations do not establish the cause; do not infer a required tool path.",
+            "evidence": [
+              {
+                "pointer": "/official_task_reward",
+                "value": 0.0
+              }
+            ]
+          }
+        ]
+      },
+      "feedback": null,
+      "source_commit": {
+        "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
+        "dirty": false
+      },
+      "diagnostic_source": "analysis/9-structured.formal.json"
+    },
+    {
+      "path": "test/12-baseline/task",
+      "phase": "test",
+      "task_id": "12",
+      "arm": "baseline",
+      "evaluation": null,
+      "split": "test",
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "official_reward": 1.0,
+      "termination_reason": "user_stop",
+      "status": "task_success",
+      "message_count": 6,
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "actions": {
+        "count": 5,
+        "outcomes": [
+          {
+            "action_match": false,
+            "action_reward": 0.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": false,
+            "action_reward": 0.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": false,
+            "action_reward": 0.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": false,
+            "action_reward": 0.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "generic"
+          }
+        ]
+      },
+      "env_assertions": {
+        "count": 0,
+        "outcomes": []
+      },
+      "nl_assertions": {
+        "count": 0,
+        "outcomes": []
+      },
+      "communicate_checks": {
+        "availability": "unavailable"
+      },
+      "tool_names": [
+        "transfer_to_human_agents"
+      ],
+      "tool_error_count": 0,
+      "finish_reasons": {
+        "stop": 3,
+        "tool_calls": 1
+      },
+      "duration_seconds": 8.18701599999622,
+      "worker_seconds": 33.20300000000134,
+      "usage": {
+        "requests": 4,
+        "input_tokens": 11058,
+        "output_tokens": 223,
+        "estimated_rmb": 0.0092924,
+        "provider_seconds": 7.6560000000026776
+      },
+      "roles": {
+        "agent": 2,
+        "simulator": 2
+      },
+      "diagnostics": {
+        "schema_version": 1,
+        "diagnostics": [
+          {
+            "type": "task_completion",
+            "certain": true,
+            "explanation": "A participant stopped; early termination or business completion cannot be inferred.",
+            "evidence": [
+              {
+                "pointer": "/termination_reason",
+                "value": "user_stop"
+              }
+            ]
+          }
+        ]
+      },
+      "feedback": null,
+      "source_commit": {
+        "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
+        "dirty": false
+      },
+      "diagnostic_source": "test/12-baseline/task/12.json"
+    },
+    {
+      "path": "test/12-basic/task",
+      "phase": "test",
+      "task_id": "12",
+      "arm": "basic",
+      "evaluation": null,
+      "split": "test",
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "official_reward": 1.0,
+      "termination_reason": "user_stop",
+      "status": "task_success",
+      "message_count": 16,
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "actions": {
+        "count": 5,
+        "outcomes": [
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": false,
+            "action_reward": 0.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "generic"
+          }
+        ]
+      },
+      "env_assertions": {
+        "count": 0,
+        "outcomes": []
+      },
+      "nl_assertions": {
+        "count": 0,
+        "outcomes": []
+      },
+      "communicate_checks": {
+        "availability": "unavailable"
+      },
+      "tool_names": [
+        "find_user_id_by_email",
+        "get_user_details",
+        "get_order_details",
+        "transfer_to_human_agents"
+      ],
+      "tool_error_count": 0,
+      "finish_reasons": {
+        "stop": 7,
+        "tool_calls": 4
+      },
+      "duration_seconds": 34.70628469999792,
+      "worker_seconds": 59.5,
+      "usage": {
+        "requests": 11,
+        "input_tokens": 44169,
+        "output_tokens": 1319,
+        "estimated_rmb": 0.037973200000000006,
+        "provider_seconds": 34.015999999995984
+      },
+      "roles": {
+        "agent": 7,
+        "simulator": 4
+      },
+      "diagnostics": {
+        "schema_version": 1,
+        "diagnostics": [
+          {
+            "type": "task_completion",
+            "certain": true,
+            "explanation": "A participant stopped; early termination or business completion cannot be inferred.",
+            "evidence": [
+              {
+                "pointer": "/termination_reason",
+                "value": "user_stop"
+              }
+            ]
+          }
+        ]
+      },
+      "feedback": null,
+      "source_commit": {
+        "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
+        "dirty": false
+      },
+      "diagnostic_source": "test/12-basic/task/12.json"
+    },
+    {
+      "path": "test/12-structured/task",
+      "phase": "test",
+      "task_id": "12",
+      "arm": "structured",
+      "evaluation": null,
+      "split": "test",
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "official_reward": 1.0,
+      "termination_reason": "user_stop",
+      "status": "task_success",
+      "message_count": 10,
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "actions": {
+        "count": 5,
+        "outcomes": [
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": false,
+            "action_reward": 0.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": false,
+            "action_reward": 0.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": false,
+            "action_reward": 0.0,
+            "tool_type": "read"
+          },
+          {
+            "action_match": true,
+            "action_reward": 1.0,
+            "tool_type": "generic"
+          }
+        ]
+      },
+      "env_assertions": {
+        "count": 0,
+        "outcomes": []
+      },
+      "nl_assertions": {
+        "count": 0,
+        "outcomes": []
+      },
+      "communicate_checks": {
+        "availability": "unavailable"
+      },
+      "tool_names": [
+        "find_user_id_by_email",
+        "transfer_to_human_agents"
+      ],
+      "tool_error_count": 0,
+      "finish_reasons": {
+        "stop": 5,
+        "tool_calls": 2
+      },
+      "duration_seconds": 16.001402599998983,
+      "worker_seconds": 42.45299999999406,
+      "usage": {
+        "requests": 7,
+        "input_tokens": 22905,
+        "output_tokens": 565,
+        "estimated_rmb": 0.019454,
+        "provider_seconds": 15.485000000000582
+      },
+      "roles": {
+        "agent": 4,
+        "simulator": 3
+      },
+      "diagnostics": {
+        "schema_version": 1,
+        "diagnostics": [
+          {
+            "type": "task_completion",
+            "certain": true,
+            "explanation": "A participant stopped; early termination or business completion cannot be inferred.",
+            "evidence": [
+              {
+                "pointer": "/termination_reason",
+                "value": "user_stop"
+              }
+            ]
+          }
+        ]
+      },
+      "feedback": null,
+      "source_commit": {
+        "commit": "0a820f0a9d12929febb0a9fe2e21e2138f0597d4",
+        "dirty": false
+      },
+      "diagnostic_source": "test/12-structured/task/12.json"
+    }
+  ],
+  "test_aggregates": {
+    "baseline": {
+      "planned": 3,
+      "executed": 3,
+      "official_successes": 3,
+      "official_mean": 1.0
+    },
+    "basic": {
+      "planned": 3,
+      "executed": 3,
+      "official_successes": 1,
+      "official_mean": 0.3333333333333333
+    },
+    "structured": {
+      "planned": 3,
+      "executed": 3,
+      "official_successes": 2,
+      "official_mean": 0.6666666666666666
+    }
+  },
+  "actual_invoice_rmb": "unavailable",
+  "historical_smokes": {
+    "requests": 18,
+    "estimated_rmb": 0.0839208,
+    "included_in_sprint_budget": false,
+    "artifact_preservation": {
+      "qwen-task0-001": {
+        "verified_recorded_files": 18,
+        "changed": false
+      },
+      "qwen-task0-002": {
+        "verified_recorded_files": 21,
+        "changed": false
+      }
+    }
+  },
+  "secret_scan": {
+    "private_file_count": 851,
+    "exact_key_hits": 0,
+    "csv_tracked": false,
+    "csv_ignored": true
+  },
+  "analysis_views": {
+    "created_after_run": true,
+    "count": 3,
+    "purpose": "resolve diagnostics against formal raw-zero view; original smoke files untouched"
+  }
+}

@@ -1,0 +1,226 @@
+[
+  {
+    "repository": "gepa-ai/gepa",
+    "commit": "8c7b697a71977980afc7537dac0881e784eef99f",
+    "path": "LICENSE",
+    "sha256": "10c47467a961feb40adf3294fe27dd9cba79d4d1b7cf27173b1c34586d4126c3",
+    "url": "https://github.com/gepa-ai/gepa/blob/8c7b697a71977980afc7537dac0881e784eef99f/LICENSE"
+  },
+  {
+    "repository": "gepa-ai/gepa",
+    "commit": "8c7b697a71977980afc7537dac0881e784eef99f",
+    "path": "pyproject.toml",
+    "sha256": "e244032a50d44ad7d033298a0a05ef4e0085207632c6a32cf032ae512cb64e6d",
+    "url": "https://github.com/gepa-ai/gepa/blob/8c7b697a71977980afc7537dac0881e784eef99f/pyproject.toml"
+  },
+  {
+    "repository": "gepa-ai/gepa",
+    "commit": "8c7b697a71977980afc7537dac0881e784eef99f",
+    "path": "README.md",
+    "sha256": "ebbf210b31f5e6cb1ff9cc0a53a33f7b0f6927eff31ee11dc50d207e9ceebe70",
+    "url": "https://github.com/gepa-ai/gepa/blob/8c7b697a71977980afc7537dac0881e784eef99f/README.md"
+  },
+  {
+    "repository": "gepa-ai/gepa",
+    "commit": "8c7b697a71977980afc7537dac0881e784eef99f",
+    "path": "src/gepa/__init__.py",
+    "sha256": "61cdac47f24d1f24315b8beb8d65e834a67a2a7a6cf9b667ecf6c669ddc6f4a6",
+    "url": "https://github.com/gepa-ai/gepa/blob/8c7b697a71977980afc7537dac0881e784eef99f/src/gepa/__init__.py"
+  },
+  {
+    "repository": "gepa-ai/gepa",
+    "commit": "8c7b697a71977980afc7537dac0881e784eef99f",
+    "path": "src/gepa/gepa_launcher.py",
+    "sha256": "9a1113060626cf32de958db303558cf60d7b9d4f1efa4a8fde4f84eae1847ddd",
+    "url": "https://github.com/gepa-ai/gepa/blob/8c7b697a71977980afc7537dac0881e784eef99f/src/gepa/gepa_launcher.py"
+  },
+  {
+    "repository": "gepa-ai/gepa",
+    "commit": "8c7b697a71977980afc7537dac0881e784eef99f",
+    "path": "src/gepa/oa/config.py",
+    "sha256": "8004e524c29d94bfbbc25fcf8d94162f6e46fc81b591b3324caf5dd89bb1fd8a",
+    "url": "https://github.com/gepa-ai/gepa/blob/8c7b697a71977980afc7537dac0881e784eef99f/src/gepa/oa/config.py"
+  },
+  {
+    "repository": "gepa-ai/gepa",
+    "commit": "8c7b697a71977980afc7537dac0881e784eef99f",
+    "path": "src/gepa/optimize_anything.py",
+    "sha256": "f037d782534c2fcc05085d7f1b34a44c3641505c9534bbfeae6674077bb7b103",
+    "url": "https://github.com/gepa-ai/gepa/blob/8c7b697a71977980afc7537dac0881e784eef99f/src/gepa/optimize_anything.py"
+  },
+  {
+    "repository": "sierra-research/tau2-bench",
+    "commit": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+    "path": "LICENSE",
+    "sha256": "e67c5aa0074dfcaefd3c3a1aedb94cb539234aecd15d5a972574e3200e6252fe",
+    "url": "https://github.com/sierra-research/tau2-bench/blob/da0835f6c67baef58bdda18f2a3b037dfb3a1754/LICENSE"
+  },
+  {
+    "repository": "sierra-research/tau2-bench",
+    "commit": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+    "path": "pyproject.toml",
+    "sha256": "80c3918930e23f14de11c948eec41c698c91ad10ddf61f0853f2c031beb4c525",
+    "url": "https://github.com/sierra-research/tau2-bench/blob/da0835f6c67baef58bdda18f2a3b037dfb3a1754/pyproject.toml"
+  },
+  {
+    "repository": "sierra-research/tau2-bench",
+    "commit": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+    "path": "README.md",
+    "sha256": "7ae047a745ef93b311edb0da5d74fbc2bd784a35ce285a73ab3af8b6aed3e34b",
+    "url": "https://github.com/sierra-research/tau2-bench/blob/da0835f6c67baef58bdda18f2a3b037dfb3a1754/README.md"
+  },
+  {
+    "repository": "sierra-research/tau2-bench",
+    "commit": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+    "path": "src/tau2/agent/base_agent.py",
+    "sha256": "97f1033723d03da99f3338ff7a12ed60114a55ed293928ff4ca0bdace6851b4d",
+    "url": "https://github.com/sierra-research/tau2-bench/blob/da0835f6c67baef58bdda18f2a3b037dfb3a1754/src/tau2/agent/base_agent.py"
+  },
+  {
+    "repository": "sierra-research/tau2-bench",
+    "commit": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+    "path": "src/tau2/agent/llm_agent.py",
+    "sha256": "7b8cd814cb44ccccd86d58242e39ec3767a1f02213cd05c9771b6d0675b37b0b",
+    "url": "https://github.com/sierra-research/tau2-bench/blob/da0835f6c67baef58bdda18f2a3b037dfb3a1754/src/tau2/agent/llm_agent.py"
+  },
+  {
+    "repository": "sierra-research/tau2-bench",
+    "commit": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+    "path": "src/tau2/cli.py",
+    "sha256": "da9738c5930af994356ab3bbb4ad116dbd7414df5053d8cf68924bda260af3c6",
+    "url": "https://github.com/sierra-research/tau2-bench/blob/da0835f6c67baef58bdda18f2a3b037dfb3a1754/src/tau2/cli.py"
+  },
+  {
+    "repository": "sierra-research/tau2-bench",
+    "commit": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+    "path": "src/tau2/data_model/run_config.py",
+    "sha256": "93a6b6a66a0fb93a23614840ff199d246f2b8f356caaf01bede06aeb0ca51b3a",
+    "url": "https://github.com/sierra-research/tau2-bench/blob/da0835f6c67baef58bdda18f2a3b037dfb3a1754/src/tau2/data_model/run_config.py"
+  },
+  {
+    "repository": "sierra-research/tau2-bench",
+    "commit": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+    "path": "src/tau2/domains/intake/cli.py",
+    "sha256": "cd83c2f64276c4580cb4c461a54d2ab5154853892fc4c5bba0ced0532db39af6",
+    "url": "https://github.com/sierra-research/tau2-bench/blob/da0835f6c67baef58bdda18f2a3b037dfb3a1754/src/tau2/domains/intake/cli.py"
+  },
+  {
+    "repository": "sierra-research/tau2-bench",
+    "commit": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+    "path": "src/tau2/domains/intake/tasks/cli.py",
+    "sha256": "f03a1e58ba231c2f5ed82b55445b597c15d50c97de03623ccbda9c22af006518",
+    "url": "https://github.com/sierra-research/tau2-bench/blob/da0835f6c67baef58bdda18f2a3b037dfb3a1754/src/tau2/domains/intake/tasks/cli.py"
+  },
+  {
+    "repository": "sierra-research/tau2-bench",
+    "commit": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+    "path": "src/tau2/evaluator/evaluator.py",
+    "sha256": "adc929736ee3d75186fcd5c7cf5d5a4036814a9b73a845f7a513b39a44e9bc93",
+    "url": "https://github.com/sierra-research/tau2-bench/blob/da0835f6c67baef58bdda18f2a3b037dfb3a1754/src/tau2/evaluator/evaluator.py"
+  },
+  {
+    "repository": "sierra-research/tau2-bench",
+    "commit": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+    "path": "src/tau2/judges/authoring_registry.py",
+    "sha256": "3d599c1340850c2d2e218ef821a9f43833973a9472d1a64aeccd432f13f6d98d",
+    "url": "https://github.com/sierra-research/tau2-bench/blob/da0835f6c67baef58bdda18f2a3b037dfb3a1754/src/tau2/judges/authoring_registry.py"
+  },
+  {
+    "repository": "sierra-research/tau2-bench",
+    "commit": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+    "path": "src/tau2/judges/cli.py",
+    "sha256": "f0e702a03f67392e712ed9a600ba402a791693cc16a0a313d2f669ac3ca6e9ae",
+    "url": "https://github.com/sierra-research/tau2-bench/blob/da0835f6c67baef58bdda18f2a3b037dfb3a1754/src/tau2/judges/cli.py"
+  },
+  {
+    "repository": "sierra-research/tau2-bench",
+    "commit": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+    "path": "src/tau2/knowledge/registry.py",
+    "sha256": "98b476f3ac15de7555e2ee621c6ea16cf1b860d383b6e6b85e47bb0e097d815c",
+    "url": "https://github.com/sierra-research/tau2-bench/blob/da0835f6c67baef58bdda18f2a3b037dfb3a1754/src/tau2/knowledge/registry.py"
+  },
+  {
+    "repository": "sierra-research/tau2-bench",
+    "commit": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+    "path": "src/tau2/multilingual/cli.py",
+    "sha256": "2614ce777ea44a65783e16b82df82053f5c85b6eff2f6ec5462c35824d6e2f24",
+    "url": "https://github.com/sierra-research/tau2-bench/blob/da0835f6c67baef58bdda18f2a3b037dfb3a1754/src/tau2/multilingual/cli.py"
+  },
+  {
+    "repository": "sierra-research/tau2-bench",
+    "commit": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+    "path": "src/tau2/multilingual/factory/cli.py",
+    "sha256": "01d936bf67ccf5de40e15544fe82e0b58157eb87c3f34c771b9067075b78887c",
+    "url": "https://github.com/sierra-research/tau2-bench/blob/da0835f6c67baef58bdda18f2a3b037dfb3a1754/src/tau2/multilingual/factory/cli.py"
+  },
+  {
+    "repository": "sierra-research/tau2-bench",
+    "commit": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+    "path": "src/tau2/multilingual/factory/localization_cli.py",
+    "sha256": "8680de3f3478ceda4a8b4c0a7968e7b44cfce8a34b651be0aa01064c4176e662",
+    "url": "https://github.com/sierra-research/tau2-bench/blob/da0835f6c67baef58bdda18f2a3b037dfb3a1754/src/tau2/multilingual/factory/localization_cli.py"
+  },
+  {
+    "repository": "sierra-research/tau2-bench",
+    "commit": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+    "path": "src/tau2/registry.py",
+    "sha256": "808a23490b25e32dd2589b09be33c493c9a4a7322cf0fd8ac31c2b96cde319bf",
+    "url": "https://github.com/sierra-research/tau2-bench/blob/da0835f6c67baef58bdda18f2a3b037dfb3a1754/src/tau2/registry.py"
+  },
+  {
+    "repository": "sierra-research/tau2-bench",
+    "commit": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+    "path": "src/tau2/run.py",
+    "sha256": "d65d9e0918f8fcfb82b1924cf17c3f8773f9c7500f9d11693f15b90157d09973",
+    "url": "https://github.com/sierra-research/tau2-bench/blob/da0835f6c67baef58bdda18f2a3b037dfb3a1754/src/tau2/run.py"
+  },
+  {
+    "repository": "sierra-research/tau2-bench",
+    "commit": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+    "path": "src/tau2/runner/batch.py",
+    "sha256": "6ff1a4d77eb65e70d53fedbff9205f81f02985fda4c15f2bd411be48261be8f6",
+    "url": "https://github.com/sierra-research/tau2-bench/blob/da0835f6c67baef58bdda18f2a3b037dfb3a1754/src/tau2/runner/batch.py"
+  },
+  {
+    "repository": "sierra-research/tau2-bench",
+    "commit": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+    "path": "src/tau2/runner/build.py",
+    "sha256": "c54c8383da51a435b777c934f9e4fab73204381f5cf9443616f637fa1e0a4086",
+    "url": "https://github.com/sierra-research/tau2-bench/blob/da0835f6c67baef58bdda18f2a3b037dfb3a1754/src/tau2/runner/build.py"
+  },
+  {
+    "repository": "sierra-research/tau2-bench",
+    "commit": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+    "path": "src/tau2/runner/cli.py",
+    "sha256": "513194df614074f703c1180293ed9a6a23103297440793c97254b35d6fe57405",
+    "url": "https://github.com/sierra-research/tau2-bench/blob/da0835f6c67baef58bdda18f2a3b037dfb3a1754/src/tau2/runner/cli.py"
+  },
+  {
+    "repository": "sierra-research/tau2-bench",
+    "commit": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+    "path": "src/tau2/runner/simulation.py",
+    "sha256": "a13e1dbe225d245f82d240b41db989778184cb9d6ca36f3912c20ca69bf409e9",
+    "url": "https://github.com/sierra-research/tau2-bench/blob/da0835f6c67baef58bdda18f2a3b037dfb3a1754/src/tau2/runner/simulation.py"
+  },
+  {
+    "repository": "sierra-research/tau2-bench",
+    "commit": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+    "path": "src/tau2/scripts/leaderboard/cli.py",
+    "sha256": "33ea2c29d55e8d67ec10b28f20ae95e6ec64d2f4b6b25f4e8bd9d8cd53e2d184",
+    "url": "https://github.com/sierra-research/tau2-bench/blob/da0835f6c67baef58bdda18f2a3b037dfb3a1754/src/tau2/scripts/leaderboard/cli.py"
+  },
+  {
+    "repository": "sierra-research/tau2-bench",
+    "commit": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+    "path": "src/tau2/task_subsets/cli.py",
+    "sha256": "0d0bc02a95f9978d1e017ff066aced9cb0e7f800e27ef33d4edcd7d1f13d5b5d",
+    "url": "https://github.com/sierra-research/tau2-bench/blob/da0835f6c67baef58bdda18f2a3b037dfb3a1754/src/tau2/task_subsets/cli.py"
+  },
+  {
+    "repository": "sierra-research/tau2-bench",
+    "commit": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+    "path": "src/tau2/voice/synthesis/cli.py",
+    "sha256": "f4c46f67ea3a843c483f4f57e637fd759317921399b8602f1e5ce9889c829a0e",
+    "url": "https://github.com/sierra-research/tau2-bench/blob/da0835f6c67baef58bdda18f2a3b037dfb3a1754/src/tau2/voice/synthesis/cli.py"
+  }
+]

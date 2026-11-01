@@ -1,0 +1,43 @@
+{
+  "upstream_sha": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+  "upstream_sources": {
+    "src/tau2/agent/README.md": "8a65beb811638cd070e815ecc7682c9689fe713bd5ab771163a644d44a470763",
+    "examples/agents/minimal_text_agent.py": "0397ae5be479f35e42c668078e9cbe122a69d1889a4c9aea16f4617f4a167727",
+    "examples/agents/custom_agent_eval.py": "d1338350022bbde3c539772bede9dcfc2a55c0e777d4be7ac3e07ddd3179203c",
+    "src/tau2/agent/llm_agent.py": "5d714749e9195de9e97a7b9cb63eb296b251a9cdd0c493bd6654e2588ee28107",
+    "src/tau2/domains/retail/environment.py": "dc1de474078119744bcc48418a3ba1bd03bab5b1b22ac358c9559f775ffca31c",
+    "src/tau2/runner/helpers.py": "75f7a72ea88f4ee917cc3968a131440ecb40b1bb2748c3623ef4ce227d43a1e7",
+    "src/tau2/runner/simulation.py": "6eecd91a41c88cee5b615312b82303863d3fa7f79288741ba71a84944d60c7f8",
+    "src/tau2/orchestrator/orchestrator.py": "56aea00010c846fec38c5ff0bd2b3a9aeb1ab9df1350b92bf29d11e4ba0a48e4",
+    "src/tau2/config.py": "4017a9edf80280a5276622a06906eec6e09b8b266639410d3455199fdf3ee82c",
+    "src/tau2/data_model/simulation.py": "49f4d0b261e3913f8560cc58acfe4fe4592cae38009c31ae8cf183c946755417",
+    "src/tau2/data_model/message.py": "1eb78bd99aea240297ef7cb83e037c7788d31e9a3fad70f8d75d9b1bdd42bdf1",
+    "src/tau2/evaluator/evaluator.py": "b7de29656b0c5f31c5b0b7ac9a7cdf58e90595f54aa03b7d326e3ebb1f8b1ecf",
+    "src/tau2/evaluator/evaluator_env.py": "98b32ae37bdb05b123b4c3e7ffdf85430ad48cccdbd597ce8df39ccb4413bf5d",
+    "src/tau2/evaluator/evaluator_nl_assertions.py": "109e7aea8e149fd02923ab3bef0f09e2eb0492858b87979c3f46bcfcf4834256",
+    "src/tau2/evaluator/evaluator_communicate.py": "9724a53c792bc19a4a6a5fd5bfa8e9dd2a29e604b9a819a3bb6078ace2506792",
+    "src/tau2/utils/llm_utils.py": "58489253f3bbd41934814f2c0e6d733c06d6feacc303dab1ffe924f482f21ce6",
+    "pyproject.toml": "b9e5d3880fceb2ae2ccad2178d261c5ec6f7acbb4d13055c4ccb62bf26d6220c",
+    "LICENSE": "74741b87a33d4704c6f33e5c71742542446c984233f7a7e4905bf36f4da5a33b",
+    "src/tau2/runner/build.py": "9ff8d1874aa853e76ae378db789bb1eb7db0463749ec6f700e5ed0a90e899439",
+    "src/tau2/user/user_simulator.py": "9bedf2c8241187898f9637c981a0eea9804c787b9cd9f49f01eeccd575fd561b"
+  },
+  "project_sources": {
+    "src/agent_evolve/baseline.py": "ac00d3b0d830c78119376fa20b2f13f40527476286c130ecdd0f6ba0f0d8d6b3",
+    "src/agent_evolve/tau_backend.py": "19d29af1963288a72234952051cd8f8818a3715d9d5f03407df0208288835188",
+    "tests/test_baseline.py": "3c05699f154e7cd66ab1c00cbc7862dd2efe28040701473026582ca1a66cde20",
+    "tests/integration/test_tau.py": "5751146d78c5764bbc41032ac6ae37dce7e682739d754526360cc956572507ec",
+    "environments/tau/uv.lock": "b2fa0bcabda25a1d2ab3caf5ae2b658369386c3ca9e9bccf3b7454bfb5e99c3d"
+  },
+  "data": {
+    "tau2/domains/retail/audio_difficulty.json": "0949980e9c472805a4069bd01807c12768564eb17181d4e13ae6322758af228f",
+    "tau2/domains/retail/db.json": "dbde692e380bb4ad17f9f7841172cf1e69bebad2daa405628ccdc52a42b3b9b0",
+    "tau2/domains/retail/policy.md": "4313d3fef8acf919f555fa17fbce929cc3ed1cef2dd8f0d35ff5c8c3364de176",
+    "tau2/domains/retail/split_tasks.json": "5f9949b833e6b99584b87e84ef22f9d81789ea67a52e534c6f7aa91eff08adc7",
+    "tau2/domains/retail/task_issues/task_4_issue_2b74ee61.json": "5d80e678c266585050e626986a938265707ec1ef9ffc71046b34e15db2ca4293",
+    "tau2/domains/retail/task_issues/task_5_issue_770466c1.json": "bc0fe9539add866d8e098d419e1f99d741df6816f09bd4e124aa91f0dc381929",
+    "tau2/domains/retail/task_issues/task_7_issue_9a37c151.json": "7deee31da8fbc88f7326b1e666517378608b06d47dad69c9f89d18248f8bae1a",
+    "tau2/domains/retail/tasks.json": "f44563d8f36362e2dc58282bb02cfb85010d22f27d9439808758d3e9b2bc16d2",
+    "tau2/domains/retail/tasks_voice.json": "97c6ec707c5a30f454e9020faa61aca34b4a730dec9e9ebd35ca80d2f3dd1e2c"
+  }
+}

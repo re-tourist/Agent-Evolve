@@ -1,0 +1,46 @@
+{
+  "task_id": "0",
+  "mode": "mock",
+  "backend": "tau",
+  "termination_reason": "user_stop",
+  "official_task_reward": 0.0,
+  "excluded_from_task_metrics": false,
+  "messages": [
+    {
+      "role": "assistant",
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "tool_calls": null
+    },
+    {
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "id": "scripted-inspect",
+          "name": "get_order_details",
+          "arguments": {
+            "order_id": "#W2378156"
+          },
+          "requestor": "assistant"
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "id": "scripted-inspect",
+      "requestor": "assistant",
+      "error": false,
+      "execution_status": "executed"
+    },
+    {
+      "role": "assistant",
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "tool_calls": null
+    }
+  ]
+}

@@ -156,6 +156,9 @@ between user claims and tools does not establish which party is wrong. Unknown
 tool internals cannot be described as intentional mock behavior. Generic advice
 like 'be careful/strict' is not an executable intervention. Focus on at most TWO
 concrete decisions; zero interventions is preferable to speculative repairs.
+Intervention fields must contain NO customer/card/account fragments, numeric
+examples, trace message pointers or task-specific examples. Evidence locators and
+literal identifiers belong in evidence only, never in the reusable decision rule.
 """
 )
 
@@ -207,6 +210,8 @@ def validate_interventions(text, view):
                 f"When {intervention['when']}, {intervention['do']}. "
                 f"Basis: {intervention['because']}. Limits: {intervention['limits']}"
             )
+            if re.search(r"\d|/messages/|<id_", flat["suggestion"]):
+                raise ValueError("Intervention contains instance fragments or trace locators")
             flat["evidence"] = observation["evidence"] + intervention["evidence"]
             checked = validate_analysis(json.dumps({"diagnostics": [flat]}), view)
             if not checked["diagnostics"]:

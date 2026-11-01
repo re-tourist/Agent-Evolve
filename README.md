@@ -1,5 +1,11 @@
 # Agent-Evolve
 
+**最新 Goal：未完成。** 新语义反馈研究因 Qwen SDK `InternalServerError` 在第755次请求
+停止。已完成20个Train基线、Basic的3个真实候选（第三批部分中断）；Structured搜索与
+新M5 Test尚未运行。已知Usage估算¥3.3939484，另有未知请求保守预留¥9.796608，实际账单未知。
+算法实现、误归因审查及未满足验收见 [本轮报告](docs/experiments/SEMANTIC_STUDY_REPORT.md)。
+不能把下面的**历史小规模实验**当作新Goal或完整M4/M5的验收。
+
 Evaluation-driven optimization and training experiments for LLM Agents.
 当前项目：**GEPA × τ-bench 客服 Agent Prompt 优化与 Trace Feedback 对照**。
 
@@ -27,6 +33,11 @@ Evaluation-driven optimization and training experiments for LLM Agents.
 [产物哈希](docs/experiments/core-sprint-001/manifest.json)
 
 ## Architecture / 数据流
+
+新增语义引擎读取可观察对话/工具结果、固定Policy和工具定义，先校验引用，再对
+候选判断做同模型二次质询，区分事实、假设、责任方和一般化建议。它尚不是可靠的
+业务失败判定真值；人工审查发现引用有效仍可能误归因。正式Test前要求具体语义案例
+审查记录及真实失败→Reflection→不同候选→官方评分链路；仅有true标志或绿CI不够。
 
 ```mermaid
 flowchart LR
@@ -90,6 +101,7 @@ environments/gepa/.venv/Scripts/python.exe -m agent_evolve.experiment --config e
 - [Goals](GOALS.md), [Architecture](ARCHITECTURE.md), [Agent rules](AGENTS.md)
 - [Project plan v0.2 (historical baseline)](docs/PROJECT_PLAN.md), [Protocol](docs/EXPERIMENT_PROTOCOL.md), [Decisions](docs/DECISIONS.md)
 - [Core sprint validation](docs/validation/CORE_SPRINT_VALIDATION.md), [Experiment log](docs/experiments/EXPERIMENT_LOG.md)
+- [Semantic Goal partial report](docs/experiments/SEMANTIC_STUDY_REPORT.md), [reviewed scalar records](docs/experiments/semantic-study-002/results.json), [Goal ExecPlan](.agent/plans/009-semantic-feedback-goal.md)
 - [GEPA audit](docs/M3_GEPA_AUDIT.md), [τ-bench audit](docs/M2_UPSTREAM_AUDIT.md), [Feedback rules](docs/M4_FEEDBACK.md)
 - [M1 validation](docs/validation/M1_VALIDATION.md), [M2-A](docs/validation/M2A_VALIDATION.md), [M3-A](docs/validation/M3A_VALIDATION.md), [M4-A](docs/validation/M4A_VALIDATION.md)
 - [GitHub tracking](docs/GITHUB_TRACKING.md), [ExecPlan](.agent/plans/008-core-experiment-sprint.md)

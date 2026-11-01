@@ -1,0 +1,2948 @@
+{
+  "run_id": "semantic-study-002",
+  "status": "externally_stopped_goal_incomplete",
+  "initial_source": "635301b",
+  "recovery_source": "5d40407",
+  "subsequent_worker_sources": "per-task git/worker_source artifacts; development fixes were versioned before Structured search",
+  "model": "qwen-plus-2025-12-01",
+  "region": "Beijing",
+  "judge": "none",
+  "gepa_sha": "8c7b697a71977980afc7537dac0881e784eef99f",
+  "tau_sha": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+  "split": {
+    "train": [
+      "1",
+      "6",
+      "7",
+      "8",
+      "11",
+      "13",
+      "14",
+      "15",
+      "20",
+      "22",
+      "23",
+      "25",
+      "30",
+      "31",
+      "34",
+      "35",
+      "41",
+      "48",
+      "50",
+      "52"
+    ],
+    "validation": [
+      "57",
+      "58",
+      "66",
+      "69",
+      "72"
+    ],
+    "test": [
+      "17",
+      "18",
+      "26",
+      "27",
+      "32",
+      "33",
+      "42",
+      "49",
+      "51",
+      "53"
+    ]
+  },
+  "baseline": {
+    "tasks": 20,
+    "official_successes": 9,
+    "official_failures": 11
+  },
+  "basic": {
+    "task_attempts": 23,
+    "scored": 22,
+    "infrastructure_failures": 1,
+    "real_proposals": 3,
+    "candidate_minibatches_complete": 2,
+    "candidate_minibatches_partial": 1,
+    "new_candidates_accepted": 0,
+    "train_coverage": [
+      "1",
+      "6",
+      "7",
+      "8",
+      "11",
+      "13",
+      "14",
+      "15",
+      "20"
+    ],
+    "checkpoint_validation_mean": 0.8,
+    "checkpoint_metric_calls": 17,
+    "best": "Seed; provisional complete checkpoint only, not a final study selection"
+  },
+  "structured": "Not run",
+  "test": {
+    "executed": 0,
+    "planned_tasks": 10,
+    "trials_per_task": 2,
+    "results": "Not run; no zeros fabricated"
+  },
+  "budget": {
+    "limit": 5000,
+    "cost_limit_rmb": 50,
+    "phase_limits": {
+      "baseline": 5000,
+      "basic": 5000,
+      "structured": 5000,
+      "test": 5000
+    },
+    "task_calls": 48,
+    "requests": 755,
+    "cost_rmb": 13.190556399999998,
+    "input_tokens": 4002363,
+    "output_tokens": 96029,
+    "phases": {
+      "baseline": 394,
+      "basic": 361,
+      "structured": 0,
+      "test": 0
+    },
+    "stopped": "InternalServerError",
+    "pending": null,
+    "unknown_usage_requests": 2,
+    "unknown_cost_reserve_rmb": 9.796607999999999
+  },
+  "usage_known": {
+    "calls": 753,
+    "input_tokens": 4002363,
+    "output_tokens": 96029,
+    "known_estimated_rmb": 3.3939484,
+    "provider_seconds": 2519.7569999999105
+  },
+  "usage_by_role": {
+    "agent": {
+      "calls": 482,
+      "input_tokens": 3439528,
+      "output_tokens": 68037,
+      "known_estimated_rmb": 2.8876964000000003,
+      "provider_seconds": 1750.4639999999854
+    },
+    "simulator": {
+      "calls": 246,
+      "input_tokens": 293842,
+      "output_tokens": 12105,
+      "known_estimated_rmb": 0.2592836,
+      "provider_seconds": 382.8879999999335
+    },
+    "diagnostic": {
+      "calls": 22,
+      "input_tokens": 267419,
+      "output_tokens": 15573,
+      "known_estimated_rmb": 0.24508120000000003,
+      "provider_seconds": 376.1559999999954
+    },
+    "reflection": {
+      "calls": 3,
+      "input_tokens": 1574,
+      "output_tokens": 314,
+      "known_estimated_rmb": 0.0018872,
+      "provider_seconds": 10.248999999996158
+    }
+  },
+  "usage_by_phase": {
+    "baseline": {
+      "calls": 393,
+      "input_tokens": 2306285,
+      "output_tokens": 58534,
+      "known_estimated_rmb": 1.962096,
+      "provider_seconds": 1509.2049999999654
+    },
+    "basic": {
+      "calls": 360,
+      "input_tokens": 1696078,
+      "output_tokens": 37495,
+      "known_estimated_rmb": 1.4318524000000001,
+      "provider_seconds": 1010.5519999999451
+    },
+    "structured": {
+      "calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "known_estimated_rmb": 0,
+      "provider_seconds": 0
+    },
+    "test": {
+      "calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "known_estimated_rmb": 0,
+      "provider_seconds": 0
+    }
+  },
+  "errors": [
+    {
+      "request": 10,
+      "phase": "baseline",
+      "role": "diagnostic",
+      "association": {
+        "candidate": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+        "task": "1",
+        "source": "baseline\\1"
+      },
+      "status": "error",
+      "time": 1793537661.9768581,
+      "seconds": 30.781000000002678,
+      "error_type": "Timeout"
+    },
+    {
+      "request": 755,
+      "phase": "basic",
+      "role": "agent",
+      "association": "63b46ae37058198a9510688847549baeb81539d8251e7d228e3ef0de0cbbe2d5",
+      "status": "error",
+      "time": 1793542001.728752,
+      "seconds": 3.0460000000020955,
+      "error_type": "InternalServerError"
+    }
+  ],
+  "cost_note": "Known-return estimates plus maximum-context reserves for two unavailable-Usage errors; invoice unavailable",
+  "trials": [
+    {
+      "path": "baseline/1/task",
+      "task_id": "1",
+      "phase": "baseline",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 0.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": false,
+        "db_reward": 0.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 0.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 5,
+        "matched": 4
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 5,
+        "tool_calls": 4
+      },
+      "usage": {
+        "calls": 9,
+        "input_tokens": 44017,
+        "output_tokens": 1775,
+        "known_estimated_rmb": 0.0387636,
+        "provider_seconds": 44.5480000000025
+      },
+      "duration": 45.20292179999524,
+      "worker_seconds": 71.70300000000134,
+      "git": {
+        "commit": "635301b660d68a7eb76671b41bad3b9bb2129b1a",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "baseline/11/task",
+      "task_id": "11",
+      "phase": "baseline",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 1.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 6,
+        "matched": 6
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_email",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "return_delivered_order_items",
+        "return_delivered_order_items"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 11,
+        "tool_calls": 6
+      },
+      "usage": {
+        "calls": 17,
+        "input_tokens": 76055,
+        "output_tokens": 1544,
+        "known_estimated_rmb": 0.063932,
+        "provider_seconds": 42.45100000000821
+      },
+      "duration": 43.79889769999863,
+      "worker_seconds": 71.40699999999924,
+      "git": {
+        "commit": "d3e25e6a1cd3f4f91133d1f395391cf1f1d7591c",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "baseline/13/task",
+      "task_id": "13",
+      "phase": "baseline",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 1.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 5,
+        "matched": 5
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_email",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "return_delivered_order_items",
+        "return_delivered_order_items"
+      ],
+      "tool_errors": 1,
+      "finish_reasons": {
+        "stop": 15,
+        "tool_calls": 6
+      },
+      "usage": {
+        "calls": 21,
+        "input_tokens": 93804,
+        "output_tokens": 1809,
+        "known_estimated_rmb": 0.0786612,
+        "provider_seconds": 48.77900000000227
+      },
+      "duration": 50.46669120000297,
+      "worker_seconds": 76.46800000000076,
+      "git": {
+        "commit": "eb9d7c68bbced8815b99fc3c38b7ab9c4047bb27",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "baseline/14/task",
+      "task_id": "14",
+      "phase": "baseline",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 0.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": false,
+        "db_reward": 0.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 0.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 6,
+        "matched": 5
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_email",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "return_delivered_order_items",
+        "return_delivered_order_items"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 9,
+        "tool_calls": 6
+      },
+      "usage": {
+        "calls": 15,
+        "input_tokens": 67246,
+        "output_tokens": 1372,
+        "known_estimated_rmb": 0.0565408,
+        "provider_seconds": 37.18600000000879
+      },
+      "duration": 38.26460650000081,
+      "worker_seconds": 64.85900000000402,
+      "git": {
+        "commit": "eb9d7c68bbced8815b99fc3c38b7ab9c4047bb27",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "baseline/15/task",
+      "task_id": "15",
+      "phase": "baseline",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 1.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 7,
+        "matched": 5
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_product_details",
+        "modify_pending_order_items"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 9,
+        "tool_calls": 5
+      },
+      "usage": {
+        "calls": 14,
+        "input_tokens": 63616,
+        "output_tokens": 1100,
+        "known_estimated_rmb": 0.0530928,
+        "provider_seconds": 31.389999999999418
+      },
+      "duration": 32.49060759999702,
+      "worker_seconds": 61.6559999999954,
+      "git": {
+        "commit": "eb9d7c68bbced8815b99fc3c38b7ab9c4047bb27",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "baseline/20/task",
+      "task_id": "20",
+      "phase": "baseline",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 0.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": false,
+        "db_reward": 0.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 0.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 10,
+        "matched": 9
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "get_product_details",
+        "get_product_details",
+        "modify_pending_order_items",
+        "get_order_details",
+        "get_item_details",
+        "get_item_details",
+        "get_item_details",
+        "get_item_details",
+        "get_order_details"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 17,
+        "tool_calls": 16
+      },
+      "usage": {
+        "calls": 33,
+        "input_tokens": 264557,
+        "output_tokens": 3411,
+        "known_estimated_rmb": 0.2184676,
+        "provider_seconds": 93.7840000000142
+      },
+      "duration": 96.29392999999982,
+      "worker_seconds": 123.01599999999598,
+      "git": {
+        "commit": "eb9d7c68bbced8815b99fc3c38b7ab9c4047bb27",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "baseline/22/task",
+      "task_id": "22",
+      "phase": "baseline",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 0.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": false,
+        "db_reward": 0.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 0.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 7,
+        "matched": 3
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "modify_user_address",
+        "modify_user_address"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 13,
+        "tool_calls": 4
+      },
+      "usage": {
+        "calls": 17,
+        "input_tokens": 62189,
+        "output_tokens": 938,
+        "known_estimated_rmb": 0.0516272,
+        "provider_seconds": 28.766999999999825
+      },
+      "duration": 29.929719000007026,
+      "worker_seconds": 54.70300000000134,
+      "git": {
+        "commit": "eb9d7c68bbced8815b99fc3c38b7ab9c4047bb27",
+        "dirty": true
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "baseline/23/task",
+      "task_id": "23",
+      "phase": "baseline",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 0.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": false,
+        "db_reward": 0.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 0.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 12,
+        "matched": 10
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "exchange_delivered_order_items",
+        "exchange_delivered_order_items"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 19,
+        "tool_calls": 10
+      },
+      "usage": {
+        "calls": 29,
+        "input_tokens": 172958,
+        "output_tokens": 2980,
+        "known_estimated_rmb": 0.14432640000000002,
+        "provider_seconds": 79.89099999999598
+      },
+      "duration": 81.57437600000412,
+      "worker_seconds": 106.25,
+      "git": {
+        "commit": "21758b7af74f2e62f36729316a68d3e10f1d0a77",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "baseline/25/task",
+      "task_id": "25",
+      "phase": "baseline",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 1.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 6,
+        "matched": 6
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "transfer_to_human_agents"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 5,
+        "tool_calls": 7
+      },
+      "usage": {
+        "calls": 12,
+        "input_tokens": 61979,
+        "output_tokens": 1258,
+        "known_estimated_rmb": 0.052099200000000005,
+        "provider_seconds": 33.80000000000291
+      },
+      "duration": 34.37985230000049,
+      "worker_seconds": 51.20300000000134,
+      "git": {
+        "commit": "21758b7af74f2e62f36729316a68d3e10f1d0a77",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "baseline/30/task",
+      "task_id": "30",
+      "phase": "baseline",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 0.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": false,
+        "db_reward": 0.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 0.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 13,
+        "matched": 9
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_item_details",
+        "get_product_details",
+        "get_order_details",
+        "get_order_details",
+        "return_delivered_order_items",
+        "return_delivered_order_items",
+        "get_order_details"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 17,
+        "tool_calls": 12
+      },
+      "usage": {
+        "calls": 29,
+        "input_tokens": 178410,
+        "output_tokens": 2828,
+        "known_estimated_rmb": 0.14838400000000002,
+        "provider_seconds": 77.56300000000192
+      },
+      "duration": 78.91414169999916,
+      "worker_seconds": 96.14100000000326,
+      "git": {
+        "commit": "84d8ffb746adec7014cc67d6eefd914c6ef2e344",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "baseline/31/task",
+      "task_id": "31",
+      "phase": "baseline",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 0.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": false,
+        "db_reward": 0.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 0.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 12,
+        "matched": 8
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_item_details",
+        "get_item_details",
+        "get_item_details",
+        "return_delivered_order_items",
+        "modify_pending_order_items",
+        "get_order_details",
+        "return_delivered_order_items"
+      ],
+      "tool_errors": 1,
+      "finish_reasons": {
+        "stop": 9,
+        "tool_calls": 12
+      },
+      "usage": {
+        "calls": 21,
+        "input_tokens": 114921,
+        "output_tokens": 2601,
+        "known_estimated_rmb": 0.0971388,
+        "provider_seconds": 69.12599999997474
+      },
+      "duration": 70.18350199999986,
+      "worker_seconds": 86.42199999999866,
+      "git": {
+        "commit": "121003d15498e952edc3e26eba86d9ec8744bb2a",
+        "dirty": true
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "baseline/34/task",
+      "task_id": "34",
+      "phase": "baseline",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 0.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": false,
+        "db_reward": 0.0
+      },
+      "reward_basis": [
+        "DB"
+      ],
+      "reward_breakdown": {
+        "DB": 0.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 6,
+        "matched": 5
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_item_details",
+        "get_item_details",
+        "cancel_pending_order"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 14,
+        "tool_calls": 8,
+        "length": 1
+      },
+      "usage": {
+        "calls": 23,
+        "input_tokens": 159664,
+        "output_tokens": 6345,
+        "known_estimated_rmb": 0.1404212,
+        "provider_seconds": 152.77799999999115
+      },
+      "duration": 154.20982240000012,
+      "worker_seconds": 171.54699999999866,
+      "git": {
+        "commit": "121003d15498e952edc3e26eba86d9ec8744bb2a",
+        "dirty": true
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "baseline/35/task",
+      "task_id": "35",
+      "phase": "baseline",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 1.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 7,
+        "matched": 6
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_email",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "return_delivered_order_items",
+        "modify_pending_order_items",
+        "cancel_pending_order",
+        "transfer_to_human_agents"
+      ],
+      "tool_errors": 1,
+      "finish_reasons": {
+        "stop": 15,
+        "tool_calls": 9
+      },
+      "usage": {
+        "calls": 24,
+        "input_tokens": 156194,
+        "output_tokens": 3377,
+        "known_estimated_rmb": 0.1317092,
+        "provider_seconds": 86.81199999998353
+      },
+      "duration": 88.18275110000104,
+      "worker_seconds": 104.89100000000326,
+      "git": {
+        "commit": "ccbb9ef5da60b4405566ca958070683b2ed198e7",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "baseline/41/task",
+      "task_id": "41",
+      "phase": "baseline",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 0.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": false,
+        "db_reward": 0.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 0.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 10,
+        "matched": 9
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "modify_pending_order_items",
+        "modify_pending_order_address",
+        "modify_user_address"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 7,
+        "tool_calls": 8
+      },
+      "usage": {
+        "calls": 15,
+        "input_tokens": 86478,
+        "output_tokens": 1951,
+        "known_estimated_rmb": 0.07308440000000001,
+        "provider_seconds": 50.01799999998184
+      },
+      "duration": 50.833485199997085,
+      "worker_seconds": 67.0940000000046,
+      "git": {
+        "commit": "0300375e4b7e34528acbbb67d7369f7a84a8360e",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "baseline/48/task",
+      "task_id": "48",
+      "phase": "baseline",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 1.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 6,
+        "matched": 6
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "return_delivered_order_items"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 9,
+        "tool_calls": 6
+      },
+      "usage": {
+        "calls": 15,
+        "input_tokens": 68935,
+        "output_tokens": 1749,
+        "known_estimated_rmb": 0.058646000000000004,
+        "provider_seconds": 44.890999999995984
+      },
+      "duration": 45.746997700000065,
+      "worker_seconds": 62.875,
+      "git": {
+        "commit": "0300375e4b7e34528acbbb67d7369f7a84a8360e",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "baseline/50/task",
+      "task_id": "50",
+      "phase": "baseline",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 1.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 1,
+        "matched": 1
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "transfer_to_human_agents"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 7,
+        "tool_calls": 4
+      },
+      "usage": {
+        "calls": 11,
+        "input_tokens": 43591,
+        "output_tokens": 1015,
+        "known_estimated_rmb": 0.0369028,
+        "provider_seconds": 26.904999999984284
+      },
+      "duration": 27.610774499997206,
+      "worker_seconds": 45.46800000000076,
+      "git": {
+        "commit": "0300375e4b7e34528acbbb67d7369f7a84a8360e",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "baseline/52/task",
+      "task_id": "52",
+      "phase": "baseline",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 0.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": false,
+        "db_reward": 0.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 0.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 5,
+        "matched": 4
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 9,
+        "tool_calls": 8
+      },
+      "usage": {
+        "calls": 17,
+        "input_tokens": 93499,
+        "output_tokens": 2059,
+        "known_estimated_rmb": 0.0789172,
+        "provider_seconds": 53.359000000004016
+      },
+      "duration": 54.16471090000414,
+      "worker_seconds": 71.13999999999942,
+      "git": {
+        "commit": "0300375e4b7e34528acbbb67d7369f7a84a8360e",
+        "dirty": true
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "baseline/6/task",
+      "task_id": "6",
+      "phase": "baseline",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 1.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 6,
+        "matched": 5
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 11,
+        "tool_calls": 6
+      },
+      "usage": {
+        "calls": 17,
+        "input_tokens": 76302,
+        "output_tokens": 1472,
+        "known_estimated_rmb": 0.0639856,
+        "provider_seconds": 39.97000000000844
+      },
+      "duration": 41.16119819999585,
+      "worker_seconds": 69.7039999999979,
+      "git": {
+        "commit": "5d40407f7eb8f499f8d19dc7e52164c2140b6444",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "baseline/7/task",
+      "task_id": "7",
+      "phase": "baseline",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 1.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 6,
+        "matched": 5
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 9,
+        "tool_calls": 5
+      },
+      "usage": {
+        "calls": 14,
+        "input_tokens": 60507,
+        "output_tokens": 1529,
+        "known_estimated_rmb": 0.051463600000000005,
+        "provider_seconds": 41.57800000001589
+      },
+      "duration": 42.81131710000045,
+      "worker_seconds": 69.31300000000192,
+      "git": {
+        "commit": "5d40407f7eb8f499f8d19dc7e52164c2140b6444",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "baseline/8/task",
+      "task_id": "8",
+      "phase": "baseline",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 0.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": false,
+        "db_reward": 0.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 0.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 6,
+        "matched": 5
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 11,
+        "tool_calls": 7
+      },
+      "usage": {
+        "calls": 18,
+        "input_tokens": 93944,
+        "output_tokens": 1848,
+        "known_estimated_rmb": 0.07885120000000001,
+        "provider_seconds": 49.45299999999406
+      },
+      "duration": 51.13446870000189,
+      "worker_seconds": 76.09399999999732,
+      "git": {
+        "commit": "5d40407f7eb8f499f8d19dc7e52164c2140b6444",
+        "dirty": true
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "basic/evaluations/000001/task",
+      "task_id": "57",
+      "phase": "basic",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 1.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": false,
+        "count": 0,
+        "matched": 0
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_order_details",
+        "get_user_details"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 7,
+        "tool_calls": 3
+      },
+      "usage": {
+        "calls": 10,
+        "input_tokens": 35557,
+        "output_tokens": 842,
+        "known_estimated_rmb": 0.0301296,
+        "provider_seconds": 22.672000000005937
+      },
+      "duration": 23.219069099999615,
+      "worker_seconds": 39.70300000000134,
+      "git": {
+        "commit": "8f0d7dded21641681a253e768966c5617d277cbf",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "basic/evaluations/000002/task",
+      "task_id": "58",
+      "phase": "basic",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 1.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 6,
+        "matched": 6
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 11,
+        "tool_calls": 6
+      },
+      "usage": {
+        "calls": 17,
+        "input_tokens": 86932,
+        "output_tokens": 2187,
+        "known_estimated_rmb": 0.0739196,
+        "provider_seconds": 55.938999999983935
+      },
+      "duration": 56.903441999995266,
+      "worker_seconds": 74.48500000000058,
+      "git": {
+        "commit": "8f0d7dded21641681a253e768966c5617d277cbf",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "basic/evaluations/000003/task",
+      "task_id": "66",
+      "phase": "basic",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 0.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": false,
+        "db_reward": 0.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 0.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 5,
+        "matched": 4
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "cancel_pending_order"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 11,
+        "tool_calls": 5
+      },
+      "usage": {
+        "calls": 16,
+        "input_tokens": 66295,
+        "output_tokens": 1298,
+        "known_estimated_rmb": 0.055632,
+        "provider_seconds": 36.5480000000025
+      },
+      "duration": 37.44421460000012,
+      "worker_seconds": 55.11000000000058,
+      "git": {
+        "commit": "8f0d7dded21641681a253e768966c5617d277cbf",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "basic/evaluations/000004/task",
+      "task_id": "69",
+      "phase": "basic",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 1.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 4,
+        "matched": 4
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "cancel_pending_order"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 9,
+        "tool_calls": 6
+      },
+      "usage": {
+        "calls": 15,
+        "input_tokens": 67498,
+        "output_tokens": 1515,
+        "known_estimated_rmb": 0.05702840000000001,
+        "provider_seconds": 39.641999999999825
+      },
+      "duration": 40.44952789999661,
+      "worker_seconds": 57.46899999999732,
+      "git": {
+        "commit": "8f0d7dded21641681a253e768966c5617d277cbf",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "basic/evaluations/000005/task",
+      "task_id": "72",
+      "phase": "basic",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 1.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 2,
+        "matched": 2
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_product_details",
+        "modify_pending_order_address",
+        "modify_pending_order_items",
+        "modify_pending_order_payment"
+      ],
+      "tool_errors": 1,
+      "finish_reasons": {
+        "stop": 11,
+        "tool_calls": 7
+      },
+      "usage": {
+        "calls": 18,
+        "input_tokens": 88363,
+        "output_tokens": 1954,
+        "known_estimated_rmb": 0.07459840000000001,
+        "provider_seconds": 51.37599999998929
+      },
+      "duration": 52.51287660000526,
+      "worker_seconds": 68.75,
+      "git": {
+        "commit": "8f0d7dded21641681a253e768966c5617d277cbf",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "basic/evaluations/000006/task",
+      "task_id": "1",
+      "phase": "basic",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 1.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 5,
+        "matched": 5
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 7,
+        "tool_calls": 5
+      },
+      "usage": {
+        "calls": 12,
+        "input_tokens": 65029,
+        "output_tokens": 1951,
+        "known_estimated_rmb": 0.0559252,
+        "provider_seconds": 48.93799999997282
+      },
+      "duration": 49.6013443999982,
+      "worker_seconds": 68.35900000000402,
+      "git": {
+        "commit": "8f0d7dded21641681a253e768966c5617d277cbf",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "basic/evaluations/000007/task",
+      "task_id": "6",
+      "phase": "basic",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 1.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 6,
+        "matched": 5
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 9,
+        "tool_calls": 5
+      },
+      "usage": {
+        "calls": 14,
+        "input_tokens": 58868,
+        "output_tokens": 1226,
+        "known_estimated_rmb": 0.049546400000000004,
+        "provider_seconds": 33.76799999999639
+      },
+      "duration": 34.85994539999956,
+      "worker_seconds": 57.98399999999674,
+      "git": {
+        "commit": "8f0d7dded21641681a253e768966c5617d277cbf",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "basic/evaluations/000008/task",
+      "task_id": "7",
+      "phase": "basic",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 1.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 6,
+        "matched": 5
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 11,
+        "tool_calls": 7
+      },
+      "usage": {
+        "calls": 18,
+        "input_tokens": 89508,
+        "output_tokens": 1920,
+        "known_estimated_rmb": 0.07544640000000001,
+        "provider_seconds": 51.46800000001531
+      },
+      "duration": 53.215575800000806,
+      "worker_seconds": 81.25,
+      "git": {
+        "commit": "8f0d7dded21641681a253e768966c5617d277cbf",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "basic/evaluations/000009/task",
+      "task_id": "1",
+      "phase": "basic",
+      "prompt_sha256": "84a8792ce728620044eab5ba5d91a69fb578cceb5d270ebc68adc97a08ede9a2",
+      "reward": 1.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 5,
+        "matched": 5
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 9,
+        "tool_calls": 5
+      },
+      "usage": {
+        "calls": 14,
+        "input_tokens": 71678,
+        "output_tokens": 1927,
+        "known_estimated_rmb": 0.0611964,
+        "provider_seconds": 50.70399999999063
+      },
+      "duration": 51.77811820000352,
+      "worker_seconds": 80.43699999999808,
+      "git": {
+        "commit": "8f0d7dded21641681a253e768966c5617d277cbf",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "basic/evaluations/000010/task",
+      "task_id": "6",
+      "phase": "basic",
+      "prompt_sha256": "84a8792ce728620044eab5ba5d91a69fb578cceb5d270ebc68adc97a08ede9a2",
+      "reward": 1.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 6,
+        "matched": 6
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 13,
+        "tool_calls": 8
+      },
+      "usage": {
+        "calls": 21,
+        "input_tokens": 119645,
+        "output_tokens": 2295,
+        "known_estimated_rmb": 0.100306,
+        "provider_seconds": 60.91300000000774
+      },
+      "duration": 62.43243000000075,
+      "worker_seconds": 86.64100000000326,
+      "git": {
+        "commit": "8f0d7dded21641681a253e768966c5617d277cbf",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "basic/evaluations/000011/task",
+      "task_id": "7",
+      "phase": "basic",
+      "prompt_sha256": "84a8792ce728620044eab5ba5d91a69fb578cceb5d270ebc68adc97a08ede9a2",
+      "reward": 1.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 6,
+        "matched": 5
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 11,
+        "tool_calls": 5
+      },
+      "usage": {
+        "calls": 16,
+        "input_tokens": 70433,
+        "output_tokens": 1579,
+        "known_estimated_rmb": 0.059504400000000006,
+        "provider_seconds": 42.57799999998679
+      },
+      "duration": 43.79205340000044,
+      "worker_seconds": 70.45299999999406,
+      "git": {
+        "commit": "8f0d7dded21641681a253e768966c5617d277cbf",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "basic/evaluations/000012/task",
+      "task_id": "8",
+      "phase": "basic",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 0.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": false,
+        "db_reward": 0.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 0.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 6,
+        "matched": 5
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 11,
+        "tool_calls": 6
+      },
+      "usage": {
+        "calls": 17,
+        "input_tokens": 84721,
+        "output_tokens": 2174,
+        "known_estimated_rmb": 0.0721248,
+        "provider_seconds": 56.873999999981606
+      },
+      "duration": 58.20623459999479,
+      "worker_seconds": 91.3440000000046,
+      "git": {
+        "commit": "8f0d7dded21641681a253e768966c5617d277cbf",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "basic/evaluations/000013/task",
+      "task_id": "11",
+      "phase": "basic",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 1.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 6,
+        "matched": 6
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_email",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "return_delivered_order_items",
+        "return_delivered_order_items"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 11,
+        "tool_calls": 6
+      },
+      "usage": {
+        "calls": 17,
+        "input_tokens": 74425,
+        "output_tokens": 1401,
+        "known_estimated_rmb": 0.06234200000000001,
+        "provider_seconds": 40.003000000011525
+      },
+      "duration": 41.17972000000009,
+      "worker_seconds": 64.29699999999866,
+      "git": {
+        "commit": "8f0d7dded21641681a253e768966c5617d277cbf",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "basic/evaluations/000014/task",
+      "task_id": "13",
+      "phase": "basic",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 1.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 5,
+        "matched": 5
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_email",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "return_delivered_order_items"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 9,
+        "tool_calls": 5
+      },
+      "usage": {
+        "calls": 14,
+        "input_tokens": 60187,
+        "output_tokens": 1617,
+        "known_estimated_rmb": 0.0513836,
+        "provider_seconds": 43.29899999999179
+      },
+      "duration": 44.32466179999756,
+      "worker_seconds": 70.71800000000076,
+      "git": {
+        "commit": "8f0d7dded21641681a253e768966c5617d277cbf",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "basic/evaluations/000015/task",
+      "task_id": "8",
+      "phase": "basic",
+      "prompt_sha256": "d884581753a4709aa112fec3e20979e6ed8f18dcef06fc3d840ee97d898c0942",
+      "reward": 0.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": false,
+        "db_reward": 0.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 0.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 6,
+        "matched": 4
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 13,
+        "tool_calls": 5
+      },
+      "usage": {
+        "calls": 18,
+        "input_tokens": 80039,
+        "output_tokens": 1954,
+        "known_estimated_rmb": 0.0679392,
+        "provider_seconds": 52.57499999999709
+      },
+      "duration": 53.89788870000484,
+      "worker_seconds": 82.15699999999924,
+      "git": {
+        "commit": "8f0d7dded21641681a253e768966c5617d277cbf",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "basic/evaluations/000016/task",
+      "task_id": "11",
+      "phase": "basic",
+      "prompt_sha256": "d884581753a4709aa112fec3e20979e6ed8f18dcef06fc3d840ee97d898c0942",
+      "reward": 1.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 6,
+        "matched": 6
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_email",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "return_delivered_order_items",
+        "return_delivered_order_items"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 11,
+        "tool_calls": 6
+      },
+      "usage": {
+        "calls": 17,
+        "input_tokens": 76825,
+        "output_tokens": 1533,
+        "known_estimated_rmb": 0.064526,
+        "provider_seconds": 41.92200000000594
+      },
+      "duration": 43.13539559999481,
+      "worker_seconds": 70.92199999999866,
+      "git": {
+        "commit": "8f0d7dded21641681a253e768966c5617d277cbf",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "basic/evaluations/000017/task",
+      "task_id": "13",
+      "phase": "basic",
+      "prompt_sha256": "d884581753a4709aa112fec3e20979e6ed8f18dcef06fc3d840ee97d898c0942",
+      "reward": 1.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 5,
+        "matched": 5
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_email",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "return_delivered_order_items"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 13,
+        "tool_calls": 5
+      },
+      "usage": {
+        "calls": 18,
+        "input_tokens": 80058,
+        "output_tokens": 1777,
+        "known_estimated_rmb": 0.0676004,
+        "provider_seconds": 49.88900000000285
+      },
+      "duration": 51.204548200003046,
+      "worker_seconds": 80.51499999999942,
+      "git": {
+        "commit": "8f0d7dded21641681a253e768966c5617d277cbf",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "basic/evaluations/000018/task",
+      "task_id": "14",
+      "phase": "basic",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 1.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 6,
+        "matched": 6
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_email",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "return_delivered_order_items",
+        "return_delivered_order_items",
+        "return_delivered_order_items"
+      ],
+      "tool_errors": 1,
+      "finish_reasons": {
+        "stop": 13,
+        "tool_calls": 7
+      },
+      "usage": {
+        "calls": 20,
+        "input_tokens": 96086,
+        "output_tokens": 2057,
+        "known_estimated_rmb": 0.08098280000000001,
+        "provider_seconds": 55.38999999999214
+      },
+      "duration": 56.821452399999544,
+      "worker_seconds": 86.625,
+      "git": {
+        "commit": "8f0d7dded21641681a253e768966c5617d277cbf",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "basic/evaluations/000019/task",
+      "task_id": "15",
+      "phase": "basic",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 1.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 7,
+        "matched": 5
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_product_details",
+        "modify_pending_order_items"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 7,
+        "tool_calls": 5
+      },
+      "usage": {
+        "calls": 12,
+        "input_tokens": 53536,
+        "output_tokens": 1032,
+        "known_estimated_rmb": 0.044892800000000004,
+        "provider_seconds": 29.39100000000326
+      },
+      "duration": 30.250209999998333,
+      "worker_seconds": 56.79700000000594,
+      "git": {
+        "commit": "8f0d7dded21641681a253e768966c5617d277cbf",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "basic/evaluations/000020/task",
+      "task_id": "20",
+      "phase": "basic",
+      "prompt_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "reward": 0.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": false,
+        "db_reward": 0.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 0.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 10,
+        "matched": 8
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "get_product_details",
+        "get_product_details",
+        "modify_pending_order_items",
+        "get_order_details"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 9,
+        "tool_calls": 10
+      },
+      "usage": {
+        "calls": 19,
+        "input_tokens": 120560,
+        "output_tokens": 2323,
+        "known_estimated_rmb": 0.101094,
+        "provider_seconds": 61.84499999999389
+      },
+      "duration": 63.25562890000583,
+      "worker_seconds": 92.375,
+      "git": {
+        "commit": "8f0d7dded21641681a253e768966c5617d277cbf",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "basic/evaluations/000021/task",
+      "task_id": "14",
+      "phase": "basic",
+      "prompt_sha256": "63b46ae37058198a9510688847549baeb81539d8251e7d228e3ef0de0cbbe2d5",
+      "reward": 1.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 6,
+        "matched": 6
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_email",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "return_delivered_order_items",
+        "return_delivered_order_items"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 9,
+        "tool_calls": 6
+      },
+      "usage": {
+        "calls": 15,
+        "input_tokens": 67610,
+        "output_tokens": 1278,
+        "known_estimated_rmb": 0.05664400000000001,
+        "provider_seconds": 36.23900000001595
+      },
+      "duration": 37.33471200000349,
+      "worker_seconds": 64.51599999999598,
+      "git": {
+        "commit": "8f0d7dded21641681a253e768966c5617d277cbf",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "basic/evaluations/000022/task",
+      "task_id": "15",
+      "phase": "basic",
+      "prompt_sha256": "63b46ae37058198a9510688847549baeb81539d8251e7d228e3ef0de0cbbe2d5",
+      "reward": 1.0,
+      "termination_reason": "user_stop",
+      "db_check": {
+        "db_match": true,
+        "db_reward": 1.0
+      },
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ],
+      "reward_breakdown": {
+        "DB": 1.0,
+        "NL_ASSERTION": 1.0
+      },
+      "action_checks": {
+        "available": true,
+        "count": 7,
+        "matched": 5
+      },
+      "nl_assertions_count": 0,
+      "tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_product_details",
+        "modify_pending_order_items"
+      ],
+      "tool_errors": 0,
+      "finish_reasons": {
+        "stop": 9,
+        "tool_calls": 5
+      },
+      "usage": {
+        "calls": 14,
+        "input_tokens": 64241,
+        "output_tokens": 1093,
+        "known_estimated_rmb": 0.0535788,
+        "provider_seconds": 30.40700000000652
+      },
+      "duration": 31.391564099998504,
+      "worker_seconds": 63.84399999999732,
+      "git": {
+        "commit": "8f0d7dded21641681a253e768966c5617d277cbf",
+        "dirty": false
+      },
+      "policy_sha256": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+      "tools_sha256": "eaf16ffafcc143f9e618efd9c7e1a0bfea819ccc2b2cb12251915522d1b4ce2a",
+      "seed": 42
+    },
+    {
+      "path": "basic/evaluations/000023/task",
+      "task_id": "20",
+      "phase": "basic",
+      "prompt_sha256": "63b46ae37058198a9510688847549baeb81539d8251e7d228e3ef0de0cbbe2d5",
+      "reward": null,
+      "termination_reason": "infrastructure_error",
+      "error_type": "ProviderError",
+      "response_count_before_fault": 5,
+      "complete_trace": "unavailable in old runner; responses/debug log retained",
+      "official_reward_availability": "unavailable; not zero"
+    }
+  ],
+  "basic_evaluations": [
+    {
+      "sequence": 1,
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "example": {
+        "id": "57",
+        "split": "validation"
+      },
+      "score": 1.0,
+      "status": "scored",
+      "path": "basic/evaluations/000001/evaluation.json"
+    },
+    {
+      "sequence": 2,
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "example": {
+        "id": "58",
+        "split": "validation"
+      },
+      "score": 1.0,
+      "status": "scored",
+      "path": "basic/evaluations/000002/evaluation.json"
+    },
+    {
+      "sequence": 3,
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "example": {
+        "id": "66",
+        "split": "validation"
+      },
+      "score": 0.0,
+      "status": "scored",
+      "path": "basic/evaluations/000003/evaluation.json"
+    },
+    {
+      "sequence": 4,
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "example": {
+        "id": "69",
+        "split": "validation"
+      },
+      "score": 1.0,
+      "status": "scored",
+      "path": "basic/evaluations/000004/evaluation.json"
+    },
+    {
+      "sequence": 5,
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "example": {
+        "id": "72",
+        "split": "validation"
+      },
+      "score": 1.0,
+      "status": "scored",
+      "path": "basic/evaluations/000005/evaluation.json"
+    },
+    {
+      "sequence": 6,
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "example": {
+        "id": "1",
+        "split": "train"
+      },
+      "score": 1.0,
+      "status": "scored",
+      "path": "basic/evaluations/000006/evaluation.json"
+    },
+    {
+      "sequence": 7,
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "example": {
+        "id": "6",
+        "split": "train"
+      },
+      "score": 1.0,
+      "status": "scored",
+      "path": "basic/evaluations/000007/evaluation.json"
+    },
+    {
+      "sequence": 8,
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "example": {
+        "id": "7",
+        "split": "train"
+      },
+      "score": 1.0,
+      "status": "scored",
+      "path": "basic/evaluations/000008/evaluation.json"
+    },
+    {
+      "sequence": 9,
+      "candidate_sha256": "84a8792ce728620044eab5ba5d91a69fb578cceb5d270ebc68adc97a08ede9a2",
+      "example": {
+        "id": "1",
+        "split": "train"
+      },
+      "score": 1.0,
+      "status": "scored",
+      "path": "basic/evaluations/000009/evaluation.json"
+    },
+    {
+      "sequence": 10,
+      "candidate_sha256": "84a8792ce728620044eab5ba5d91a69fb578cceb5d270ebc68adc97a08ede9a2",
+      "example": {
+        "id": "6",
+        "split": "train"
+      },
+      "score": 1.0,
+      "status": "scored",
+      "path": "basic/evaluations/000010/evaluation.json"
+    },
+    {
+      "sequence": 11,
+      "candidate_sha256": "84a8792ce728620044eab5ba5d91a69fb578cceb5d270ebc68adc97a08ede9a2",
+      "example": {
+        "id": "7",
+        "split": "train"
+      },
+      "score": 1.0,
+      "status": "scored",
+      "path": "basic/evaluations/000011/evaluation.json"
+    },
+    {
+      "sequence": 12,
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "example": {
+        "id": "8",
+        "split": "train"
+      },
+      "score": 0.0,
+      "status": "scored",
+      "path": "basic/evaluations/000012/evaluation.json"
+    },
+    {
+      "sequence": 13,
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "example": {
+        "id": "11",
+        "split": "train"
+      },
+      "score": 1.0,
+      "status": "scored",
+      "path": "basic/evaluations/000013/evaluation.json"
+    },
+    {
+      "sequence": 14,
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "example": {
+        "id": "13",
+        "split": "train"
+      },
+      "score": 1.0,
+      "status": "scored",
+      "path": "basic/evaluations/000014/evaluation.json"
+    },
+    {
+      "sequence": 15,
+      "candidate_sha256": "d884581753a4709aa112fec3e20979e6ed8f18dcef06fc3d840ee97d898c0942",
+      "example": {
+        "id": "8",
+        "split": "train"
+      },
+      "score": 0.0,
+      "status": "scored",
+      "path": "basic/evaluations/000015/evaluation.json"
+    },
+    {
+      "sequence": 16,
+      "candidate_sha256": "d884581753a4709aa112fec3e20979e6ed8f18dcef06fc3d840ee97d898c0942",
+      "example": {
+        "id": "11",
+        "split": "train"
+      },
+      "score": 1.0,
+      "status": "scored",
+      "path": "basic/evaluations/000016/evaluation.json"
+    },
+    {
+      "sequence": 17,
+      "candidate_sha256": "d884581753a4709aa112fec3e20979e6ed8f18dcef06fc3d840ee97d898c0942",
+      "example": {
+        "id": "13",
+        "split": "train"
+      },
+      "score": 1.0,
+      "status": "scored",
+      "path": "basic/evaluations/000017/evaluation.json"
+    },
+    {
+      "sequence": 18,
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "example": {
+        "id": "14",
+        "split": "train"
+      },
+      "score": 1.0,
+      "status": "scored",
+      "path": "basic/evaluations/000018/evaluation.json"
+    },
+    {
+      "sequence": 19,
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "example": {
+        "id": "15",
+        "split": "train"
+      },
+      "score": 1.0,
+      "status": "scored",
+      "path": "basic/evaluations/000019/evaluation.json"
+    },
+    {
+      "sequence": 20,
+      "candidate_sha256": "bf472daae29fe741f5ce5ae0543946e3a640493134612a00dd9cc4e8be10c870",
+      "example": {
+        "id": "20",
+        "split": "train"
+      },
+      "score": 0.0,
+      "status": "scored",
+      "path": "basic/evaluations/000020/evaluation.json"
+    },
+    {
+      "sequence": 21,
+      "candidate_sha256": "63b46ae37058198a9510688847549baeb81539d8251e7d228e3ef0de0cbbe2d5",
+      "example": {
+        "id": "14",
+        "split": "train"
+      },
+      "score": 1.0,
+      "status": "scored",
+      "path": "basic/evaluations/000021/evaluation.json"
+    },
+    {
+      "sequence": 22,
+      "candidate_sha256": "63b46ae37058198a9510688847549baeb81539d8251e7d228e3ef0de0cbbe2d5",
+      "example": {
+        "id": "15",
+        "split": "train"
+      },
+      "score": 1.0,
+      "status": "scored",
+      "path": "basic/evaluations/000022/evaluation.json"
+    },
+    {
+      "sequence": 23,
+      "candidate_sha256": "63b46ae37058198a9510688847549baeb81539d8251e7d228e3ef0de0cbbe2d5",
+      "example": {
+        "id": "20",
+        "split": "train"
+      },
+      "score": null,
+      "status": "error",
+      "error_type": "ProviderError",
+      "path": "basic/evaluations/000023/evaluation.json"
+    }
+  ],
+  "semantic_development_review": {
+    "scope": "Assistant manual review of the eight citation-valid development-baseline findings; not a model Judge or new Reward",
+    "used_for_optimizer_selection": false,
+    "findings": [
+      {
+        "task_id": "6",
+        "index": 0,
+        "label": "unsupported_extra_confirmation_requirement",
+        "reason": "The quoted prior message already supplied details and requested consent. Policy does not require repeating the entire confirmation after receiving yes."
+      },
+      {
+        "task_id": "7",
+        "index": 0,
+        "label": "positive_not_error",
+        "reason": "The finding itself says arrays and narrowed scope were correct and impact none. It must not enter a failure-frequency count."
+      },
+      {
+        "task_id": "13",
+        "index": 0,
+        "label": "supported_observable_policy_error",
+        "reason": "Actual return tool rejected a non-original refund method; the fixed Policy and observed tool error support the general eligibility-check recommendation. Final Reward1 reflects later correction."
+      },
+      {
+        "task_id": "13",
+        "index": 1,
+        "label": "weak_not_established_violation",
+        "reason": "A partial reconfirmation may be a communication risk, but the evidence does not establish that already-confirmed unchanged details must be repeated."
+      },
+      {
+        "task_id": "20",
+        "index": 0,
+        "label": "unsupported_agent_attribution",
+        "reason": "Official real tool returns conflict. The source reuses a prior loop's variant in its mutation loop; no evidence supports intentional mock data or treating Agent consistency checks as an error."
+      },
+      {
+        "task_id": "23",
+        "index": 0,
+        "label": "unsupported_fresh_lookup_requirement",
+        "reason": "A prior delivered-status check was observed. No intervening status mutation or concurrent update supports the proposed mandatory recheck."
+      },
+      {
+        "task_id": "25",
+        "index": 0,
+        "label": "supported_discrepancy_uncertain_cause",
+        "reason": "User claim and observed payment methods conflict. This is useful uncertainty/attribution evidence, not proof the simulator is defective or the Agent caused failure."
+      },
+      {
+        "task_id": "31",
+        "index": 0,
+        "label": "unsupported_after_terminal_user_attribution",
+        "reason": "The final user request includes TRANSFER and terminates before another Agent turn. A separate earlier invalid modify-items call is observable, but the reviewed finding incorrectly blames a nonexistent later cancellation decision."
+      }
+    ]
+  },
+  "acceptance_audit": {
+    "goal_complete": false,
+    "external_stop": "InternalServerError at request755; no further real calls",
+    "A": "Not proven: citation-valid baseline failures included unsupported attribution; a genuine policy error exists in Reward1 Task13, but does not establish failed-task acceptance",
+    "B": "Not run: Structured GEPA search never started",
+    "C": "Partial: Basic3 proposals/22 scored task evaluations/9 Train IDs; Structured not run",
+    "M5": "Not run:0 Test requests; all planned tasks/trials remain missing, never zeros",
+    "earlier_program_A_boolean": "Insufficient evidence; superseded by this explicit audit, not an acceptance claim"
+  },
+  "secret_review": {
+    "runtime_files_scanned": 2302,
+    "exact_key_hits": 0,
+    "csv_tracked": false
+  },
+  "historical_runs": "Task0 smokes and core-sprint-001 unchanged; excluded from this new budget",
+  "reviewed_diagnostic_examples": [
+    {
+      "task_id": "13",
+      "raw_official_reward": 1,
+      "source_artifact": "baseline/13/semantic/analysis.json",
+      "source_sha256": "79bc84f7e3f692f4a8b53160382365dade474de02b4f86618222872498dd1f7c",
+      "model_diagnostic_redacted_excerpt": {
+        "category": "policy_violation",
+        "observation": "The agent attempted to process a return with PayPal as the refund method, but the policy states: 'The refund must either go to the original payment method, or an existing gift card.' The order was paid via <payment-method-id>, and PayPal is neither the original method nor a gift card.",
+        "hypothesis": "The agent misinterpreted the policy's allowed refund methods, possibly conflating 'payment method' generically with 'refund-eligible method'.",
+        "certainty": "observed",
+        "responsibility": "Agent",
+        "impact": "Caused a tool failure (error response), requiring corrective re-prompting and delaying resolution.",
+        "suggestion": "Before proposing a refund method, explicitly verify eligibility against the policy: only original payment method or gift card — never PayPal or other non-original/non-gift-card methods for returns.",
+        "evidence": [
+          {
+            "pointer": "/policy",
+            "quote": "The refund must either go to the original payment method, or an existing gift card."
+          },
+          {
+            "pointer": "/messages/19",
+            "quote": "Error: Payment method should be the original payment method"
+          }
+        ]
+      },
+      "trace_policy_review": "Observed refund-eligibility error supported; final Reward1 after correction. The model's blanket 'never PayPal' suggestion is overgeneralized: PayPal is allowed if it is the original payment method. This is not gateA for a failed task.",
+      "note": "Actual model output with payment identifiers redacted for publication; original literal evidence checks refer to private observable input. Review annotations are separate from model claims; none certify failed-task gateA."
+    },
+    {
+      "task_id": "25",
+      "raw_official_reward": 1,
+      "source_artifact": "baseline/25/semantic/analysis.json",
+      "source_sha256": "95967c7792752fe1dc9bb20aad3d1d45e0d7dac1ebe81954b8cc0dc67621041a",
+      "model_diagnostic_redacted_excerpt": {
+        "category": "simulator_environment",
+        "observation": "The user explicitly states they paid with an American Express card, but all retrieved order payment histories and user payment methods show only PayPal (<payment-method-id>). This contradiction persists across all four orders and the user profile, despite the user’s clear assertion and urgency. No tool call reveals or allows verification of an Amex card, and no tool exists to list or search for unreturned payment methods.",
+        "hypothesis": "The simulator environment either omits the American Express card from tool responses (e.g., due to incomplete mock data population) or enforces static payment method associations that don’t reflect the user’s actual transaction — neither of which the Agent can detect or resolve via available tools.",
+        "finding": "unknown",
+        "certainty": "plausible",
+        "responsibility": "Simulator",
+        "impact": "High — prevents compliant execution of the refund request per user instruction, forcing escalation even though the user’s stated need falls within policy scope (return delivered order + refund to provided payment method).",
+        "suggestion": "When user-provided factual claims (e.g., payment method used) directly contradict all available tool outputs, treat the discrepancy as an environmental limitation and escalate transparently — without attributing error to the Agent or inventing missing data.",
+        "evidence": [
+          {
+            "pointer": "/messages/1",
+            "quote": "I don’t remember my order number or email address, but I need to find the tracking number, return all items except the pet bed, and get a refund to my American Express card."
+          },
+          {
+            "pointer": "/messages/5",
+            "quote": "\"payment_methods\": {\"<payment-method-id>\": {\"source\": \"paypal\", \"id\": \"<payment-method-id>\"}}"
+          },
+          {
+            "pointer": "/messages/9",
+            "quote": "\"payment_history\": [{\"transaction_type\": \"payment\", \"amount\": 581.15, \"payment_method_id\": \"<payment-method-id>\"}]"
+          },
+          {
+            "pointer": "/policy",
+            "quote": "The refund must either go to the original payment method, or an existing gift card."
+          }
+        ],
+        "semantic_review": "independent_second_pass"
+      },
+      "trace_policy_review": "Payment-method contradiction observed, but Simulator responsibility, missing-data cause and claimed inability to resolve are not established. Keep attribution unknown; do not present the model's full causal claim or escalation suggestion as validated advice.",
+      "note": "Actual model output with payment identifiers redacted for publication; original literal evidence checks refer to private observable input. Review annotations are separate from model claims; none certify failed-task gateA."
+    }
+  ]
+}

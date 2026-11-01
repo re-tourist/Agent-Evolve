@@ -5,13 +5,24 @@ subproject is **GEPA × τ-bench: trace-grounded Prompt optimization for custome
 service Agents**. `docs/PROJECT_PLAN.md` v0.2 is the preserved design baseline;
 the execution log and reports describe actual progress.
 
-## Current outcome: M3-B2 / M4-B / M5 exploratory sprint
+## Current scope: semantic-feedback Goal (not complete)
 
 Active Goal update: the user now authorizes semantic feedback and a new bounded
 study under5000 shared requests/RMB50 estimated threshold,64Steps/task. This
 supersedes the old stop below only for the new config/run. See plan009; preserve
 the old sprint as historical evidence. Completion requires real gatesA/B/C and
 subsequent independent Test, not just engineering tests or a positive score.
+
+Current external stop: semantic-study-002 ended on request755 with SDK
+InternalServerError. Baseline20 complete (9 successes/11 official zeros); Basic
+3 proposals,22 scored task evaluations plus1 unscored infrastructure fault.
+Structured and new Test are Not run. A is not proven by citation-valid model
+claims; B is unexecuted; C is partial. See SEMANTIC_STUDY_REPORT.md. The Goal is
+unachieved, no additional real request is sent after the stop, no task is retried.
+Known-return cost estimateRMB3.3939484; unavailable-Usage reservesRMB9.796608;
+same ledger remains stopped at755/5000, not reset for another phase.
+
+## Historical completed limited sprint
 
 The explicitly approved `core-sprint-001` is complete and stopped. Real Qwen
 Agent/User/Reflection calls exercised pinned GEPA and official Retail scoring.

@@ -21,6 +21,9 @@
 | ADR-017 / 2026-11-01 | Authorized real sprint reuses Qwen single-task body and GEPA callable seam across existing isolated environments | `experiment.py`, `live_runtime.py`; shared serial400-request/RMB30 estimated stop ledger, phase92/92/216, no dependency/upstream changes |
 | ADR-018 / 2026-11-01 | Formal Live optimization/aggregation uses raw official Reward, including step/protocol zeros; infrastructure faults are unscored | Supersedes ADR-011 only for benchmark score handling: old normalized smoke null annotations never remove official failures; three Test truncations retained |
 | ADR-019 / 2026-11-01 | Keep strict rejection and identical frozen Best prompts even when final arm scores differ | Both proposals tied Seed at Train7=1; no further proposals under whole-task reserves. All9 Test trials retained, no post-Test tuning or benefit claim |
+| ADR-020 / 2026-11-01 | New Goal uses configurable shared5000/RMB50 limits and20/5/10 split; old experiments retained | Direct chat authorization;64Steps/48calls/900s, same model/pins/Policy/tools/Reward; no independent new budgets per phase |
+| ADR-021 / 2026-11-01 | Citation validation is necessary but not semantic truth; gate final Test with an inspected supported case and actual failure-to-candidate chain | Development review found false attribution despite correct quotations; same-Qwen second pass may repeat it; no auxiliary score replaces Reward |
+| ADR-022 / 2026-11-01 | Preserve unavailable Usage and conservatively reserve error costs without clearing the final Provider stop | One scoped diagnostic-timeout recovery did not retry its Agent task; later InternalServerError stopped all calls; incomplete Goal reported, not completed |
 
 New major decisions record context, choice, alternatives, evidence and consequences.
 Distinguish pinned-source facts from local decisions and unverified runtime assumptions.

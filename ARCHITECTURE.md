@@ -1,5 +1,32 @@
 # Architecture and implementation boundary
 
+## Semantic-feedback Goal: implemented path, incomplete real acceptance
+
+`study.py` reuses the existing task worker/evaluator/public GEPA optimizer. It
+loads configurable official judge-free splits, builds a baseline failure pool,
+shares a deterministic failure/success sampler across arms and exposes40-eval
+search caps. `semantic.py` adds observable-only projection, nine semantic labels,
+literal evidence checking, attribution/uncertainty and reusable advice. Qwen
+analysis and conditional second-pass review run in the existing tau worker, with
+all four roles counted by the same dynamic5000-request/RMB50 ledger.
+
+Raw responses, preliminary/reviewed findings and effective prompts are retained
+privately. Uncited advice and unreviewed historical findings are stripped before
+Reflection. A second same-model request is not an independent gold Judge and does
+not replace manual semantic review or official scoring. Policy/tools/data hashes
+remain fixed; Test cannot enter optimization. A/B/C artifact checks plus an
+inspectable reviewed semantic case gate final testing.
+
+Actual semantic-study-002 stopped on a Provider InternalServerError after755
+requests.20 baseline tasks and partial Basic search exist; Structured/held-out
+Test do not. Citation-valid development findings included wrong causal claims,
+so this is not accepted as a complete reliable business diagnosis engine.
+See `docs/experiments/SEMANTIC_STUDY_REPORT.md`.
+
+After the stop, offline-only fixes retain partial trajectories on future worker
+exceptions, use nonzero worker failure status and save safe HTTP status metadata.
+They have mock-transport tests; no new Live run verifies those fixes yet.
+
 ## Current real execution path (core-sprint-001)
 
 `experiment.py` provides the authorized continuous Live entry. `qwen_smoke.py`

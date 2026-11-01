@@ -1,5 +1,9 @@
 # Qwen Task 0 / one trial — prepared, NOT APPROVED / NOT RUN
 
+Execution update 2026-11-01: the user subsequently authorized exactly one task;
+[qwen-task0-001 actual record](M3B1_QWEN_TASK0_001.md) documents the bounded attempt.
+No second task is authorized. The proposal below is the historical preparation scope.
+
 Offline acceptance: [commands/results](../validation/QWEN_PREPARATION.md).
 
 2026-11-01. This replaces the DeepSeek choice for the FIRST single-task gate only.

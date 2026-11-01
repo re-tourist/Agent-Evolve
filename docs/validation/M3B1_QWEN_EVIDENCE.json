@@ -1,0 +1,132 @@
+{
+  "run_id": "qwen-task0-001",
+  "classification": "real_api; one bounded smoke, not benchmark",
+  "launches": 1,
+  "attempt_complete": true,
+  "business_completion_validated": false,
+  "created_utc": "2026-11-01T07:58:15.599593+00:00",
+  "git_when_run": {
+    "commit": "01729ead055ec94345d5c589045622728c419c52",
+    "dirty": true
+  },
+  "model": "qwen-plus-2025-12-01",
+  "region": "Beijing",
+  "workspace": "默认业务空间",
+  "endpoint_source": "CSV openAiCompatible; workspace-specific Beijing route",
+  "credential_injection": "temporary child environment; no credential CLI arguments",
+  "tau_sha": "da0835f6c67baef58bdda18f2a3b037dfb3a1754",
+  "limits": {
+    "calls": 24,
+    "steps": 12,
+    "request_seconds": 30,
+    "admission_seconds": 180,
+    "output_tokens_per_call": 512
+  },
+  "process_exit": 1,
+  "wall_seconds": 66.92200000000594,
+  "simulation_seconds": 43.7155433999942,
+  "status": "step_limit",
+  "termination_reason": "max_steps",
+  "official_raw_reward": 0.0,
+  "normalized_reward": null,
+  "official_reward_note": {
+    "note": "Simulation terminated prematurely. Termination reason: max_steps"
+  },
+  "excluded_from_task_metrics": true,
+  "provider_calls": 8,
+  "successful_provider_returns": 8,
+  "provider_errors": 0,
+  "usage_by_role": {
+    "user": {
+      "calls": 2,
+      "input": 1604,
+      "output": 387
+    },
+    "assistant": {
+      "calls": 6,
+      "input": 40606,
+      "output": 1330
+    }
+  },
+  "total_usage": {
+    "prompt_tokens": 42210,
+    "completion_tokens": 1717,
+    "total_tokens": 43927
+  },
+  "max_input_per_call": 8922,
+  "estimated_rmb_no_cache_discount": 0.037202,
+  "actual_invoice_rmb": "unavailable; provider billing not accessed",
+  "pricing_source": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+  "pricing_date": "2026-11-01",
+  "pricing_rmb_per_million": {
+    "input": 0.8,
+    "output": 2
+  },
+  "tool_names": [
+    "find_user_id_by_name_zip",
+    "get_order_details",
+    "get_product_details",
+    "get_product_details",
+    "exchange_delivered_order_items"
+  ],
+  "tool_response_errors": [
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "final_observed_order_status": "exchange requested",
+  "message_count": 14,
+  "length_finish_message_indices": [
+    10
+  ],
+  "m4_feedback": {
+    "schema_version": 1,
+    "diagnostics": [
+      {
+        "type": "task_completion",
+        "certain": true,
+        "explanation": "The recorded run terminated abnormally; this does not establish an Agent business failure.",
+        "evidence": [
+          {
+            "pointer": "/termination_reason",
+            "value": "max_steps"
+          }
+        ]
+      }
+    ]
+  },
+  "runtime_artifact_hashes": {
+    "0.json": "4925dd2ce6115de5a813c173bc2e63eb0ce4f6de8fb31e3311cd9614a1f09e2b",
+    "0.raw.json": "7307ec33612009a9f34192fc58f9991f5dde4280b98746bbdf6016f5a5fd4118",
+    "analysis.json": "0ec8e7e950503608a5d80d2f274280afa3dd8b233609a429e68147712b27e6cf",
+    "call-001.json": "7a04afea1459e42b3c3001c12e790f281ab68f9e5beeebaed00cab106470a988",
+    "call-002.json": "fd5b3f8d14d32e253a1960afb6dab4a45ea2df0c2f8e4628c297594be26e3d2a",
+    "call-003.json": "01a4747ba9158f84e705b80c63d0a81ca8489de4ade7bd53c2bbadcfaca00fcb",
+    "call-004.json": "52eebf5f944112b9ef7a30531ab5995c23cf143fcfb2309e6e9d0082cb0eb5a8",
+    "call-005.json": "087cedaf32627f2065869b4ea13e30101bcaab82f412cccac8764a502c1c8bc8",
+    "call-006.json": "acbe261376d1834eeb5bd2ed31c724b036375fd6c5512fdb9616adb5463659b9",
+    "call-007.json": "6e8baa128afc10b58e1eb4504f0401df5a0c5be763b6abfbc370d18cfeab3af8",
+    "call-008.json": "337b5ca525144fd9da254e6e5e1ff08648ee5b5e47c0f64c483394934a757e0c",
+    "config.json": "4138daff0899fcd402342acd32f4adaac1574c38df9fe0ce676e1168257f5bca",
+    "launch_result.json": "224145a36a5bffb13428303e5624e97a47804daa16ba1b043f9e5b747bcd44f3",
+    "metadata.json": "e735dff194d270f8df84fef142bd23a290f73dcd28469c035f1ab111bd16f466",
+    "prompt.json": "2d044912f75ee74e823f9549c62b8dd15698185599a3d3bae2664b8a5b4d58b4",
+    "structured_feedback.json": "dd6dd53e0e0654d5ddac6d57d63e22801818ec5d4cfb2b62c91860fd43200beb",
+    "summary.json": "35a240acfdad6959e44797a0176be73d937c0f3cd4f65ba6286a0ae3c3ed75aa",
+    "task.json": "b03a5800ff217b90dd355a564b72b6c2cd778ad42c65def9ee78a61c3a886b81"
+  },
+  "tested_sources_and_private_launcher_hashes": {
+    "src/agent_evolve/qwen_smoke.py": "a035cdfec41759d555f4dc31139e712945a6c2afbf62417694e087c400486fa1",
+    "src/agent_evolve/feedback.py": "e9be63ae5114a2422f1a602dc4dea4fb93ee64dbb07ea3271f737d61dcb91865",
+    ".cache/qwen_csv_check.py": "da6a65258a33422a81527287a3023c48a418c1743ac848958875af2a6de911ab",
+    ".cache/qwen_b1_once.py": "a1bf4831408df53f00d7d618a39aae4d9290dc835c6fc3bff6f82c1f83684b38"
+  },
+  "csv_unchanged": true,
+  "csv_git_tracked": false,
+  "csv_ignored": true,
+  "secret_in_runtime_files": false,
+  "second_task_started": false,
+  "gepa_live_started": false
+}

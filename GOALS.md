@@ -9,13 +9,15 @@ Agents**. PROJECT_PLAN.md v0.2 is the design baseline.
 M3-A and Qwen single-task preparation are retained. Add four small evidence-linked
 diagnostic types and optional structured GEPA feedback using the same official
 Reward. No reference tool path, hidden target or test trace enters reflection.
-M3-B1 is unapproved/unrun; Qwen code/configuration stay unchanged. Its dedicated
-entry defaults to offline and requires explicit approval before Live flags are used.
-No real model request, GEPA Live optimization, M4-B or M5 is authorized.
+M3-B1 update: one expressly authorized Qwen task-0 attempt completed; 8 calls returned,
+but max_steps prevented valid business completion scoring (raw 0, normalized null).
+See docs/experiments/M3B1_QWEN_TASK0_001.md. No second task, GEPA Live optimization,
+M4-B or M5 is authorized. Dedicated entry still defaults to offline.
 
 Retain M1 and M2-A. Integrate pinned real GEPA core with the M2 official Reward/Trace
 adapter, candidate evidence, explicit train/validation/test boundaries, deterministic
-reflection and offline tests. No actual model API chain has been verified in M2/M3.
+reflection and offline tests. One actual Agent/User/tool chain is verified, but no
+normally terminated Live task or real GEPA reflection/optimization is verified.
 The original baseline/optimizer Live gates remain closed. M3-B requires staged approval: one real
 Agent task first; only after review, separately approve the smallest real GEPA loop.
 Synthetic score changes and scripted trajectories are engineering evidence only.

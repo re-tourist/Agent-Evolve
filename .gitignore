@@ -9,6 +9,7 @@ __pycache__/
 build/
 dist/
 .env
+docs/ali/
 .env.*
 !.env.example
 *.pem

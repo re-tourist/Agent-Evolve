@@ -116,6 +116,12 @@ def load(filename):
     config = read(filename)
     for k in ("output_dir", "credentials_dir", "gepa_checkout", "tau_python", "seed_file"):
         config[k] = str((filename.parent / config[k]).resolve())
+    if config.get("budget_predecessor"):
+        config["budget_predecessor"] = str(
+            (filename.parent / config["budget_predecessor"]).resolve()
+        )
+    if config.get("tau_protocol", "registry") not in {"registry", "reviewed-en-text"}:
+        raise ValueError("Unknown tau protocol")
     TaskSets(*(tuple(config[k]) for k in ("train", "validation", "test")))
     if (
         config.get("study") != "semantic-v1"
@@ -141,11 +147,17 @@ def load(filename):
     # Judge eligibility and official split only: never inspect Test goals/answers.
     data = ROOT / ".cache/tau2-source/data/tau2/domains/retail"
     splits = read(data / "split_tasks.json")
-    tasks = {str(t["id"]): t for t in read(data / "tasks.json")}
+    reviewed = config.get("tau_protocol") == "reviewed-en-text"
+    task_file = (
+        data.parent.parent / "multilingual/en/retail_tasks_en.json"
+        if reviewed
+        else data / "tasks.json"
+    )
+    tasks = {str(t["id"]): t for t in read(task_file)}
     for group in ("train", "validation", "test"):
         official = "test" if group == "test" else "train"
         for task_id in config[group]:
-            if task_id not in splits[official]:
+            if task_id not in tasks or (not reviewed and task_id not in splits[official]):
                 raise ValueError("Unofficial split")
             criteria = tasks[task_id].get("evaluation_criteria") or {}
             if criteria.get("nl_assertions") or "COMMUNICATE" in criteria.get("reward_basis", []):
@@ -204,6 +216,37 @@ class StudyClient(WorkerClient):
             self.pool, self.config["search"]["minibatch"], self.directory / phase / "sampled.jsonl"
         )
 
+    def reflection_episodes(self, messages):
+        """Only same-run reviewed training Episodes, never old protocol or Test."""
+        episodes = []
+        for task_id, entry in self.pool.items():
+            if entry["reward"] != 0 or task_id not in self.config["train"]:
+                continue
+            diagnostics = [
+                d
+                for d in entry["diagnostic"]["diagnostics"]
+                if d.get("semantic_review") == "independent_second_pass"
+                and d.get("layers", {}).get("intervention") is not None
+            ]
+            if diagnostics:
+                episodes.append(
+                    {
+                        "task_id": task_id,
+                        "official_reward": entry["reward"],
+                        "candidate_sha256": entry["diagnostic"]["candidate_sha256"],
+                        "evidence_source": entry["diagnostic"]["evidence_source"],
+                        "diagnostics": diagnostics,
+                        "episode": entry.get("episode"),
+                        "note": "Historical TRAIN episode under this reviewed protocol. "
+                        "Not a new score or evidence of the current candidate's behavior.",
+                    }
+                )
+        return (
+            messages
+            + "\n\n## Prior reviewed TRAIN failure Episodes\n"
+            + json.dumps(episodes[:3], ensure_ascii=False)
+        )
+
     def semantic_feedback(self, result, prompt, directory, example):
         if example["split"] == "test":
             raise ValueError("Test must not enter optimization diagnosis")
@@ -237,7 +280,11 @@ class StudyClient(WorkerClient):
         write_json(target / "observable.json", view)
         text = read(target / "output.json")["text"]
         try:
-            analysis = validate_analysis(text, view)
+            analysis = (
+                json.loads(text)
+                if self.config.get("tau_protocol") == "reviewed-en-text"
+                else validate_analysis(text, view)
+            )
         except (ValueError, TypeError, KeyError):
             analysis = {
                 "diagnostics": [],
@@ -245,7 +292,7 @@ class StudyClient(WorkerClient):
                 "success_principles": [],
             }
         analysis.update(
-            schema_version=2,
+            schema_version=3 if self.config.get("tau_protocol") == "reviewed-en-text" else 2,
             deterministic=deterministic_observations(result),
             task_id=example["id"],
             candidate_sha256=result["prompt_sha256"],
@@ -335,13 +382,23 @@ def run(config, *, live=False, resume=False):
         directory.mkdir(parents=True, exist_ok=False)
     phases = {p: config["request_limit"] for p in ("baseline", "basic", "structured", "test")}
     if not resume:
-        Budget.create(
-            directory / "budget.json",
-            limit=config["request_limit"],
-            cost_limit_rmb=config["cost_limit_rmb"],
-            phase_limits=phases,
-            task_calls=config["task_limits"]["calls"],
-        )
+        if config.get("tau_protocol") == "reviewed-en-text":
+            if not config.get("budget_predecessor"):
+                raise ValueError("Reviewed study requires the cumulative predecessor ledger")
+            Budget.carry_forward(
+                directory / "budget.json",
+                config["budget_predecessor"],
+                phase_limits=phases,
+                task_calls=config["task_limits"]["calls"],
+            )
+        else:
+            Budget.create(
+                directory / "budget.json",
+                limit=config["request_limit"],
+                cost_limit_rmb=config["cost_limit_rmb"],
+                phase_limits=phases,
+                task_calls=config["task_limits"]["calls"],
+            )
         write_json(directory / "config.json", config)
         write_json(
             directory / "metadata.json",
@@ -391,6 +448,12 @@ def run(config, *, live=False, resume=False):
                 "reward": score,
                 "termination_reason": info["termination_reason"],
                 "diagnostic": diagnostic,
+                "episode": {
+                    "protocol": config.get("tau_protocol", "registry"),
+                    "trace": str((target / "task" / f"{task_id}.raw.json").relative_to(directory)),
+                    "prompt_sha256": result["prompt_sha256"],
+                    "source_run_id": config["run_id"],
+                },
             }
             summary["baseline"].append({"task_id": task_id, **client.pool[task_id]})
             save()

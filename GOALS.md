@@ -7,6 +7,14 @@ the execution log and reports describe actual progress.
 
 ## Current scope: semantic-feedback Goal (not complete)
 
+2026-11-02 Goal7699cf31 supersedes the stopped development scope: align reviewed
+English v2.0 text binding, separate Observation/Attribution/Intervention, train on
+new-protocol failure Episodes, then compare validation-selected prompts on held-out
+Test. Plan010 tracks actual acceptance. Same cumulative5000/RMB50 authorization
+includes old755 requests/RMB13.1905564 occupancy. Old stopped ledger/results stay
+unchanged. New reviewed-study config freezes18/6/10 judge-free tasks; no new real
+request yet. Historical registry scores cannot be merged with this protocol.
+
 Active Goal update: the user now authorizes semantic feedback and a new bounded
 study under5000 shared requests/RMB50 estimated threshold,64Steps/task. This
 supersedes the old stop below only for the new config/run. See plan009; preserve

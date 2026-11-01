@@ -131,6 +131,101 @@ def observable_view(result, policy, tools, *, max_chars=180000):
     return view
 
 
+OAI_SYSTEM = (
+    SYSTEM
+    + """
+For this study replace the flat diagnostic schema above with THREE separate layers.
+Return {"diagnostics": [{"category": category,
+"observation": {"fact": exact observable event, "evidence": [pointer/quote objects]},
+"attribution": {"responsibility": Agent/Simulator/Environment/Unknown,
+"certainty": observed/plausible/unknown, "hypothesis": explanation or null,
+"agent_decision_pointer": pointer to the actual assistant message or null,
+"alternatives": alternative explanations, "reward_causality": unknown unless demonstrated},
+"intervention": null OR {"when": observable trigger, "do": concrete decision rule,
+"because": why fixed Policy/tools support it, "limits": when it does NOT apply,
+"evidence": [pointer/quote objects supporting the rule]}, "impact": description}]}.
+An Observation can be correct while Attribution and Intervention are unknown.
+No reliable actionable rule: intervention MUST be null. Unknown is useful evidence.
+Only propose an intervention for a demonstrated Agent decision with an execution
+opportunity, never for a user request delivered with terminal STOP/TRANSFER.
+Do not replace missing causal evidence by Reward0. Separate a corrected process
+error from the cause of final failure. A rejected refund to a NON-ORIGINAL PayPal
+account does not forbid PayPal when it IS the original payment method. Preserve
+conditions and exceptions. No blanket bans unsupported by Policy. A discrepancy
+between user claims and tools does not establish which party is wrong. Unknown
+tool internals cannot be described as intentional mock behavior. Generic advice
+like 'be careful/strict' is not an executable intervention. Focus on at most TWO
+concrete decisions; zero interventions is preferable to speculative repairs.
+"""
+)
+
+
+def validate_interventions(text, view):
+    """Structural evidence/control checks; not a claim of semantic causal truth."""
+    fenced = re.fullmatch(r"\s*```(?:json)?\s*(.*?)\s*```\s*", text, re.S)
+    parsed = json.loads(fenced.group(1) if fenced else text)
+    observations, actionable, rejected = [], [], []
+    for index, item in enumerate(parsed["diagnostics"][:3]):
+        try:
+            observation, attribution = item["observation"], item["attribution"]
+            intervention = item["intervention"]
+            flat = {
+                "category": item["category"],
+                "observation": observation["fact"],
+                "hypothesis": attribution["hypothesis"],
+                "certainty": attribution["certainty"],
+                "responsibility": attribution["responsibility"],
+                "impact": item["impact"],
+                "suggestion": "No intervention established.",
+                "evidence": observation["evidence"],
+            }
+            checked = validate_analysis(json.dumps({"diagnostics": [flat]}), view)
+            if not checked["diagnostics"]:
+                raise ValueError("Observation lacks valid evidence")
+            observations.append(
+                {
+                    "category": item["category"],
+                    "observation": observation,
+                    "attribution": attribution,
+                    "impact": item["impact"],
+                }
+            )
+            if intervention is None:
+                continue
+            if attribution["responsibility"] != "Agent" or attribution["certainty"] != "observed":
+                raise ValueError("Intervention lacks observed Agent control")
+            decision = attribution["agent_decision_pointer"]
+            event = at_pointer(view, decision)
+            if not decision.startswith("/messages/") or event.get("role") != "assistant":
+                raise ValueError("Missing actual Agent decision")
+            if not all(
+                isinstance(intervention.get(k), str) and intervention[k].strip()
+                for k in ("when", "do", "because", "limits")
+            ):
+                raise ValueError("Missing conditional decision rule/limits")
+            flat["suggestion"] = (
+                f"When {intervention['when']}, {intervention['do']}. "
+                f"Basis: {intervention['because']}. Limits: {intervention['limits']}"
+            )
+            flat["evidence"] = observation["evidence"] + intervention["evidence"]
+            checked = validate_analysis(json.dumps({"diagnostics": [flat]}), view)
+            if not checked["diagnostics"]:
+                raise ValueError("Intervention evidence rejected")
+            flat["layers"] = item
+            actionable.append(flat)
+        except (KeyError, ValueError, TypeError, IndexError, AttributeError):
+            rejected.append({"index": index, "reason": "unproven_observation_control_or_rule"})
+    return {
+        "diagnostics": actionable,
+        "observations": observations,
+        "rejected": rejected,
+        "schema_version": 3,
+        "success_principles": [],
+        "note": "Facts, attribution and intervention separated; "
+        "semantic correctness still needs review.",
+    }
+
+
 def at_pointer(view, pointer):
     if not isinstance(pointer, str) or not pointer.startswith("/"):
         raise ValueError("Invalid evidence pointer")

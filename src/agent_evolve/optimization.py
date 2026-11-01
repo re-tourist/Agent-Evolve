@@ -311,6 +311,9 @@ def optimize_live(client, phase, seed, splits):
         "reflection_minibatch_size": batch_size,
         "skip_perfect_score": False,
     }
+    if getattr(client, "config", {}).get("tau_protocol") == "reviewed-en-text":
+        reflection_options["skip_perfect_score"] = True
+        reflection_options["perfect_score"] = 1.0
     if hasattr(client, "sampler"):
         reflection_options["batch_sampler"] = client.sampler(phase)
 

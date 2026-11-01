@@ -130,7 +130,7 @@ def execute_task(config, *, live=False, approved=False, call_context=None, runti
         from agent_evolve.tau_backend import TauBackend, build_live_components
 
         backend = TauBackend(config.tau_checkout)
-        task = backend.tasks((task_id,))[0]
+        task = backend.tasks((task_id,), protocol=config.tau_protocol)[0]
         criteria = task.get("evaluation_criteria") or {}
         if criteria.get("nl_assertions") or "COMMUNICATE" in criteria.get("reward_basis", []):
             raise ValueError("Task requires a Judge; stop and review, preserve official scoring")
@@ -149,6 +149,17 @@ def execute_task(config, *, live=False, approved=False, call_context=None, runti
     write_json(directory / "config.json", asdict(config))
     write_json(directory / "prompt.json", prompt.record())
     write_json(
+        directory / "effective_system_prompt.json",
+        {
+            "system": orchestrator.agent.system_prompt,
+            "tau_protocol": config.tau_protocol,
+        },
+    )
+    if orchestrator.call_context is not None:
+        write_json(
+            directory / "call_context.json", orchestrator.call_context.model_dump(mode="json")
+        )
+    write_json(
         directory / "tools.json", [t.openai_schema for t in orchestrator.environment.get_tools()]
     )
     write_json(directory / "task.json", task)
@@ -161,6 +172,7 @@ def execute_task(config, *, live=False, approved=False, call_context=None, runti
             "trials": 1,
             "task_id": task_id,
             "upstream_sha": TAU_SHA,
+            "tau_protocol": config.tau_protocol,
             "data_identity": backend.data_identity,
             "tools_sha256": digest(
                 canonical([t.openai_schema for t in orchestrator.environment.get_tools()])

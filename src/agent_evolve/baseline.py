@@ -78,8 +78,11 @@ class Config:
     max_steps: int = 12
     domain: str = "retail"
     tau_checkout: str | None = None
+    tau_protocol: str = "registry"
 
     def __post_init__(self):
+        if self.tau_protocol not in {"registry", "reviewed-en-text"}:
+            raise ValueError("Unknown tau protocol")
         if self.mode not in {"offline", "mock", "live"} or self.backend not in {"fixture", "tau"}:
             raise ValueError("Invalid mode or backend")
         if self.domain != "retail":
@@ -288,7 +291,14 @@ def execute(config: Config, *, backend=None, invocation=None) -> Path:
                 backend = TauBackend(config.tau_checkout)
             else:
                 backend = FixtureBackend()
-        tasks = backend.tasks(config.task_ids)
+        if config.tau_protocol == "reviewed-en-text":
+            if config.backend != "tau" or config.mode == "mock":
+                raise ValueError(
+                    "Reviewed protocol uses the official text worker; no legacy mock path"
+                )
+            tasks = backend.tasks(config.task_ids, protocol=config.tau_protocol)
+        else:
+            tasks = backend.tasks(config.task_ids)
         if [t["id"] for t in tasks] != list(config.task_ids):
             raise ValueError("Backend task selection must match requested order and IDs")
         prompt = Prompt(config.instruction, backend.policy)

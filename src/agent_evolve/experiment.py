@@ -66,6 +66,10 @@ def worker(job):
                 if job["kind"] == "diagnostic":
                     from agent_evolve.semantic import SYSTEM
 
+                    if job.get("tau_protocol") == "reviewed-en-text":
+                        from agent_evolve.semantic import OAI_SYSTEM
+
+                        SYSTEM = OAI_SYSTEM
                     messages[0]["content"] = SYSTEM
                     payload = json.loads(messages[1]["content"])
                     payload["deterministic_observations"] = diagnose(
@@ -101,6 +105,11 @@ def worker(job):
                 if job["kind"] == "diagnostic":
                     from agent_evolve.semantic import validate_analysis
 
+                    if job.get("tau_protocol") == "reviewed-en-text":
+                        from agent_evolve.semantic import validate_interventions
+
+                        validate_analysis = validate_interventions
+
                     write_json(directory / "raw_output.json", {"text": text})
                     try:
                         verified = validate_analysis(text, payload)
@@ -120,7 +129,12 @@ def worker(job):
                             {
                                 "role": "user",
                                 "content": json.dumps(
-                                    dict(payload, proposed_findings=verified["diagnostics"]),
+                                    dict(
+                                        payload,
+                                        proposed_findings=[
+                                            d.get("layers", d) for d in verified["diagnostics"]
+                                        ],
+                                    ),
                                     ensure_ascii=False,
                                 ),
                             },
@@ -154,6 +168,7 @@ def worker(job):
         output_dir=str(directory),
         run_id="task",
         tau_checkout=str(ROOT / ".cache/tau2-source"),
+        tau_protocol=job.get("tau_protocol", "registry"),
         max_steps=limits.get("steps", 32),
         seed=job.get("seed", 42),
         agent_model=MODEL,
@@ -192,6 +207,7 @@ class WorkerClient:
         directory = Path(job["directory"])
         directory.mkdir(parents=True, exist_ok=False)
         job["budget"] = str(self.budget.path)
+        job["tau_protocol"] = self.config.get("tau_protocol", "registry")
         job["limits"] = self.config.get("task_limits", {})
         if job["kind"] in {"reflection", "diagnostic"}:
             job["request_seconds"] = self.config.get("analysis_request_seconds", 30)
@@ -263,6 +279,12 @@ class WorkerClient:
             read("prompt.json"),
             read("metadata.json"),
         )
+        if self.config.get("tau_protocol") == "reviewed-en-text":
+            if metadata.get("tau_protocol") != "reviewed-en-text":
+                raise ProviderError("Legacy task cannot enter reviewed study")
+            context = read("call_context.json")["language"]
+            if context["language"] != "en" or context["mode"] != "text" or not context["persona"]:
+                raise ProviderError("Missing reviewed language/persona binding")
         score = (raw.get("reward_info") or {}).get("reward")
         if (
             metadata["upstream_sha"] != TAU_SHA
@@ -380,6 +402,11 @@ class QwenReflection:
         ):
             raise StageBudget("Proposal cap")
         directory = self.directory / f"reflection-{self.calls:04d}"
+        if (
+            self.phase == "structured"
+            and getattr(self.client, "config", {}).get("tau_protocol") == "reviewed-en-text"
+        ):
+            messages = self.client.reflection_episodes(messages)
         self.client.execute(
             {
                 "kind": "reflection",

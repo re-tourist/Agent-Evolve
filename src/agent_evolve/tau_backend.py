@@ -59,6 +59,8 @@ def build_live_components(config, task, prompt):
     from tau2.runner import build_environment, build_user
 
     task = Task.model_validate(task)
+    if config.tau_protocol == "reviewed-en-text":
+        return build_reviewed_components(config, task, prompt)
     environment = build_environment("retail")
     if environment.get_policy() != prompt.policy:
         raise ValueError("Official Policy mismatch")
@@ -84,6 +86,60 @@ def build_live_components(config, task, prompt):
         max_errors=2,
         seed=config.seed,
     )
+
+
+def reviewed_tasks(ids):
+    """Official language binding; deliberately restrict research to reviewed IDs."""
+    import json
+
+    from tau2.multilingual.runtime import load_language
+    from tau2.runner.helpers import filter_tasks
+    from tau2.utils.utils import DATA_DIR
+
+    reviewed = json.loads(
+        (DATA_DIR / "tau2/multilingual/en/retail_tasks_en.json").read_text(encoding="utf-8")
+    )
+    if not set(ids) <= {t["id"] for t in reviewed}:
+        raise ValueError("Task outside reviewed English Retail population")
+    loaded = load_language("en", "retail", mode="text")
+    return filter_tasks(loaded.tasks, task_ids=list(ids))
+
+
+def build_reviewed_components(config, task, prompt):
+    from tau2.data_model.simulation import TextRunConfig
+    from tau2.multilingual.runtime import task_digest
+    from tau2.runner import build_text_orchestrator
+
+    selected = reviewed_tasks([task.id])[0]
+    if task_digest(selected) != task_digest(task):
+        raise ValueError("Task differs from reviewed language binding")
+    run_config = TextRunConfig(
+        domain="retail",
+        language="en",
+        agent="llm_agent",
+        user="user_simulator",
+        task_ids=[task.id],
+        llm_agent=config.agent_model,
+        llm_user=config.user_model,
+        llm_args_agent=config.agent_args or {},
+        llm_args_user=config.user_args or {},
+        seed=config.seed,
+        max_steps=config.max_steps,
+        max_errors=2,
+    )
+    orchestrator = build_text_orchestrator(run_config, selected)
+    if orchestrator.environment.get_policy() != prompt.policy:
+        raise ValueError("Reviewed environment Policy mismatch")
+    # Keep official resolved language guidance; only Agent Instruction is variable.
+    resolved_prompt = Prompt(prompt.instruction, orchestrator.agent.domain_policy)
+    orchestrator.agent = make_agent(
+        resolved_prompt,
+        orchestrator.agent.tools,
+        config.agent_model,
+        config.agent_args or {},
+        scripted=False,
+    )
+    return orchestrator
 
 
 class TauBackend:
@@ -122,10 +178,14 @@ class TauBackend:
             if p.is_file()
         }
 
-    def tasks(self, ids):
+    def tasks(self, ids, *, protocol="registry"):
         from tau2.runner import get_tasks
 
-        tasks = get_tasks("retail", task_ids=list(ids))
+        tasks = (
+            reviewed_tasks(ids)
+            if protocol == "reviewed-en-text"
+            else get_tasks("retail", task_ids=list(ids))
+        )
         by_id = {task.id: task for task in tasks}
         return [by_id[i].model_dump(mode="json") for i in ids]
 

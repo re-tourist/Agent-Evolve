@@ -1,6 +1,7 @@
 """Serial, file-backed budget for this bounded Qwen experiment, not a billing service."""
 
 import csv
+import hashlib
 import io
 import json
 import os
@@ -85,6 +86,64 @@ def estimate_rmb(input_tokens, output_tokens):
 class Budget:
     def __init__(self, filename):
         self.path = Path(filename)
+
+    @classmethod
+    def carry_forward(cls, filename, predecessor, *, phase_limits, task_calls=48):
+        """One serial successor, retaining cumulative occupancy and immutable old stop."""
+        predecessor = Path(predecessor).resolve()
+        raw = predecessor.read_bytes()
+        old = json.loads(raw)
+        if old["pending"] is not None or not old["stopped"]:
+            raise ValueError("Predecessor must be terminal with no pending request")
+        if old["limit"] != 5000 or old["cost_limit_rmb"] != 50:
+            raise ValueError("Cumulative authorization differs")
+        if old["requests"] >= 5000 or old["cost_rmb"] >= 50:
+            raise ProviderError("Cumulative allowance exhausted")
+        if Path(filename).exists():
+            raise FileExistsError("Successor already exists")
+        # Exclusive marker prevents branching one authorization into multiple budgets.
+        marker = predecessor.parent / "budget-successor.json"
+        with marker.open("x", encoding="utf-8") as stream:
+            json.dump(
+                {
+                    "successor": str(Path(filename).resolve()),
+                    "predecessor_sha256": hashlib.sha256(raw).hexdigest(),
+                },
+                stream,
+            )
+        budget = cls.create(
+            filename,
+            limit=5000,
+            cost_limit_rmb=50,
+            phase_limits=phase_limits,
+            task_calls=task_calls,
+        )
+        state = budget.read()
+        for key in (
+            "requests",
+            "cost_rmb",
+            "input_tokens",
+            "output_tokens",
+            "unknown_usage_requests",
+            "unknown_cost_reserve_rmb",
+        ):
+            if key in old:
+                state[key] = old[key]
+        state["predecessor"] = {
+            "path": str(predecessor),
+            "sha256": hashlib.sha256(raw).hexdigest(),
+            "snapshot": old,
+        }
+        budget.save(state)
+        budget.log(
+            {
+                "status": "carry_forward",
+                "requests": old["requests"],
+                "cost_rmb": old["cost_rmb"],
+                "predecessor_sha256": state["predecessor"]["sha256"],
+            }
+        )
+        return budget
 
     @classmethod
     def create(cls, filename, *, limit=400, cost_limit_rmb=30, phase_limits=None, task_calls=24):

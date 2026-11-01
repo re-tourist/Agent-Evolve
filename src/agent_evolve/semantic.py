@@ -28,6 +28,10 @@ The environment here is REAL pinned official code, not a mock. Conflicting tool
 responses may indicate an Environment issue. Never assert a known simulator bug,
 intentional mock format, or which conflicting source is correct without evidence.
 Reasonable consistency checks are not errors merely because they add calls.
+This run is serial with fresh per-task state. Do not invent concurrent database
+updates or race conditions. A previous observed status check remains valid until
+an observed state-changing event makes it stale; no redundant fresh lookup or
+repeated confirmation is required without an explicit Policy basis.
 Pinned framework fact: a user message containing its STOP marker ends execution
 BEFORE another Agent turn. If the simulator confirms an action and emits STOP in
 that same message, the Agent cannot execute the next tool. Attribute the observed

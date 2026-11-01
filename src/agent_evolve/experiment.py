@@ -97,17 +97,14 @@ def worker(job):
                                 "content": SYSTEM + "\nReview the proposed findings "
                                 "independently. Reject claims that do not follow from evidence, "
                                 "invent Policy requirements, blame Agent for Simulator/Environment "
-                                "events, call positive behavior an error, or assert known mock bugs. "
+                                "events, call positive behavior an error, or invent mock bugs. "
                                 "Return only supported findings in the same JSON schema. Unknown "
                                 "attribution is preferable to a fabricated cause.",
                             },
                             {
                                 "role": "user",
                                 "content": json.dumps(
-                                    {
-                                        "payload": payload,
-                                        "proposed_findings": verified["diagnostics"],
-                                    },
+                                    dict(payload, proposed_findings=verified["diagnostics"]),
                                     ensure_ascii=False,
                                 ),
                             },

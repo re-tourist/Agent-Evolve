@@ -1,6 +1,6 @@
 {
   "study": "semantic-v1",
-  "run_id": "semantic-study-001",
+  "run_id": "semantic-study-002",
   "output_dir": "../runs/semantic",
   "credentials_dir": "../docs/ali",
   "gepa_checkout": "../.cache/gepa-source",

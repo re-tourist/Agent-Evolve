@@ -5,7 +5,7 @@ from types import SimpleNamespace
 
 import pytest
 
-from agent_evolve.baseline import ProviderError
+from agent_evolve.baseline import Config, ProviderError
 from agent_evolve.live_runtime import Budget
 from agent_evolve.semantic import observable_view, validate_analysis
 from agent_evolve.study import FailureSampler, load
@@ -46,6 +46,19 @@ def test_observable_allowlist_and_citations():
     assert not rejected["diagnostics"] and rejected["rejected"]
     diagnostic["category"] = "policy_violation"
     assert not validate_analysis(json.dumps({"diagnostics": [diagnostic]}), view)["diagnostics"]
+
+
+def test_authorized_64_steps_constructs_m2_config():
+    config = Config(
+        mode="mock",
+        backend="fixture",
+        task_ids=("1",),
+        instruction="seed",
+        output_dir="unused",
+        run_id="offline-check",
+        max_steps=64,
+    )
+    assert config.max_steps == 64
 
 
 def test_new_shared_limits_and_diagnostic_role(tmp_path):

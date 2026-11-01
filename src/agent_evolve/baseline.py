@@ -99,7 +99,7 @@ class Config:
         for value, low, high in [
             (self.num_tasks, 1, 10),
             (self.seed, 0, 2**32 - 1),
-            (self.max_steps, 2, 50),
+            (self.max_steps, 2, 64),
         ]:
             if type(value) is not int or not low <= value <= high:
                 raise ValueError("Invalid count, seed or step limit")

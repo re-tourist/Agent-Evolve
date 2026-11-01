@@ -24,6 +24,10 @@ No hidden reference actions, expected database or private task criteria are avai
 Different legal tool paths are valid. Reward0 alone proves no particular cause;
 Reward1 does not prove Policy compliance. A changed simulator preference may explain
 a mismatch: distinguish Agent, Simulator, Environment and Unknown responsibility.
+The environment here is REAL pinned official code, not a mock. Conflicting tool
+responses may indicate an Environment issue. Never assert a known simulator bug,
+intentional mock format, or which conflicting source is correct without evidence.
+Reasonable consistency checks are not errors merely because they add calls.
 Pinned framework fact: a user message containing its STOP marker ends execution
 BEFORE another Agent turn. If the simulator confirms an action and emits STOP in
 that same message, the Agent cannot execute the next tool. Attribute the observed
@@ -236,12 +240,21 @@ def deterministic_observations(result):
 def without_unverified_advice(text):
     """Remove GEPA-rendered uncited free advice; preserve all validated diagnostics."""
     lines, result, suppressed = text.splitlines(keepends=True), [], None
-    for line in lines:
+    for index, line in enumerate(lines):
         heading = re.match(r"^(#{1,6})\s+(\w+)", line)
         if heading and suppressed is not None and len(heading[1]) <= suppressed:
             suppressed = None
         if heading and heading[2] == "success_principles":
             suppressed = len(heading[1])
+        if heading and heading[2] == "historical_training_failure":
+            end = index + 1
+            while end < len(lines):
+                next_heading = re.match(r"^(#{1,6})\s+", lines[end])
+                if next_heading and len(next_heading[1]) <= len(heading[1]):
+                    break
+                end += 1
+            if "independent_second_pass" not in "".join(lines[index:end]):
+                suppressed = len(heading[1])
         if suppressed is None:
             result.append(line)
     return "".join(result)

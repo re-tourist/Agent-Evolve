@@ -47,7 +47,8 @@ def worker(job):
             job["budget"],
             job["phase"],
             job["association"],
-            reflection=True,
+            reflection=job["kind"] == "reflection",
+            limit=2,
             max_tokens=job.get("max_tokens", 1024),
             request_seconds=job.get("request_seconds", 30),
         ) as calls:
@@ -89,6 +90,41 @@ def worker(job):
                         verified = validate_analysis(text, payload)
                     except (ValueError, KeyError, TypeError):
                         verified = {"diagnostics": [], "rejected": [{"reason": "invalid_json"}]}
+                    if verified["diagnostics"]:
+                        review = [
+                            {
+                                "role": "system",
+                                "content": SYSTEM + "\nReview the proposed findings "
+                                "independently. Reject claims that do not follow from evidence, "
+                                "invent Policy requirements, blame Agent for Simulator/Environment "
+                                "events, call positive behavior an error, or assert known mock bugs. "
+                                "Return only supported findings in the same JSON schema. Unknown "
+                                "attribution is preferable to a fabricated cause.",
+                            },
+                            {
+                                "role": "user",
+                                "content": json.dumps(
+                                    {
+                                        "payload": payload,
+                                        "proposed_findings": verified["diagnostics"],
+                                    },
+                                    ensure_ascii=False,
+                                ),
+                            },
+                        ]
+                        write_json(directory / "review_input.json", review)
+                        reviewed = llm_utils.completion(model=MODEL, messages=review)
+                        review_text = reviewed.choices[0].message.content
+                        write_json(directory / "review_raw.json", {"text": review_text})
+                        try:
+                            verified = validate_analysis(review_text, payload)
+                            for finding in verified["diagnostics"]:
+                                finding["semantic_review"] = "independent_second_pass"
+                        except (ValueError, KeyError, TypeError):
+                            verified = {
+                                "diagnostics": [],
+                                "rejected": [{"reason": "invalid_review"}],
+                            }
                     write_json(directory / "validation.json", verified)
                     text = json.dumps(verified, ensure_ascii=False)
                 write_json(directory / "output.json", {"text": text, "calls": calls.count})

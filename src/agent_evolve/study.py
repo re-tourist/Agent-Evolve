@@ -45,6 +45,31 @@ def algorithm_evidence(directory):
         (p, read(p))
         for p in sorted((directory / "structured/evaluations").glob("*/evaluation.json"))
     ]
+    config = read(directory / "config.json")
+    if config.get("tau_protocol") == "reviewed-en-text":
+        for task_id, entry in read(directory / "failure_pool.json").items():
+            episode = entry.get("episode", {})
+            if (
+                task_id in config["train"]
+                and entry["reward"] == 0
+                and episode.get("protocol") == "reviewed-en-text"
+                and episode.get("source_run_id") == config["run_id"]
+            ):
+                trace = read(directory / episode["trace"])
+                if (trace.get("reward_info") or {}).get("reward") != 0:
+                    raise ValueError("Historical Episode lacks actual official failure")
+                events.append(
+                    (
+                        directory / "baseline" / task_id / "semantic/analysis.json",
+                        {
+                            "score": 0,
+                            "status": "historical_training_episode",
+                            "example": {"id": task_id, "split": "train"},
+                            "candidate_sha256": episode["prompt_sha256"],
+                            "feedback": {"structured_feedback": entry["diagnostic"]},
+                        },
+                    )
+                )
     seed_sha = read(directory / "seed_prompt.json")["sha256"]
     for source_path, event in events:
         if event.get("score") != 0 or event["example"]["split"] != "train":
@@ -66,6 +91,7 @@ def algorithm_evidence(directory):
                     if isinstance(messages, str)
                     else "\n".join(m.get("content", "") for m in messages)
                 )
+                actual = actual.replace('\\"', '"')
                 if d["observation"] not in actual or event["candidate_sha256"] not in actual:
                     continue
                 output = effective.parent / "output.json"

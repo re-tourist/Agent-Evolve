@@ -143,7 +143,21 @@ def run_m2_worker(config: Config, directory: Path, python: Path, timeout: int):
 class TauEvaluator:
     """GEPA callable (candidate, example) -> (official Reward, basic trace feedback)."""
 
-    def __init__(self, baseline, splits, ledger, python, *, max_evals, timeout=90, worker=None):
+    def __init__(
+        self,
+        baseline,
+        splits,
+        ledger,
+        python,
+        *,
+        max_evals,
+        timeout=90,
+        worker=None,
+        feedback_mode="basic",
+    ):
+        if feedback_mode not in {"basic", "structured"}:
+            raise ValueError("feedback_mode must be basic or structured")
+        self.feedback_mode = feedback_mode
         if baseline.mode != "mock" or baseline.backend != "tau":
             raise ValueError("M3-A uses only M2's scripted official tau backend")
         self.baseline, self.splits, self.ledger = baseline, splits, ledger
@@ -228,6 +242,10 @@ class TauEvaluator:
                 "model_execution": "scripted; no real LLM",
                 "usage": result.get("usage"),
             }
+            if self.feedback_mode == "structured":
+                from agent_evolve.feedback import diagnose
+
+                feedback["structured_feedback"] = diagnose(result)
             event.update(score=score, feedback=feedback, status="scored")
             return float(score), feedback
         except Exception as exc:

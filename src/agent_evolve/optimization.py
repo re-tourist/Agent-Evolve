@@ -40,8 +40,11 @@ class OptimizationConfig:
     worker_timeout: int = 90
     acceptance_criterion: str = "strict_improvement"
     reflection_mode: str = "deterministic_fake"
+    feedback_mode: str = "basic"
 
     def __post_init__(self):
+        if self.feedback_mode not in {"basic", "structured"}:
+            raise ValueError("feedback_mode must be basic or structured")
         if self.mode not in {"offline", "live"}:
             raise ValueError("Mode must be offline or live")
         if self.reflection_mode != "deterministic_fake":
@@ -205,6 +208,7 @@ def optimize(config, *, worker=None):
             max_evals=config.max_evals,
             timeout=config.worker_timeout,
             worker=worker,
+            feedback_mode=config.feedback_mode,
         )
         reflection = OfflineReflection(directory, seed)
         start = time.monotonic()

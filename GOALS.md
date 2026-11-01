@@ -5,16 +5,18 @@ and optionally future data construction and SFT/RL experiments. The sole current
 subproject is **GEPA × τ-bench: trace-grounded Prompt optimization for customer-service
 Agents**. PROJECT_PLAN.md v0.2 is the design baseline.
 
-## Current scope: M3-A (offline GEPA integration)
-Update: M3-A complete; current work prepares one Qwen Task 0 smoke only, without
-executing it. See docs/experiments/QWEN_SINGLE_TASK_PROPOSAL.md. The dedicated
-entry defaults to offline; Live flags require subsequent explicit user approval.
-No GEPA Live optimization, M4 or M5 is authorized.
+## Current scope: M4-A (offline trace diagnostics)
+M3-A and Qwen single-task preparation are retained. Add four small evidence-linked
+diagnostic types and optional structured GEPA feedback using the same official
+Reward. No reference tool path, hidden target or test trace enters reflection.
+M3-B1 is unapproved/unrun; Qwen code/configuration stay unchanged. Its dedicated
+entry defaults to offline and requires explicit approval before Live flags are used.
+No real model request, GEPA Live optimization, M4-B or M5 is authorized.
 
 Retain M1 and M2-A. Integrate pinned real GEPA core with the M2 official Reward/Trace
 adapter, candidate evidence, explicit train/validation/test boundaries, deterministic
 reflection and offline tests. No actual model API chain has been verified in M2/M3.
-Both live gates remain closed. M3-B requires staged explicit approval: one real
+The original baseline/optimizer Live gates remain closed. M3-B requires staged approval: one real
 Agent task first; only after review, separately approve the smallest real GEPA loop.
 Synthetic score changes and scripted trajectories are engineering evidence only.
 
@@ -28,7 +30,7 @@ Synthetic score changes and scripted trajectories are engineering evidence only.
   honest final-test results and reproducible public report.
 
 ## Non-goals
-M3-A implements no paid run, model-backed reflection, M4 taxonomy or formal comparison.
+M4-A adds no paid run, model-backed reflection, large taxonomy or formal comparison.
 The current project does not rewrite upstream algorithms/benchmarks, build a web
 platform, add RAG, voice or multi-Agent execution, or train SFT/RLHF/RL weights.
 GPU provisioning and paid evaluation are not foundation requirements. No Agent

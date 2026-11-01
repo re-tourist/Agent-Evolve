@@ -33,8 +33,19 @@ candidate pool/lineage, result/metadata/eval_log and selected Best. No fabricate
 unexposed ancestry. Separate GEPA core and τ environments avoid the full-extra
 LiteLLM conflict. No M2 implementation or official Orchestrator/scoring was changed.
 Real engine + synthetic tests and real engine + scripted Retail are distinct from
-hosted-model experiments. M2/M3 Live remain closed; no M4 feedback algorithm exists.
+hosted-model experiments. Baseline/optimizer Live remain closed; M4-A adds the
+optional feedback described below.
 See `docs/M3_RUNBOOK.md` and `docs/M3_GEPA_AUDIT.md`.
+
+## Implemented in M4-A
+`feedback.py` is a pure normalized-trace to diagnostic-JSON function. It recognizes
+explicit tool error/binding markers and termination observations; failed Reward
+never establishes a specific cause. Evidence uses message/field JSON Pointers.
+No hidden evaluation_details, target state, raw text or reference sequence is
+exported. `feedback_mode=structured` optionally adds this JSON to TauEvaluator info;
+basic remains default and official Reward/optimizer/Policy are unchanged. Existing
+split/admission guards still apply. No Judge or causal failure classifier added.
+See `docs/M4_FEEDBACK.md`; no real Agent failure rates or improvement established.
 
 ## System boundaries and later-stage intent
 Single-task preparation adds `qwen_smoke.py`: reuse M2 official participant

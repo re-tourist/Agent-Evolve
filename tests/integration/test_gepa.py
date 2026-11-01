@@ -76,7 +76,9 @@ def synthetic_worker(config, directory, python, timeout):
     )
 
 
-def test_real_api_loop_candidate_lineage_and_split_secrecy(config):
+@pytest.mark.parametrize("feedback_mode", ["basic", "structured"])
+def test_real_api_loop_candidate_lineage_and_split_secrecy(config, feedback_mode):
+    config = replace(config, feedback_mode=feedback_mode)
     with deny_network():
         verify_gepa(config.gepa_checkout)
         assert importlib.util.find_spec("litellm") is None  # GEPA core only, no provider SDK
@@ -96,6 +98,9 @@ def test_real_api_loop_candidate_lineage_and_split_secrecy(config):
     ]
     assert {r["example"]["id"] for r in records} == {"0", "1"}
     assert all(r["transport"] == "injected_test_worker" for r in records)
+    assert all(
+        ("structured_feedback" in r["feedback"]) == (feedback_mode == "structured") for r in records
+    )
     assert (directory / "gepa_eval_log.json").exists() and (
         directory / "gepa_metadata.json"
     ).exists()

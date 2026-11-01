@@ -17,6 +17,7 @@
 | ADR-013 / 2026-11-01 | Reuse unmodified M2 CLI per evaluation through a serial JSON/subprocess boundary | Official Reward only, fresh state/history, identical Policy; missing/invalid scores abort |
 | ADR-014 / 2026-11-01 | Save all observed candidates separately from GEPA accepted pool | Rejected candidates may be absent from GEPAResult; preserve feedback and exposed lineage without inventing parents |
 | ADR-015 / 2026-11-01 | Explicit development split and test_set=None; both Live gates closed | Train 0 / validation 1 from official train, reserved test 5 never evaluated; layered M3-B approval required |
+| ADR-016 / 2026-11-01 | M4-A uses conservative observation rules with JSON Pointer evidence; basic feedback stays default | Explicit tool flags/binding markers and termination only; Reward failure is not causal evidence, hidden details never exported, no score/model/Policy change |
 
 New major decisions record context, choice, alternatives, evidence and consequences.
 Distinguish pinned-source facts from local decisions and unverified runtime assumptions.

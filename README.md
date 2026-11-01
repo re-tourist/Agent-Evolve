@@ -3,9 +3,10 @@
 Evaluation-driven experiments for LLM Agents. 当前唯一正式子项目为 **GEPA × τ-bench**：
 基于执行轨迹反馈的客服 Agent Prompt 自动优化。
 
-**Status / 当前状态**：M3-A offline GEPA integration. 真实 GEPA 引擎已接入 M2
-脚本化 Retail Runner，保存候选、官方 Reward/Trace、反思替身 I/O 和结果。
-真实模型基线/反思及 Prompt 效果尚未验证；付费调用 0 次，Live 仍关闭。
+**Status / 当前状态**：M4-A offline trace diagnostics. 保留 M3-A 离线 GEPA 闭环，
+新增可选结构化反馈：工具错误、参数异常、结束状态和不确定失败，附 Trace 位置。
+官方 Reward 不变；真实模型基线/反思及 Prompt 效果尚未验证，付费调用 0 次。
+说明与示例见 [M4 feedback](docs/M4_FEEDBACK.md)。
 单任务真实测试准备：新增默认离线的 Qwen 入口，执行前仍需用户明确批准；
 见 [Qwen Task 0 方案与命令](docs/experiments/QWEN_SINGLE_TASK_PROPOSAL.md)。
 
@@ -51,7 +52,7 @@ only; no key is needed for M1, M2-A or M3-A.
 | M1 | Repository Foundation & Codex Governance | See validation evidence |
 | M2 | τ-bench Baseline & Trace | M2-A offline; M2-B not approved |
 | M3 | GEPA Optimization Loop | M3-A offline; real API loop not approved |
-| M4 | Trace-grounded Structured Feedback | Planned |
+| M4 | Trace-grounded Structured Feedback | M4-A offline; real-trace validation/comparison pending |
 | M5 | Controlled Experiments & Portfolio Release | Planned |
 
 长期可探索 SFT/RL；当前不训练模型权重，不重写官方 Benchmark 或 GEPA。

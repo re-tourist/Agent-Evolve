@@ -241,3 +241,26 @@ def test_optimization_cli_live_refusal(optimization_config, tmp_path):
     assert result.returncode == 2
     assert "LiveNotApprovedError" in result.stderr
     assert not Path(optimization_config.output_dir).exists()
+
+
+def test_optional_structured_feedback_preserves_score_and_refuses_test(evaluator):
+    from agent_evolve.feedback import diagnose
+
+    basic_score, basic = evaluator("candidate", {"id": "0", "split": "train"})
+    assert "structured_feedback" not in basic
+    evaluator.feedback_mode = "structured"
+    score, structured = evaluator("candidate", {"id": "0", "split": "train"})
+    expected = diagnose(fake_worker(evaluator.baseline, None, None, None)[0])
+    assert score == basic_score == 0.0
+    assert structured.pop("structured_feedback") == expected
+    # Other fields are unchanged except the per-evaluation trace locator.
+    structured.pop("trace_path")
+    basic.pop("trace_path")
+    assert structured == basic
+    with pytest.raises(ValueError):
+        evaluator("candidate", {"id": "5", "split": "test"})
+
+
+def test_invalid_feedback_mode(optimization_config):
+    with pytest.raises(ValueError):
+        replace(optimization_config, feedback_mode="judge")

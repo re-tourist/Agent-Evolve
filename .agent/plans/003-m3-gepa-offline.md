@@ -25,7 +25,7 @@ GEPA. Save public result fields plus unavailable markers for inaccessible lineag
   repeated run IDs, limits, and unconditional Live rejection; run M2 regressions.
 - [x] Record actual artifacts/commands/source identity and update project docs.
 - [x] Submit layered M3-B proposal only; verify/create six M3 Issues with evidence.
-- [ ] Inspect diff, commit safely and stop. No push/default-branch change or Release.
+- [x] Inspect diff, commit safely and stop. No push/default-branch change or Release.
 
 ## Verification and limits
 Narrow unit tests first, then root pytest/ruff/import and opt-in native upstream
@@ -49,3 +49,8 @@ portable extract, source/artifact hashes and commands in docs/validation/M3A_*.
 GEPA core stays isolated; root/M2 locks and upstream code unchanged. Six M3 Issues
 #13-18 assigned to existing milestone 3; open pending publication/review. Layered
 Live proposal submitted, both layers unapproved. Paid/real model calls: 0.
+
+Local implementation/evidence commit d43a9ab6000eb558d7bedde55269b76ebdb63321.
+All six Issue bodies now contain checked M3-A criteria and actual evidence/SHA;
+authenticated re-read verified milestone 3, open states and evidence for #13-18.
+This closure changes documentation only. M3-A stops here; await proposal review.

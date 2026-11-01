@@ -82,3 +82,9 @@ Issues remain **open pending publication/review**; M3 as a whole is not marked
 complete because no hosted-model validation has been approved/run. Remote CI is
 not run; local native/CI-equivalent tests are identified separately. No push,
 automatic merge, Release or M4 work.
+
+Local M3-A implementation/evidence commit:
+`d43a9ab6000eb558d7bedde55269b76ebdb63321` (unpushed). All six Issue bodies now
+contain checked M3-A criteria, actual validation evidence and this SHA. A final
+authenticated read verified #13-18 are open, assigned to milestone 3 and retain
+the evidence. This closure changes documentation only; it does not authorize Live.

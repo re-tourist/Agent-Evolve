@@ -106,3 +106,14 @@ max_evals is not total API requests, tokens or RMB; no hard all-role spend cap e
 No actual model Tool Calling/Simulator/Reflection chain has been validated. The
 Layer-1 real task gate must precede a separately approved Layer-2 optimizer gate.
 Proposal: ../experiments/M3_LIVE_TEST_PROPOSAL.md. Stop at M3-A.
+
+## Local Git / GitHub closure
+Implementation/evidence commit: d43a9ab6000eb558d7bedde55269b76ebdb63321,
+branch codex/m3-gepa-offline. It records the tested source hashes above; tests ran
+on the audited dirty tree before commit, not on an invented prior commit.
+Six M3 Issues #13-18 were created only after checking existing Issues and are
+assigned to existing milestone 3. Their bodies now contain checked M3-A criteria,
+actual results/evidence paths and local SHA; final authenticated re-read verified
+all six remain open with those fields. Open means pending publication/review.
+No push, default-branch modification, merge or Release. The final documentation
+closure adds no executable code or lock changes, so no redundant test run is claimed.

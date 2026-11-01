@@ -149,6 +149,9 @@ simulator_environment, unknown.
 """
 
 OAI_SCHEMA = """
+Every evidence entry has the exact shape
+{"pointer": "/messages/N/content", "quote": "short exact substring from that location"}.
+Replace N and the quote with actual source data. Do not use bare pointer strings.
 Return {"diagnostics": [{"category": category,
 "observation": {"fact": exact observable event, "evidence": [pointer/quote objects]},
 "attribution": {"responsibility": Agent/Simulator/Environment/Unknown,
@@ -211,9 +214,26 @@ def validate_interventions(text, view):
     fenced = re.fullmatch(r"\s*```(?:json)?\s*(.*?)\s*```\s*", text, re.S)
     parsed = json.loads(fenced.group(1) if fenced else text)
     observations, actionable, rejected = [], [], []
+
+    def references(refs):
+        result = []
+        for ref in refs:
+            if isinstance(ref, str):
+                value = at_pointer(view, ref)
+                ref = {
+                    "pointer": ref,
+                    "quote": value
+                    if isinstance(value, str)
+                    else json.dumps(value, ensure_ascii=False),
+                    "normalization": "literal source resolved from model-provided pointer",
+                }
+            result.append(ref)
+        return result
+
     for index, item in enumerate(parsed["diagnostics"][:3]):
         try:
             observation, attribution = item["observation"], item["attribution"]
+            observation["evidence"] = references(observation["evidence"])
             intervention = item["intervention"]
             flat = {
                 "category": item["category"],
@@ -261,6 +281,7 @@ def validate_interventions(text, view):
             )
             if re.search(r"\d|/messages/|<id_", flat["suggestion"]):
                 raise ValueError("Intervention contains instance fragments or trace locators")
+            intervention["evidence"] = references(intervention["evidence"])
             flat["evidence"] = observation["evidence"] + intervention["evidence"]
             checked = validate_analysis(json.dumps({"diagnostics": [flat]}), view)
             if not checked["diagnostics"]:

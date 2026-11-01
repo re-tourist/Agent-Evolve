@@ -69,3 +69,16 @@ def test_user_event_cannot_be_an_agent_execution_opportunity():
     view["messages"][0]["role"] = "user"
     result = validate_interventions(json.dumps({"diagnostics": [diagnostic]}), view)
     assert not result["diagnostics"] and result["rejected"]
+
+
+def test_pointer_only_evidence_resolves_actual_source_without_fabricating_quote():
+    view, diagnostic = case()
+    diagnostic["observation"]["evidence"] = ["/policy", "/messages/1/content"]
+    result = validate_interventions(json.dumps({"diagnostics": [diagnostic]}), view)
+    refs = result["diagnostics"][0]["evidence"]
+    assert refs[1]["quote"] == view["messages"][1]["content"]
+    assert "normalization" in refs[1]
+    diagnostic["observation"]["evidence"] = ["/messages/999/content"]
+    assert not validate_interventions(json.dumps({"diagnostics": [diagnostic]}), view)[
+        "diagnostics"
+    ]

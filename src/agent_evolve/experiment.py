@@ -1,6 +1,7 @@
 """One bounded research sprint; shared budget, serial workers and independent final test."""
 
 import argparse
+import hashlib
 import json
 import math
 import os
@@ -35,6 +36,23 @@ def worker(job):
     directory = Path(job["directory"])
     write_json(directory / "worker_source.json", git_info())
     budget = Budget(job["budget"])
+    if (
+        job.get("tau_protocol") == "reviewed-en-text"
+        and job["kind"] == "diagnostic"
+        and job["phase"] == "structured"
+    ):
+        identity = {
+            name: hashlib.sha256((ROOT / "src/agent_evolve" / name).read_bytes()).hexdigest()
+            for name in ("semantic.py", "experiment.py")
+        }
+        pin = Path(job["budget"]).parent / "structured/feedback_source.json"
+        if pin.exists():
+            if json.loads(pin.read_text(encoding="utf-8")) != identity:
+                budget.stop("structured_feedback_source_drift")
+                raise ProviderError("Structured feedback source changed during formal search")
+        else:
+            pin.parent.mkdir(parents=True, exist_ok=True)
+            write_json(pin, identity)
     if job["kind"] == "task" and job["phase"] == "test":
         run_dir = Path(job["budget"]).parent
         if json.loads((run_dir / "config.json").read_text(encoding="utf-8")).get("study"):

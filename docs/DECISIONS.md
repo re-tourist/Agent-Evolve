@@ -13,6 +13,10 @@
 | ADR-009 / 2026-11-01 | Live is unconditionally closed in M2-A; configuration is not authorization | User requires explicit approval before M2-B; single-task proposal records missing provider/budget activation work |
 | ADR-010 / 2026-11-01 | Keep separate locked tau environment tied to validated local source checkout | Avoid M1 dependency churn and future GEPA-full/LiteLLM conflict; pin/source/data identity checked |
 | ADR-011 / 2026-11-01 | Exclude infrastructure/simulator/protocol/step-limit failures from normalized task metrics | Keep original upstream RewardInfo/zero in raw evidence; never score infrastructure faults as business failures |
+| ADR-012 / 2026-11-01 | M3 reuses M1 GEPA SHA and installs core only in a separate lock/environment | Actual OptimizeAnythingConfig/callable reflection tested without LiteLLM; full-extra conflict remains |
+| ADR-013 / 2026-11-01 | Reuse unmodified M2 CLI per evaluation through a serial JSON/subprocess boundary | Official Reward only, fresh state/history, identical Policy; missing/invalid scores abort |
+| ADR-014 / 2026-11-01 | Save all observed candidates separately from GEPA accepted pool | Rejected candidates may be absent from GEPAResult; preserve feedback and exposed lineage without inventing parents |
+| ADR-015 / 2026-11-01 | Explicit development split and test_set=None; both Live gates closed | Train 0 / validation 1 from official train, reserved test 5 never evaluated; layered M3-B approval required |
 
 New major decisions record context, choice, alternatives, evidence and consequences.
 Distinguish pinned-source facts from local decisions and unverified runtime assumptions.

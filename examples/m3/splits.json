@@ -1,0 +1,6 @@
+{
+  "train": ["0"],
+  "validation": ["1"],
+  "test": ["5"],
+  "tau_sha": "da0835f6c67baef58bdda18f2a3b037dfb3a1754"
+}

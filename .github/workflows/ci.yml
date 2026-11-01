@@ -19,3 +19,21 @@ jobs:
       - run: uv run --offline --frozen python -m pytest
       - run: uv run --offline --frozen python -c "import agent_evolve; print(agent_evolve.__version__)"
       - run: uv run --offline --frozen python -m agent_evolve.baseline --config examples/m2/mock.json
+  gepa-offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.9.5"
+      - run: uv python install 3.12
+      # Provision fixed public source; no SDK/full extra/model key.
+      - run: git clone --filter=blob:none --no-checkout https://github.com/gepa-ai/gepa.git .cache/gepa-source
+      - run: git -C .cache/gepa-source sparse-checkout init --cone
+      - run: git -C .cache/gepa-source sparse-checkout set src
+      - run: git -C .cache/gepa-source checkout 8c7b697a71977980afc7537dac0881e784eef99f
+      - run: uv sync --project environments/gepa --frozen
+      - run: uv run --project environments/gepa --offline --frozen python -m pytest tests/integration/test_gepa.py -q
+        env:
+          AGENT_EVOLVE_GEPA_TESTS: "1"

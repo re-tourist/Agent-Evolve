@@ -4,7 +4,7 @@
 `src/agent_evolve/__init__.py` exposes package version metadata only.
 `tools/capture_environment.py` writes an allowlisted CPU-only environment snapshot.
 pytest/ruff and CI validate the foundation without model credentials.
-M1 remains the foundation; M2-A additions below do not add GEPA or paid execution.
+M1 remains the foundation; M2-A and M3-A additions are described separately below.
 
 ## Implemented in M2-A
 `baseline.py` owns validated JSON config, frozen Prompt/Policy composition,
@@ -18,8 +18,23 @@ rejected in M2-A. The construction-only seam configures official Agent/User mode
 objects, with generation forbidden by tests; it is not an active live runner.
 Trace messages/tool fields and original reward details are retained. Missing metrics
 are unavailable; infrastructure/simulator/step-limit errors have no normalized task
-score. Structured feedback/optimizer remain unimplemented. Live approval proposal:
+score. M2 adds no optimizer; M3-A integration is described below. Live approval proposal:
 `docs/experiments/M2_LIVE_RUN_PROPOSAL.md`.
+
+## Implemented in M3-A
+`gepa_adapter.py` owns split validation, immutable candidate/evaluation evidence and
+TauEvaluator. The evaluator sends one validated M2 Config to the original M2 CLI
+in a fresh process, checks identities/Policy/RewardInfo, and returns official Reward
+plus basic status/tool/Trace references. Failures abort with null project scores.
+`optimization.py` runs pinned public optimize_anything with explicit budgets,
+train/validation examples, test_set=None and deterministic callable reflection.
+It saves all observed candidates (including rejected ones), reflection I/O, official
+candidate pool/lineage, result/metadata/eval_log and selected Best. No fabricated
+unexposed ancestry. Separate GEPA core and τ environments avoid the full-extra
+LiteLLM conflict. No M2 implementation or official Orchestrator/scoring was changed.
+Real engine + synthetic tests and real engine + scripted Retail are distinct from
+hosted-model experiments. M2/M3 Live remain closed; no M4 feedback algorithm exists.
+See `docs/M3_RUNBOOK.md` and `docs/M3_GEPA_AUDIT.md`.
 
 ## System boundaries and later-stage intent
 | Component | Responsibility | Ownership / interface intent |

@@ -61,3 +61,24 @@ Local M2-A implementation/evidence commit:
 `f342149669b91cc3a4f2d0c1e96f344660e4b52b` (unpushed). All six M2 Issues now
 contain checked M2-A acceptance criteria, actual test evidence, file paths and this
 local commit; states remain open. This documentation-only closure adds no code.
+
+## M3-A — 2026-11-01
+Reused [M3 milestone 3](https://github.com/re-tourist/Agent-Evolve/milestone/3).
+Authoritative Issue list checked before creating six missing M3 entries; no new
+Milestone or duplicate Issue. All six are assigned to milestone 3:
+
+| Issue | Scope | Local M3-A acceptance |
+|---|---|---|
+| [#13 M3-01](https://github.com/re-tourist/Agent-Evolve/issues/13) | GEPA audit/dependency pin | Exact public API/source, core-only isolated lock, root/M2 unchanged |
+| [#14 M3-02](https://github.com/re-tourist/Agent-Evolve/issues/14) | Evaluator adapter | M2 subprocess, official RewardInfo consistency, no zero for faults |
+| [#15 M3-03](https://github.com/re-tourist/Agent-Evolve/issues/15) | Candidate evidence | Seed/evaluated texts/hashes/feedback, rejected proposals, official pool/Best |
+| [#16 M3-04](https://github.com/re-tourist/Agent-Evolve/issues/16) | Optimization runner | Real engine offline, split isolation, budget, unique Run ID, Live refused |
+| [#17 M3-05](https://github.com/re-tourist/Agent-Evolve/issues/17) | Offline/exception tests | Root 76 passed; real GEPA 6 passed; official tau 7 passed; ruff/format/import passed |
+| [#18 M3-06](https://github.com/re-tourist/Agent-Evolve/issues/18) | Live approval proposal | Layer 1 single-task first, Layer 2 separately approved, conditional RMB estimates |
+
+Evidence: `validation/M3A_VALIDATION.md`, command/source-manifest/example JSON,
+`experiments/M3A_OFFLINE_SMOKE.md`, and `experiments/M3_LIVE_TEST_PROPOSAL.md`.
+Issues remain **open pending publication/review**; M3 as a whole is not marked
+complete because no hosted-model validation has been approved/run. Remote CI is
+not run; local native/CI-equivalent tests are identified separately. No push,
+automatic merge, Release or M4 work.

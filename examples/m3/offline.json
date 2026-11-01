@@ -1,0 +1,16 @@
+{
+  "baseline_file": "../m2/tau_mock.json",
+  "seed_prompt_file": "../m2/instruction.txt",
+  "splits_file": "splits.json",
+  "gepa_checkout": "../../.cache/gepa-source",
+  "tau_python": "../../environments/tau/.venv/Scripts/python.exe",
+  "output_dir": "../../runs/m3",
+  "run_id": "gepa-offline-001",
+  "mode": "offline",
+  "seed": 42,
+  "max_evals": 4,
+  "max_proposals": 1,
+  "worker_timeout": 90,
+  "reflection_mode": "deterministic_fake",
+  "acceptance_criterion": "strict_improvement"
+}

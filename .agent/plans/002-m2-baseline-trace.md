@@ -20,7 +20,7 @@ M1 risks: remote CI/unpushed commits; upstream runtime unverified; GEPA-full and
 - [x] Record actual checks and mock artifacts; update architecture/goals/ADR/logs.
 - [x] Produce one-task/one-trial Live proposal with researched provider/tool/pricing
   and hard-limit limitations. M2-B remains forbidden and awaits explicit approval.
-- [ ] Reuse/create six M2 Issues with evidence, inspect diff and safely commit.
+- [x] Reuse/create six M2 Issues with evidence, inspect diff and safely commit.
 
 ## Validation strategy
 Run narrow tests then full pytest, ruff check/format and CLI smoke. Run a separate
@@ -42,4 +42,9 @@ exits 0; Live config exits 2 before backend import. Windows sandbox cleanup hang
 diagnosed and recorded, not marked as successful execution. Missing message costs
 are unavailable even when upstream totals default to zero. Tests/fixtures are labeled.
 Paid model calls: 0. No M2-B or GEPA execution. Six Issues #7-#12 created under
-existing M2; final evidence synchronization and local commit remain.
+existing M2. Reviewed implementation/evidence committed locally as
+`f342149669b91cc3a4f2d0c1e96f344660e4b52b`; git status was empty after that commit.
+Actual acceptance evidence synchronized to Issues #7–#12; they remain open pending
+publication/review, matching M1 workflow. Remote CI not run, no push/merge/Release.
+Construction-only official Agent/User configuration also verified with both generation
+functions forbidden. M2-A complete; stop and await proposal review. M2-B is not run.

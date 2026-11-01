@@ -5,6 +5,9 @@ Source baseline afb0e8e plus recorded M2 working tree on codex/m2-baseline-trace
 project source hashes, pinned upstream sources and Retail data hashes are in
 M2A_SOURCE_MANIFEST.json. No upstream tracked file, root uv.lock, original v0.2 plan,
 or user environment configuration was changed.
+Reviewed M2-A implementation/evidence was committed locally as
+`f342149669b91cc3a4f2d0c1e96f344660e4b52b`, with empty status after commit.
+The following documentation-only closure records acceptance; it changes no tested code.
 
 Environment: Windows 11 AMD64, CPython 3.12.8, local uv 0.9.5. Root pytest 8.4.2,
 ruff 0.14.14. Isolated tau2 2.0.0 / LiteLLM 1.82.6, full transitive versions fixed
@@ -96,3 +99,7 @@ approval environment flag. Provider interoperability, real Simulator behavior,
 DeepSeek non-thinking request configuration, strict global Token/RMB admission
 and actual hosted usage accounting await explicit M2-B approval/review. Proposal:
 `../experiments/M2_LIVE_RUN_PROPOSAL.md`. No M2-B or M3 execution performed.
+
+Final staged diff was inspected; `git diff --cached --check` exited 0. Original
+PROJECT_PLAN.md and root pyproject.toml/uv.lock remained unchanged. Six GitHub M2
+Issues received local acceptance evidence and stay open pending publication/review.

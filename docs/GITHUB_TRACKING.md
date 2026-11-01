@@ -56,3 +56,8 @@ Evidence: `validation/M2A_VALIDATION.md`, command JSON, source/data hashes and
 following M1's workflow; local completion does not claim remote CI success.
 M2 as a whole is not complete: M2-B real model validation is not approved or run.
 No new Milestone, automatic merge, release, push or later-stage issue was created.
+
+Local M2-A implementation/evidence commit:
+`f342149669b91cc3a4f2d0c1e96f344660e4b52b` (unpushed). All six M2 Issues now
+contain checked M2-A acceptance criteria, actual test evidence, file paths and this
+local commit; states remain open. This documentation-only closure adds no code.

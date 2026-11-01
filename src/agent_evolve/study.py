@@ -1,0 +1,352 @@
+"""Failure-driven semantic feedback study, reusing the pinned official task/search path."""
+
+import argparse
+import json
+import os
+import re
+from collections import Counter
+from pathlib import Path
+
+from agent_evolve.baseline import TAU_SHA, digest, git_info, write_json
+from agent_evolve.experiment import WorkerClient, run_search
+from agent_evolve.gepa_adapter import TaskSets, candidate_text
+from agent_evolve.live_runtime import Budget, credentials
+from agent_evolve.qwen_smoke import MODEL, ROOT
+from agent_evolve.semantic import (
+    SYSTEM,
+    deterministic_observations,
+    observable_view,
+    validate_analysis,
+)
+
+
+def read(path):
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+
+
+def load(filename):
+    filename = Path(filename).resolve()
+    config = read(filename)
+    for k in ("output_dir", "credentials_dir", "gepa_checkout", "tau_python", "seed_file"):
+        config[k] = str((filename.parent / config[k]).resolve())
+    TaskSets(*(tuple(config[k]) for k in ("train", "validation", "test")))
+    if (
+        config.get("study") != "semantic-v1"
+        or not config["run_id"].replace("-", "").isalnum()
+        or not 1 <= config["request_limit"] <= 5000
+        or not 0 < config["cost_limit_rmb"] <= 50
+        or not 1 <= config["task_limits"]["steps"] <= 64
+        or not 1 <= config["task_limits"]["calls"] <= 64
+        or not 30 <= config["task_limits"]["seconds"] <= 1200
+        or not 2 <= config["search"]["minibatch"] <= 3
+        or not 25 <= config["search"]["max_evals"] <= 40
+        or not 2 <= config["search"]["max_proposals"] <= 8
+        or not 1 <= config["trials"] <= 2
+    ):
+        raise ValueError("Study configuration exceeds approved scope")
+    if set(config["test"]) & {"0", "5", "8", "9", "10", "12"}:
+        raise ValueError("Previously inspected tasks cannot be new Test")
+    for k in ("diagnostic_tokens", "reflection_tokens"):
+        if not 256 <= config[k] <= 4096:
+            raise ValueError("Invalid output limit")
+    # Judge eligibility and official split only: never inspect Test goals/answers.
+    data = ROOT / ".cache/tau2-source/data/tau2/domains/retail"
+    splits = read(data / "split_tasks.json")
+    tasks = {str(t["id"]): t for t in read(data / "tasks.json")}
+    for group in ("train", "validation", "test"):
+        official = "test" if group == "test" else "train"
+        for task_id in config[group]:
+            if task_id not in splits[official]:
+                raise ValueError("Unofficial split")
+            criteria = tasks[task_id].get("evaluation_criteria") or {}
+            if criteria.get("nl_assertions") or "COMMUNICATE" in criteria.get("reward_basis", []):
+                raise ValueError("Judge task outside approved study")
+    return config
+
+
+class FailureSampler:
+    """Public GEPA BatchSampler seam: rotate failed + successful cases identically in arms."""
+
+    def __init__(self, pool, size, path):
+        self.pool, self.size, self.path = pool, size, Path(path)
+        self.counts = Counter()
+        self.round = 0
+
+    def next_minibatch_ids(self, loader, state):
+        ids = list(loader.all_ids())
+        mapping = {i: loader.fetch([i])[0]["id"] for i in ids}
+        ordered = sorted(ids, key=lambda i: (self.counts[i], ids.index(i)))
+        failed = [i for i in ordered if self.pool[mapping[i]]["reward"] < 1]
+        passed = [i for i in ordered if self.pool[mapping[i]]["reward"] == 1]
+        selected = []
+        for group in (failed, passed, ordered):
+            available = [i for i in group if i not in selected]
+            if available and len(selected) < self.size:
+                selected.append(available[0])
+        for i in ordered:
+            if len(selected) >= self.size:
+                break
+            if i not in selected:
+                selected.append(i)
+        self.counts.update(selected)
+        self.round += 1
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        with self.path.open("a", encoding="utf-8") as f:
+            f.write(
+                json.dumps(
+                    {
+                        "round": self.round,
+                        "tasks": [mapping[i] for i in selected],
+                        "baseline_rewards": [self.pool[mapping[i]]["reward"] for i in selected],
+                    }
+                )
+                + "\n"
+            )
+        return selected
+
+
+class StudyClient(WorkerClient):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.pool = {}
+
+    def sampler(self, phase):
+        return FailureSampler(
+            self.pool, self.config["search"]["minibatch"], self.directory / phase / "sampled.jsonl"
+        )
+
+    def semantic_feedback(self, result, prompt, directory, example):
+        if example["split"] == "test":
+            raise ValueError("Test must not enter optimization diagnosis")
+        directory = Path(directory)
+        tools = read(directory / "task/tools.json")
+        view = observable_view(result, prompt["policy"], tools)
+        target = directory / "semantic"
+        # Only observable content enters hosted diagnosis. Raw output remains private.
+        phase = (
+            "baseline" if directory.is_relative_to(self.directory / "baseline") else "structured"
+        )
+        self.execute(
+            {
+                "kind": "diagnostic",
+                "directory": str(target),
+                "phase": phase,
+                "association": {
+                    "candidate": result["prompt_sha256"],
+                    "task": example["id"],
+                    "source": str(directory.relative_to(self.directory)),
+                },
+                "max_tokens": self.config["diagnostic_tokens"],
+                "messages": [
+                    {"role": "system", "content": SYSTEM},
+                    {"role": "user", "content": json.dumps(view, ensure_ascii=False)},
+                ],
+            }
+        )
+        write_json(target / "observable.json", view)
+        text = read(target / "output.json")["text"]
+        try:
+            analysis = validate_analysis(text, view)
+        except (ValueError, TypeError, KeyError):
+            analysis = {
+                "diagnostics": [],
+                "rejected": [{"reason": "invalid_model_json"}],
+                "success_principles": [],
+            }
+        analysis.update(
+            schema_version=2,
+            deterministic=deterministic_observations(result),
+            task_id=example["id"],
+            candidate_sha256=result["prompt_sha256"],
+            observable_sha256=digest(json.dumps(view, ensure_ascii=False)),
+            evidence_source=str((target / "observable.json").relative_to(self.directory)),
+        )
+        prior = self.pool.get(example["id"])
+        if prior and prior["reward"] < 1:
+            # The real baseline failure remains informative even if a stochastic rerun passes.
+            # It is labelled historical and cannot replace this execution's official scalar.
+            analysis["historical_training_failure"] = {
+                "official_reward": prior["reward"],
+                "candidate_sha256": prior["diagnostic"]["candidate_sha256"],
+                "current_candidate_same_as_failure": prior["diagnostic"]["candidate_sha256"]
+                == result["prompt_sha256"],
+                "diagnostics": prior["diagnostic"]["diagnostics"],
+                "evidence_source": prior["diagnostic"]["evidence_source"],
+                "note": "Earlier training observation, not this run's Reward or a gold answer.",
+            }
+        write_json(target / "analysis.json", analysis)
+        return analysis
+
+
+def run(config, *, live=False):
+    if not live:
+        return {"status": "offline_config_only", "real_calls": 0}
+    from agent_evolve.optimization import verify_gepa
+
+    verify_gepa(config["gepa_checkout"])
+    key, endpoint = credentials(config["credentials_dir"])
+    directory = Path(config["output_dir"]) / config["run_id"]
+    directory.mkdir(parents=True, exist_ok=False)
+    phases = {p: config["request_limit"] for p in ("baseline", "basic", "structured", "test")}
+    Budget.create(
+        directory / "budget.json",
+        limit=config["request_limit"],
+        cost_limit_rmb=config["cost_limit_rmb"],
+        phase_limits=phases,
+        task_calls=config["task_limits"]["calls"],
+    )
+    write_json(directory / "config.json", config)
+    write_json(
+        directory / "metadata.json",
+        {
+            "git": git_info(),
+            "tau_sha": TAU_SHA,
+            "model": MODEL,
+            "test_sent_to_gepa": False,
+            "judge": "none",
+        },
+    )
+    seed = candidate_text(Path(config["seed_file"]).read_text(encoding="utf-8"))
+    write_json(directory / "seed_prompt.json", {"instruction": seed, "sha256": digest(seed)})
+    env = dict(
+        os.environ,
+        DASHSCOPE_API_KEY=key,
+        DASHSCOPE_BASE_URL=endpoint,
+        PYTHONIOENCODING="utf-8",
+        PYTHON_DOTENV_DISABLED="1",
+        LITELLM_LOCAL_MODEL_COST_MAP="True",
+    )
+    client = StudyClient(config, directory, environment=env)
+    splits = TaskSets(*(tuple(config[k]) for k in ("train", "validation", "test")))
+    summary = {"status": "running", "baseline": [], "search": {}, "test": [], "gates": {}}
+
+    def save():
+        summary["budget"] = client.budget.read()
+        (directory / "progress.json").write_text(
+            json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+
+    try:
+        for task_id in splits.train:
+            target = directory / "baseline" / task_id
+            score, info, result, prompt, _ = client.task(seed, task_id, "baseline", target)
+            diagnostic = client.semantic_feedback(
+                result, prompt, target, {"id": task_id, "split": "train"}
+            )
+            client.pool[task_id] = {
+                "reward": score,
+                "termination_reason": info["termination_reason"],
+                "diagnostic": diagnostic,
+            }
+            summary["baseline"].append({"task_id": task_id, **client.pool[task_id]})
+            save()
+        write_json(directory / "failure_pool.json", client.pool)
+        summary["gates"]["A"] = any(
+            x["reward"] < 1
+            and any(d["category"] != "unknown" for d in x["diagnostic"]["diagnostics"])
+            for x in client.pool.values()
+        )
+        if not summary["gates"]["A"]:
+            raise ValueError(
+                "No auditable semantic diagnosis of a real training failure; do not claim gateA"
+            )
+        basic = run_search(client, "basic", seed, splits)
+        summary["search"]["basic"] = basic["summary"]
+        save()
+        structured = run_search(client, "structured", seed, splits)
+        summary["search"]["structured"] = structured["summary"]
+        reflection_files = sorted((directory / "structured").glob("reflection-*/input.json"))
+        # Inspect the actual official Reflection request, not intended evaluator output.
+        consumed = []
+        for p in reflection_files:
+            content = read(p)
+            text = content if isinstance(content, str) else json.dumps(content)
+            if (
+                "structured_feedback" in text
+                and "diagnostics" in text
+                and re.search(r"official_reward\s+0(?:\.0)?\b", text)
+            ):
+                consumed.append(str(p.relative_to(directory)))
+        summary["gates"]["B"] = (
+            bool(consumed) and structured["summary"]["new_candidates_evaluated"] >= 2
+        )
+        summary["reflection_failure_evidence"] = consumed
+        summary["gates"]["C"] = all(
+            s["summary"]["new_candidates_evaluated"] >= 2
+            and len(s["summary"]["train_tasks_observed"]) >= 3
+            and s["summary"]["best_complete_validation"]
+            for s in (basic, structured)
+        )
+        save()
+        if not all(summary["gates"].values()):
+            raise ValueError("Real semantic/search gates unproven; preserve evidence before Test")
+        prompts = {"baseline": seed, "basic": basic["best"], "structured": structured["best"]}
+        write_json(
+            directory / "frozen_test_prompts.json",
+            {k: {"instruction": v, "sha256": digest(v)} for k, v in prompts.items()},
+        )
+        distinct = {}
+        for arm, text in prompts.items():
+            distinct.setdefault(digest(text), {"instruction": text, "arms": []})["arms"].append(arm)
+        summary["test_plan"] = {
+            "ids": list(splits.test),
+            "trials": config["trials"],
+            "unique_prompts": len(distinct),
+            "identical_arms_share_measurement": True,
+        }
+        save()
+        for task_id in splits.test:
+            for trial in range(config["trials"]):
+                client.trial_seed = config["seed"] + 10000 + trial
+                for entry in distinct.values():
+                    arm = entry["arms"][0]
+                    target = directory / "test" / f"{task_id}-{arm}-{trial + 1}"
+                    score, info, result, _, _ = client.task(
+                        entry["instruction"], task_id, "test", target
+                    )
+                    summary["test"].append(
+                        {
+                            "task_id": task_id,
+                            "trial": trial + 1,
+                            "seed": client.trial_seed,
+                            "arm": arm,
+                            "aliases": entry["arms"],
+                            "score": score,
+                            "termination_reason": info["termination_reason"],
+                            "trace": str(target.relative_to(directory)),
+                            "candidate_sha256": result["prompt_sha256"],
+                        }
+                    )
+                    save()
+        summary["status"] = "complete"
+    except Exception as exc:
+        summary.update(status="stopped", error_type=type(exc).__name__)
+        # Safe local diagnostics; no raw provider exception or secret-bearing config.
+        if isinstance(exc, ValueError):
+            summary["gate_error"] = str(exc)[:200]
+    finally:
+        save()
+        write_json(directory / "summary.json", summary)
+    return {
+        "status": summary["status"],
+        "artifacts": str(directory),
+        "requests": summary["budget"]["requests"],
+    }
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--config", required=True, type=Path)
+    parser.add_argument("--live", action="store_true")
+    args = parser.parse_args()
+    try:
+        result = run(load(args.config), live=args.live)
+    except Exception as exc:
+        print(json.dumps({"status": "stopped", "error_type": type(exc).__name__}))
+        return 2
+    print(json.dumps(result))
+    return 0 if result["status"] in {"complete", "offline_config_only"} else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

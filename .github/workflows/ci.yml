@@ -34,6 +34,6 @@ jobs:
       - run: git -C .cache/gepa-source sparse-checkout set src
       - run: git -C .cache/gepa-source checkout 8c7b697a71977980afc7537dac0881e784eef99f
       - run: uv sync --project environments/gepa --frozen
-      - run: uv run --project environments/gepa --offline --frozen python -m pytest tests/integration/test_gepa.py tests/integration/test_sprint_gepa.py -q
+      - run: uv run --project environments/gepa --offline --frozen python -m pytest tests/integration/test_gepa.py tests/integration/test_sprint_gepa.py tests/integration/test_semantic_search.py -q
         env:
           AGENT_EVOLVE_GEPA_TESTS: "1"

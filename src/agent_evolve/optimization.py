@@ -302,6 +302,18 @@ def optimize_live(client, phase, seed, splits):
     from agent_evolve.experiment import LiveEvaluator, QwenReflection
     from agent_evolve.live_runtime import PHASE_LIMITS, StageBudget
 
+    settings = getattr(client, "config", {}).get("search", {})
+    max_evals = settings.get("max_evals", 8)
+    batch_size = settings.get("minibatch", 1)
+    proposals = settings.get("max_proposals", 2)
+    reflection_options = {
+        "reflection_lm": None,
+        "reflection_minibatch_size": batch_size,
+        "skip_perfect_score": False,
+    }
+    if hasattr(client, "sampler"):
+        reflection_options["batch_sampler"] = client.sampler(phase)
+
     if phase not in {"basic", "structured"}:
         raise ValueError("Invalid search phase")
     directory = client.directory / phase
@@ -310,13 +322,19 @@ def optimize_live(client, phase, seed, splits):
     ledger.candidate(seed)
     evaluator = LiveEvaluator(client, phase, ledger, splits)
     reflection = QwenReflection(client, phase, directory)
+    reflection_options["reflection_lm"] = reflection
 
     def stop(state):
         budget = client.budget.read()
         return (
-            8 - ledger.attempts < 4
+            max_evals - ledger.attempts < 2 * batch_size + len(splits.validation)
             or budget["stopped"] is not None
-            or PHASE_LIMITS[phase] - budget["phases"][phase] < 24
+            or min(
+                budget["limit"] - budget["requests"],
+                budget.get("phase_limits", PHASE_LIMITS)[phase] - budget["phases"][phase],
+            )
+            < budget.get("task_calls", 24)
+            * (2 * batch_size + len(splits.validation) if settings else 1)
         )
 
     try:
@@ -329,7 +347,7 @@ def optimize_live(client, phase, seed, splits):
             objective="Optimize Agent Instructions; respect fixed Policy, tools and scoring.",
             config=OptimizeAnythingConfig(
                 engine="gepa",
-                max_evals=8,
+                max_evals=max_evals,
                 max_concurrency=1,
                 name=phase,
                 output_dir=directory / "gepa",
@@ -341,14 +359,10 @@ def optimize_live(client, phase, seed, splits):
                         "use_cloudpickle": False,
                         "raise_on_exception": True,
                         "cache_evaluation": False,
-                        "max_candidate_proposals": 2,
+                        "max_candidate_proposals": proposals,
                         "acceptance_criterion": "strict_improvement",
                     },
-                    "reflection": {
-                        "reflection_lm": reflection,
-                        "reflection_minibatch_size": 1,
-                        "skip_perfect_score": False,
-                    },
+                    "reflection": reflection_options,
                     "stop_callbacks": [stop],
                 },
             ),
@@ -366,7 +380,7 @@ def optimize_live(client, phase, seed, splits):
         )
     if client.budget.read()["stopped"]:
         raise ProviderError("Shared budget stopped")
-    if len(result.val_subscores[result.best_idx]) != 2:
+    if len(result.val_subscores[result.best_idx]) != len(splits.validation):
         raise ValueError("Best candidate does not have complete validation")
     export_result(result, directory)
     events = [

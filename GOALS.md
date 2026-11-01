@@ -7,6 +7,12 @@ the execution log and reports describe actual progress.
 
 ## Current outcome: M3-B2 / M4-B / M5 exploratory sprint
 
+Active Goal update: the user now authorizes semantic feedback and a new bounded
+study under5000 shared requests/RMB50 estimated threshold,64Steps/task. This
+supersedes the old stop below only for the new config/run. See plan009; preserve
+the old sprint as historical evidence. Completion requires real gatesA/B/C and
+subsequent independent Test, not just engineering tests or a positive score.
+
 The explicitly approved `core-sprint-001` is complete and stopped. Real Qwen
 Agent/User/Reflection calls exercised pinned GEPA and official Retail scoring.
 Both search arms proposed and evaluated one new instruction, rejected its tied

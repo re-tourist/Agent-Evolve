@@ -36,10 +36,11 @@ class CallLimit(ProviderError):
 class Calls:
     """Serial total-call guard for Agent and Simulator; no retry after any fault."""
 
-    def __init__(self, completion, key, path, *, limit=24, seconds=600):
+    def __init__(self, completion, key, path, *, limit=24, seconds=600, max_tokens=1024):
         self.completion, self.key, self.path = completion, key, path
         self.limit, self.deadline = limit, time.monotonic() + seconds
         self.count, self.failed = 0, False
+        self.max_tokens = max_tokens
 
     def __call__(self, **kwargs):
         if self.failed or self.count >= self.limit or time.monotonic() >= self.deadline:
@@ -57,7 +58,7 @@ class Calls:
             timeout=30,
             num_retries=0,
             max_retries=0,
-            max_tokens=1024,
+            max_tokens=self.max_tokens,
             temperature=0,
             extra_body={"enable_thinking": False},
             caching=False,
@@ -114,13 +115,14 @@ def run(run_id, *, live=False, approved=False):
     return execute_task(config, live=live, approved=approved)
 
 
-def execute_task(config, *, live=False, approved=False, call_context=None):
+def execute_task(config, *, live=False, approved=False, call_context=None, runtime_limits=None):
     """Reusable official one-task execution; caller supplies only a bounded call context."""
     if live and not approved:
         raise LiveNotApprovedError("Explicit Live authorization required")
     if config.backend != "tau" or len(config.task_ids) != 1:
         raise ValueError("One official Retail task required")
     task_id = config.task_ids[0]
+    runtime_limits = runtime_limits or {}
     with deny_network():
         from agent_evolve.tau_backend import TauBackend, build_live_components
 
@@ -143,6 +145,9 @@ def execute_task(config, *, live=False, approved=False, call_context=None):
     directory.mkdir(parents=True, exist_ok=False)
     write_json(directory / "config.json", asdict(config))
     write_json(directory / "prompt.json", prompt.record())
+    write_json(
+        directory / "tools.json", [t.openai_schema for t in orchestrator.environment.get_tools()]
+    )
     write_json(directory / "task.json", task)
     write_json(
         directory / "metadata.json",
@@ -166,10 +171,10 @@ def execute_task(config, *, live=False, approved=False, call_context=None):
             "judge": "none",
             "reflection": "not invoked",
             "limits": {
-                "calls": 24,
-                "steps": 32,
+                "calls": runtime_limits.get("calls", 24),
+                "steps": config.max_steps,
                 "request_seconds": 30,
-                "admission_seconds": 600,
+                "admission_seconds": runtime_limits.get("seconds", 600),
                 "output_tokens_per_call": 1024,
             },
         },

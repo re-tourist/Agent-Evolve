@@ -87,17 +87,26 @@ class Budget:
         self.path = Path(filename)
 
     @classmethod
-    def create(cls, filename):
+    def create(cls, filename, *, limit=400, cost_limit_rmb=30, phase_limits=None, task_calls=24):
+        if not 1 <= limit <= 5000 or not 0 < cost_limit_rmb <= 50 or not 1 <= task_calls <= 64:
+            raise ValueError("Budget exceeds approved bounds")
+        phase_limits = dict(PHASE_LIMITS if phase_limits is None else phase_limits)
+        if not phase_limits or any(
+            type(v) is not int or not 1 <= v <= limit for v in phase_limits.values()
+        ):
+            raise ValueError("Invalid phase limits")
         write_json(
             Path(filename),
             {
-                "limit": 400,
-                "cost_limit_rmb": 30,
+                "limit": limit,
+                "cost_limit_rmb": cost_limit_rmb,
+                "phase_limits": phase_limits,
+                "task_calls": task_calls,
                 "requests": 0,
                 "cost_rmb": 0.0,
                 "input_tokens": 0,
                 "output_tokens": 0,
-                "phases": dict.fromkeys(PHASE_LIMITS, 0),
+                "phases": dict.fromkeys(phase_limits, 0),
                 "stopped": None,
                 "pending": None,
             },
@@ -121,7 +130,10 @@ class Budget:
         state = self.read()
         if state["stopped"] or state["pending"]:
             raise ProviderError("Global budget is stopped or unresolved")
-        if min(400 - state["requests"], PHASE_LIMITS[phase] - state["phases"][phase]) < 24:
+        if min(
+            state["limit"] - state["requests"],
+            state.get("phase_limits", PHASE_LIMITS)[phase] - state["phases"][phase],
+        ) < state.get("task_calls", 24):
             raise StageBudget("Insufficient whole-task admission reserve")
 
     def begin(self, phase, role, association):
@@ -129,13 +141,13 @@ class Budget:
         if (
             state["stopped"]
             or state["pending"]
-            or state["requests"] >= 400
-            or state["cost_rmb"] >= 30
-            or role not in {"agent", "simulator", "reflection"}
+            or state["requests"] >= state["limit"]
+            or state["cost_rmb"] >= state["cost_limit_rmb"]
+            or role not in {"agent", "simulator", "reflection", "diagnostic"}
         ):
             self.stop("global_limit_or_invalid_role")
             raise ProviderError("Global request admission stopped")
-        if state["phases"][phase] >= PHASE_LIMITS[phase]:
+        if state["phases"][phase] >= state.get("phase_limits", PHASE_LIMITS)[phase]:
             raise StageBudget("Stage reserve exhausted")
         state["requests"] += 1
         state["phases"][phase] += 1
@@ -192,7 +204,18 @@ class Budget:
 
 
 @contextmanager
-def shared_calls(directory, key, budget_file, phase, association, *, reflection=False):
+def shared_calls(
+    directory,
+    key,
+    budget_file,
+    phase,
+    association,
+    *,
+    reflection=False,
+    limit=24,
+    seconds=600,
+    max_tokens=1024,
+):
     from tau2.agent import llm_agent
     from tau2.user import user_simulator
     from tau2.utils import llm_utils
@@ -244,7 +267,14 @@ def shared_calls(directory, key, budget_file, phase, association, *, reflection=
 
         return generate
 
-    calls = Calls(completion, key, Path(directory), limit=1 if reflection else 24)
+    calls = Calls(
+        completion,
+        key,
+        Path(directory),
+        limit=1 if reflection else limit,
+        seconds=seconds,
+        max_tokens=max_tokens,
+    )
     try:
         with (
             patch.object(llm_utils, "completion", calls),

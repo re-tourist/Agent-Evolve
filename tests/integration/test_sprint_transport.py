@@ -15,7 +15,8 @@ pytestmark = pytest.mark.skipif(
 )
 
 
-def test_reflection_worker_guarded_real_sdk_transport(tmp_path, monkeypatch):
+@pytest.mark.parametrize("kind", ["reflection", "diagnostic"])
+def test_reflection_worker_guarded_real_sdk_transport(tmp_path, monkeypatch, kind):
     budget = Budget.create(tmp_path / "budget.json")
     directory = tmp_path / "reflection"
     directory.mkdir()
@@ -66,7 +67,7 @@ def test_reflection_worker_guarded_real_sdk_transport(tmp_path, monkeypatch):
             monkeypatch.setenv("DASHSCOPE_BASE_URL", "https://offline.example/v1")
             worker(
                 {
-                    "kind": "reflection",
+                    "kind": kind,
                     "directory": str(directory),
                     "budget": str(budget.path),
                     "phase": "basic",

@@ -16,6 +16,12 @@ simulator errors, cancellations and budget exhaustion. Missing scores are not ze
 or silently dropped successes; report denominators, exclusions and retry policy.
 Mock runs establish interfaces only. Seed does not ensure hosted-model determinism.
 
+Official benchmark aggregation must retain upstream raw Reward and the full planned
+attempt denominator, including step/token-budget failures. Smoke-only normalized
+null/exclusion annotations describe engineering status; they must never silently
+remove real official failures or inflate benchmark success rates. Report infrastructure
+faults separately alongside the raw official outcome, with the denominator explicit.
+
 ## Provenance and artifacts
 Use a unique run ID and fresh output directory; never overwrite evidence. Record
 timestamp/timezone, project commit and dirty state, exact command, config/hash,

@@ -1,0 +1,226 @@
+{
+  "run_id": "qwen-task0-002",
+  "status": "task_success",
+  "termination_reason": "user_stop",
+  "raw_official_reward": 1.0,
+  "normalized_reward": 1.0,
+  "excluded_from_task_metrics": false,
+  "reward_breakdown": {
+    "DB": 1.0,
+    "NL_ASSERTION": 1.0
+  },
+  "db_check": {
+    "db_match": true,
+    "db_reward": 1.0
+  },
+  "action_checks": {
+    "count": 5,
+    "matched": 5
+  },
+  "model_calls": 10,
+  "returned": 10,
+  "usage": {
+    "prompt_tokens": 53736,
+    "completion_tokens": 1865,
+    "total_tokens": 55601
+  },
+  "by_role": {
+    "user": {
+      "calls": 3,
+      "input": 3392,
+      "output": 349
+    },
+    "assistant": {
+      "calls": 7,
+      "input": 50344,
+      "output": 1516
+    }
+  },
+  "estimated_rmb": 0.0467188,
+  "actual_bill": "unavailable",
+  "finish_reasons": [
+    {
+      "index": 1,
+      "reason": "stop"
+    },
+    {
+      "index": 2,
+      "reason": "tool_calls"
+    },
+    {
+      "index": 4,
+      "reason": "tool_calls"
+    },
+    {
+      "index": 6,
+      "reason": "tool_calls"
+    },
+    {
+      "index": 8,
+      "reason": "tool_calls"
+    },
+    {
+      "index": 10,
+      "reason": "stop"
+    },
+    {
+      "index": 11,
+      "reason": "stop"
+    },
+    {
+      "index": 12,
+      "reason": "tool_calls"
+    },
+    {
+      "index": 14,
+      "reason": "stop"
+    },
+    {
+      "index": 15,
+      "reason": "stop"
+    }
+  ],
+  "m4_feedback": {
+    "schema_version": 1,
+    "diagnostics": [
+      {
+        "type": "task_completion",
+        "certain": true,
+        "explanation": "A participant stopped; early termination or business completion cannot be inferred.",
+        "evidence": [
+          {
+            "pointer": "/termination_reason",
+            "value": "user_stop"
+          }
+        ]
+      }
+    ]
+  },
+  "wall_seconds": 70.5,
+  "simulation_seconds": 46.63700130000507,
+  "first_run_unchanged": true,
+  "csv_unchanged": true,
+  "created_utc": "2026-11-01T08:30:04.617330+00:00",
+  "classification": "real_api; exactly one new authorized trial",
+  "git_when_run": {
+    "commit": "d17e435ced6c8ca8f0763f4f85aa474a583357c6",
+    "dirty": true
+  },
+  "model": "qwen-plus-2025-12-01",
+  "region": "Beijing",
+  "limits": {
+    "calls": 24,
+    "steps": 32,
+    "request_seconds": 30,
+    "admission_seconds": 600,
+    "output_tokens_per_call": 1024
+  },
+  "process_timeout_seconds": 600,
+  "process_exit": 0,
+  "pricing_date": "2026-11-01",
+  "pricing_source": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+  "pricing_rmb_per_million": {
+    "input": 0.8,
+    "output": 2
+  },
+  "max_input_per_call": 9904,
+  "transition_step_indices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14
+  ],
+  "tool_names": [
+    "find_user_id_by_name_zip",
+    "get_order_details",
+    "get_product_details",
+    "get_product_details",
+    "exchange_delivered_order_items"
+  ],
+  "tool_errors": [
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "final_order_summary": {
+    "status": "exchange requested",
+    "exchange_items": [
+      "1151293680",
+      "4983901480"
+    ],
+    "exchange_new_items": [
+      "7706410293",
+      "7747408585"
+    ],
+    "exchange_price_difference": -16.63
+  },
+  "prompt_identical_to_first": true,
+  "task_identical_to_first": true,
+  "first_official_raw_reward_retained": 0.0,
+  "first_run_benchmark_exclusion_allowed": false,
+  "first_artifact_hashes": {
+    "0.json": "4925dd2ce6115de5a813c173bc2e63eb0ce4f6de8fb31e3311cd9614a1f09e2b",
+    "0.raw.json": "7307ec33612009a9f34192fc58f9991f5dde4280b98746bbdf6016f5a5fd4118",
+    "analysis.json": "0ec8e7e950503608a5d80d2f274280afa3dd8b233609a429e68147712b27e6cf",
+    "call-001.json": "7a04afea1459e42b3c3001c12e790f281ab68f9e5beeebaed00cab106470a988",
+    "call-002.json": "fd5b3f8d14d32e253a1960afb6dab4a45ea2df0c2f8e4628c297594be26e3d2a",
+    "call-003.json": "01a4747ba9158f84e705b80c63d0a81ca8489de4ade7bd53c2bbadcfaca00fcb",
+    "call-004.json": "52eebf5f944112b9ef7a30531ab5995c23cf143fcfb2309e6e9d0082cb0eb5a8",
+    "call-005.json": "087cedaf32627f2065869b4ea13e30101bcaab82f412cccac8764a502c1c8bc8",
+    "call-006.json": "acbe261376d1834eeb5bd2ed31c724b036375fd6c5512fdb9616adb5463659b9",
+    "call-007.json": "6e8baa128afc10b58e1eb4504f0401df5a0c5be763b6abfbc370d18cfeab3af8",
+    "call-008.json": "337b5ca525144fd9da254e6e5e1ff08648ee5b5e47c0f64c483394934a757e0c",
+    "config.json": "4138daff0899fcd402342acd32f4adaac1574c38df9fe0ce676e1168257f5bca",
+    "launch_result.json": "224145a36a5bffb13428303e5624e97a47804daa16ba1b043f9e5b747bcd44f3",
+    "metadata.json": "e735dff194d270f8df84fef142bd23a290f73dcd28469c035f1ab111bd16f466",
+    "prompt.json": "2d044912f75ee74e823f9549c62b8dd15698185599a3d3bae2664b8a5b4d58b4",
+    "structured_feedback.json": "dd6dd53e0e0654d5ddac6d57d63e22801818ec5d4cfb2b62c91860fd43200beb",
+    "summary.json": "35a240acfdad6959e44797a0176be73d937c0f3cd4f65ba6286a0ae3c3ed75aa",
+    "task.json": "b03a5800ff217b90dd355a564b72b6c2cd778ad42c65def9ee78a61c3a886b81"
+  },
+  "current_artifact_hashes": {
+    "0.json": "decdd2abea4c606e9df5f0e764eff2826d378b46cf0328f51762ee1947ca33f8",
+    "0.raw.json": "a9e3c2b36a0a8debb3f1253c316b4736904e0dd29a7cf49e4b7293224dc20302",
+    "analysis.json": "e4c3272d30f48be765212ba8e5b4fc8f1b72f382414298aed6236b62e06b8e85",
+    "call-001.json": "df4b461fd9f8171f0aaa4cd6afcaac4c0ec3656bf0b61c1773f5e6e4b368da83",
+    "call-002.json": "c0dba1fae324afb05e32cfe13d9608f0a667b639c3dde0fdc8ea4e11899dd742",
+    "call-003.json": "8135280b5abf27818d749668c74aae47cfd5de6f9075468e518e3b1112240af6",
+    "call-004.json": "a1a6f51cd8a2d96293d51dd4fbf84f4270eaba67a96a81343299ef73fd745e69",
+    "call-005.json": "dc8fa5f6f3a7138b225e52fcbb208e66d7fb254bbe8583d9e5e632c77350451b",
+    "call-006.json": "4bd896125fd4288897be35861c16e939b87f6681960e985a9ea380a13583af96",
+    "call-007.json": "1f09374faf88da289db8db79646577278990b33fa7ff4bc1294aac5bdcadd583",
+    "call-008.json": "90df6a99665c560f56fbd730102d685e6116e674ae232134bcda9e0906b55adc",
+    "call-009.json": "b8e1a779877b8967a5123a9ede9debc716754d0b8acc8c8378d7c48710d015d8",
+    "call-010.json": "867d6bbafc8eef83dfa7c8a5988a0efa016222bfdc7e09f2ebd8f98d224555aa",
+    "config.json": "2f8c439b7463a93d0fe995c1baf565fa4f663a4ae13695b9e2efd7456d90398b",
+    "final_state.json": "8e0c93f6868daee70d71e271bb790a77353e55b13a5ea0e38a82d8c7a8083461",
+    "launch_result.json": "8472518e5dd51c6fdfea27479985243c4c5f29b821c0e4d68bf474a0b784f788",
+    "metadata.json": "0938ed1ee5f7bc28fad4483df142c69f68864d18b4bc08a4fecaa16fc2d9ea95",
+    "prompt.json": "2d044912f75ee74e823f9549c62b8dd15698185599a3d3bae2664b8a5b4d58b4",
+    "structured_feedback.json": "1e2011735feb4dea8dae30403140377f49976381c6acd25369e5229a9dc24462",
+    "summary.json": "292ed1206ddc28d323a93f6b0256d849586374ca76e400644cd831e5be55edff",
+    "task.json": "b03a5800ff217b90dd355a564b72b6c2cd778ad42c65def9ee78a61c3a886b81"
+  },
+  "current_source_hashes": {
+    "src/agent_evolve/qwen_smoke.py": "1a3b0d9080b0e544f1bbc01e9ffba946967a9d8cfeadd0b11344ec3c46a12d19",
+    "src/agent_evolve/tau_backend.py": "19d29af1963288a72234952051cd8f8818a3715d9d5f03407df0208288835188",
+    "src/agent_evolve/feedback.py": "e9be63ae5114a2422f1a602dc4dea4fb93ee64dbb07ea3271f737d61dcb91865",
+    ".cache/qwen_csv_check.py": "da6a65258a33422a81527287a3023c48a418c1743ac848958875af2a6de911ab",
+    ".cache/qwen_b12_once.py": "29c3c27539aab5c7ce11eade13f1829246c7454b7024cfe5874c2995b0afd062"
+  },
+  "no_third_task": true,
+  "no_gepa": true
+}

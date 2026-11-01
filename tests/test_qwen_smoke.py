@@ -23,7 +23,7 @@ def test_call_forwarding_limit_and_secret_free_logs(tmp_path):
     assert seen[0]["extra_body"] == {"enable_thinking": False}
     assert seen[0]["api_key"] == "SECRET_SENTINEL"
     assert seen[0]["num_retries"] == seen[0]["max_retries"] == 0
-    assert seen[0]["timeout"] == 30 and seen[0]["max_tokens"] == 512
+    assert seen[0]["timeout"] == 30 and seen[0]["max_tokens"] == 1024
     with pytest.raises(CallLimit):
         calls(model=MODEL)
     assert "SECRET_SENTINEL" not in (tmp_path / "call-001.json").read_text()

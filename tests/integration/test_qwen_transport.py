@@ -78,7 +78,7 @@ def test_litellm_qwen_wire_with_local_transport(tmp_path):
             )
         assert requests[0]["enable_thinking"] is False
         assert requests[0]["model"] == "qwen-plus-2025-12-01"
-        assert requests[0]["max_tokens"] == 512
+        assert requests[0]["max_tokens"] == 1024
         assert response.choices[0].message.tool_calls[0].function.name == "inspect"
 
 
@@ -152,6 +152,9 @@ def test_prepared_entry_with_scripted_provider_only(tmp_path, monkeypatch):
     assert not errors
     assert result["status"] == "task_failure"
     assert normalized["official_task_reward"] == 0.0
+    assert normalized["official_raw_reward"] == 0.0
+    assert json.loads((directory / "config.json").read_text())["max_steps"] == 32
+    assert json.loads((directory / "final_state.json").read_text())["orders"]
     assert normalized["provider_cost"] == {"agent": None, "user": None}
     assert 1 <= normalized["model_calls"] <= 24
     assert normalized["messages"] and (directory / "0.raw.json").exists()

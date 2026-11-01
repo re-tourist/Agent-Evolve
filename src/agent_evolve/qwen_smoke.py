@@ -36,7 +36,7 @@ class CallLimit(ProviderError):
 class Calls:
     """Serial total-call guard for Agent and Simulator; no retry after any fault."""
 
-    def __init__(self, completion, key, path, *, limit=24, seconds=180):
+    def __init__(self, completion, key, path, *, limit=24, seconds=600):
         self.completion, self.key, self.path = completion, key, path
         self.limit, self.deadline = limit, time.monotonic() + seconds
         self.count, self.failed = 0, False
@@ -57,7 +57,7 @@ class Calls:
             timeout=30,
             num_retries=0,
             max_retries=0,
-            max_tokens=512,
+            max_tokens=1024,
             temperature=0,
             extra_body={"enable_thinking": False},
             caching=False,
@@ -107,8 +107,9 @@ def run(run_id, *, live=False, approved=False):
         tau_checkout=str(ROOT / ".cache/tau2-source"),
         agent_model=MODEL,
         user_model=MODEL,
-        agent_args={"max_tokens": 512, "timeout": 30, "num_retries": 0, "temperature": 0},
-        user_args={"max_tokens": 512, "timeout": 30, "num_retries": 0, "temperature": 0},
+        max_steps=32,
+        agent_args={"max_tokens": 1024, "timeout": 30, "num_retries": 0, "temperature": 0},
+        user_args={"max_tokens": 1024, "timeout": 30, "num_retries": 0, "temperature": 0},
     )
     with deny_network():
         from agent_evolve.tau_backend import TauBackend, build_live_components
@@ -153,16 +154,17 @@ def run(run_id, *, live=False, approved=False):
             "reflection": "not invoked",
             "limits": {
                 "calls": 24,
-                "steps": 12,
+                "steps": 32,
                 "request_seconds": 30,
-                "admission_seconds": 180,
-                "output_tokens_per_call": 512,
+                "admission_seconds": 600,
+                "output_tokens_per_call": 1024,
             },
         },
     )
     from tau2.runner import run_simulation
 
     with qwen_calls(directory, key) as calls:
+        raw = {}
         try:
             raw = run_simulation(orchestrator).model_dump(mode="json")
             write_json(directory / "0.raw.json", raw)
@@ -178,17 +180,39 @@ def run(run_id, *, live=False, approved=False):
             result["error"] = {"type": type(exc).__name__, "message": "Details withheld"}
         result.update(
             mode="real_api",
+            official_raw_reward=(raw.get("reward_info") or {}).get("reward"),
             model_calls=calls.count,
             reward_source="official_evaluator"
             if result["official_task_reward"] is not None
             else "unavailable",
         )
         write_json(directory / "0.json", result)
+        # Observed order IDs only; no hidden target or whole-dataset DB export.
+        order_ids = {
+            call.get("arguments", {}).get("order_id")
+            for message in raw.get("messages", [])
+            for call in message.get("tool_calls") or []
+        }
+        write_json(
+            directory / "final_state.json",
+            {
+                "orders": {
+                    order_id: orchestrator.environment.tools.db.orders[order_id].model_dump(
+                        mode="json"
+                    )
+                    for order_id in sorted(order_ids - {None})
+                    if order_id in orchestrator.environment.tools.db.orders
+                },
+                "source": "actual environment after run; observed order IDs only",
+            },
+        )
         write_json(
             directory / "summary.json",
             {
                 "status": result["status"],
                 "model_calls": calls.count,
+                "official_raw_reward": result["official_raw_reward"],
+                "metric_note": "Smoke annotations never exclude official failures from benchmarks",
                 "benchmark_performance_claim": False,
             },
         )

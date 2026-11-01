@@ -5,9 +5,9 @@ Evaluation-driven experiments for LLM Agents. 当前唯一正式子项目为 **G
 
 **Status / 当前状态**：M4-A offline trace diagnostics. 保留 M3-A 离线 GEPA 闭环，
 新增可选结构化反馈：工具错误、参数异常、结束状态和不确定失败，附 Trace 位置。
-官方 Reward 不变；首次真实 Qwen 单任务已执行：8 次调用正常返回，因 12 Steps 上限
-终止（原始 Reward 0、归一化 null/excluded）。完整模型基线/反思及 Prompt 效果尚未验证。
-见 [M3-B1 实验记录](docs/experiments/M3B1_QWEN_TASK0_001.md)，未自动重试或执行真实 GEPA。
+官方 Reward 不变；第二次获批 Qwen 单任务已正常 user_stop，官方 Reward=1，10 次调用。
+第一次因人工 Step 上限截断的官方 Reward=0 完整保留。真实 GEPA 与 Prompt 优化效果未验证。
+见 [M3-B1.2 实验记录](docs/experiments/M3B12_QWEN_TASK0_002.md)，未执行第三次或真实 GEPA。
 说明与示例见 [M4 feedback](docs/M4_FEEDBACK.md)。
 单任务真实测试准备：新增默认离线的 Qwen 入口，执行前仍需用户明确批准；
 见 [Qwen Task 0 方案与命令](docs/experiments/QWEN_SINGLE_TASK_PROPOSAL.md)。
@@ -21,7 +21,7 @@ uv run --offline --frozen python -m agent_evolve.baseline --config examples/m2/m
 
 GEPA 独立环境及离线优化入口见 [M3 runbook](docs/M3_RUNBOOK.md)。默认仅使用
 确定性反思替身，不表示已在真实 LLM 上取得提升。真实 GEPA 优化尚未执行；
-M3-B1 仅有上述一次受 Step 上限截断的单任务记录。
+M3-B1.2 已有一次正常终止的单任务记录，等待 M3-B2 单独审查。
 
 ## Quick start / 本地启动
 Use Python 3.12 and uv 0.9.5. If uv is absent, install it locally in PowerShell:
@@ -53,7 +53,7 @@ only; no key is needed for M1, M2-A or M3-A.
 | Stage | Scope | State |
 |---|---|---|
 | M1 | Repository Foundation & Codex Governance | See validation evidence |
-| M2 | τ-bench Baseline & Trace | Offline verified; first Live attempt hit step limit |
+| M2 | τ-bench Baseline & Trace | Task 0 Live smoke normal stop / official Reward 1 |
 | M3 | GEPA Optimization Loop | M3-A offline; real API loop not approved |
 | M4 | Trace-grounded Structured Feedback | M4-A offline; real-trace validation/comparison pending |
 | M5 | Controlled Experiments & Portfolio Release | Planned |

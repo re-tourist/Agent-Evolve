@@ -4,6 +4,7 @@ import argparse
 import json
 import os
 import re
+import shutil
 from collections import Counter
 from pathlib import Path
 
@@ -53,14 +54,16 @@ def algorithm_evidence(directory):
                 task_id in config["train"]
                 and entry["reward"] == 0
                 and episode.get("protocol") == "reviewed-en-text"
-                and episode.get("source_run_id") == config["run_id"]
+                and episode.get("source_run_id")
+                in {config["run_id"], Path(config.get("baseline_source_run", ".")).name}
             ):
                 trace = read(directory / episode["trace"])
                 if (trace.get("reward_info") or {}).get("reward") != 0:
                     raise ValueError("Historical Episode lacks actual official failure")
                 events.append(
                     (
-                        directory / "baseline" / task_id / "semantic/analysis.json",
+                        directory
+                        / entry.get("analysis_path", f"baseline/{task_id}/semantic/analysis.json"),
                         {
                             "score": 0,
                             "status": "historical_training_episode",
@@ -145,6 +148,10 @@ def load(filename):
     if config.get("budget_predecessor"):
         config["budget_predecessor"] = str(
             (filename.parent / config["budget_predecessor"]).resolve()
+        )
+    if config.get("baseline_source_run"):
+        config["baseline_source_run"] = str(
+            (filename.parent / config["baseline_source_run"]).resolve()
         )
     if config.get("tau_protocol", "registry") not in {"registry", "reviewed-en-text"}:
         raise ValueError("Unknown tau protocol")
@@ -356,6 +363,25 @@ def run(config, *, live=False, resume=False):
 
     verify_gepa(config["gepa_checkout"])
     key, endpoint = credentials(config["credentials_dir"])
+    source_run = Path(config["baseline_source_run"]) if config.get("baseline_source_run") else None
+    if source_run is not None:
+        original_config = read(source_run / "config.json")
+        expected = dict(
+            original_config,
+            run_id=config["run_id"],
+            budget_predecessor=config["budget_predecessor"],
+            baseline_source_run=str(source_run),
+        )
+        if (
+            original_config.get("baseline_source_run")
+            or config != expected
+            or config.get("tau_protocol") != "reviewed-en-text"
+            or Path(config["budget_predecessor"]) != source_run / "budget.json"
+            or read(source_run / "budget.json")["stopped"] != "InternalServerError"
+            or read(source_run / "summary.json")["search"]
+            or read(source_run / "summary.json")["test"]
+        ):
+            raise ValueError("Only one same-config reviewed baseline reschedule is allowed")
     directory = Path(config["output_dir"]) / config["run_id"]
     if resume:
         previous = read(directory / "summary.json")
@@ -465,7 +491,7 @@ def run(config, *, live=False, resume=False):
         )
 
     try:
-        if config.get("tau_protocol") == "reviewed-en-text" and not resume:
+        if config.get("tau_protocol") == "reviewed-en-text" and not resume and source_run is None:
             for task_id in ("13", "20", "25", "31"):
                 source = ROOT / "runs/semantic/semantic-study-002/baseline" / task_id / "task"
                 target = directory / "development" / task_id
@@ -492,11 +518,31 @@ def run(config, *, live=False, resume=False):
             save()
         for task_id in splits.train:
             target = directory / "baseline" / task_id
-            if resume and target.exists():
+            reused = False
+            if source_run is not None:
+                source = source_run / "baseline" / task_id
+                raw_file = source / "task" / f"{task_id}.raw.json"
+                if raw_file.exists():
+                    shutil.copytree(source, target)
+                    write_json(
+                        target / "reused_episode.json",
+                        {
+                            "source_run": str(source_run),
+                            "source_task": task_id,
+                            "raw_sha256": digest(raw_file.read_text(encoding="utf-8")),
+                            "task_reexecuted": False,
+                        },
+                    )
+                    reused = True
+            if reused or (resume and target.exists()):
                 score, info, result, prompt, _ = client.read_task(seed, task_id, "baseline", target)
             else:
                 score, info, result, prompt, _ = client.task(seed, task_id, "baseline", target)
-            if (target / "semantic/analysis.json").exists():
+            if reused and score < 1:
+                diagnostic = client.semantic_feedback(
+                    result, prompt, target, {"id": task_id, "split": "train"}
+                )
+            elif (target / "semantic/analysis.json").exists():
                 diagnostic = read(target / "semantic/analysis.json")
             else:
                 diagnostic = client.semantic_feedback(
@@ -506,11 +552,15 @@ def run(config, *, live=False, resume=False):
                 "reward": score,
                 "termination_reason": info["termination_reason"],
                 "diagnostic": diagnostic,
+                "analysis_path": str(
+                    Path(diagnostic["evidence_source"]).with_name("analysis.json")
+                ),
                 "episode": {
                     "protocol": config.get("tau_protocol", "registry"),
                     "trace": str((target / "task" / f"{task_id}.raw.json").relative_to(directory)),
                     "prompt_sha256": result["prompt_sha256"],
-                    "source_run_id": config["run_id"],
+                    "source_run_id": source_run.name if reused else config["run_id"],
+                    "selection_run_id": config["run_id"],
                 },
             }
             summary["baseline"].append({"task_id": task_id, **client.pool[task_id]})

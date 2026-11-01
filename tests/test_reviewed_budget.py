@@ -75,3 +75,76 @@ def test_buffered_request_reserve_does_not_rewrite_prior_occupancy(tmp_path):
         event, response={"usage": {"prompt_tokens": 11, "completion_tokens": 1}}, input_estimate=10
     )
     assert budget.read()["stopped"] == "input_estimate_insufficient"
+
+
+def test_reschedule_reuses_completed_episode_without_task_or_counter_reset(tmp_path, monkeypatch):
+    from agent_evolve import optimization, study
+    from agent_evolve.baseline import digest, write_json
+
+    source = tmp_path / "old"
+    source.mkdir()
+    seed = tmp_path / "seed.txt"
+    seed.write_text("seed", encoding="utf-8")
+    config = {
+        "gepa_checkout": "unused",
+        "credentials_dir": "unused",
+        "output_dir": str(tmp_path),
+        "run_id": "old",
+        "tau_protocol": "reviewed-en-text",
+        "budget_predecessor": str(tmp_path / "prior.json"),
+        "request_limit": 5000,
+        "cost_limit_rmb": 50,
+        "task_limits": {"calls": 48},
+        "seed_file": str(seed),
+        "seed": 42,
+        "train": ["1"],
+        "validation": ["2"],
+        "test": ["3"],
+    }
+    write_json(source / "config.json", config)
+    write_json(source / "summary.json", {"search": {}, "test": []})
+    old = Budget.create(
+        source / "budget.json", limit=5000, cost_limit_rmb=50, phase_limits={"baseline": 5000}
+    )
+    state = old.read()
+    state.update(requests=998, cost_rmb=24.33, stopped="InternalServerError")
+    old.save(state)
+    prior = old.path.read_bytes()
+    task = source / "baseline/1/task"
+    task.mkdir(parents=True)
+    write_json(task / "1.raw.json", {"reward_info": {"reward": 0}})
+    calls = []
+
+    class Client(study.StudyClient):
+        def task(self, *args):
+            pytest.fail("Completed task must not be executed again")
+
+        def read_task(self, *args):
+            calls.append("read")
+            return 0, {"termination_reason": "user_stop"}, {"prompt_sha256": digest("seed")}, {}, {}
+
+        def semantic_feedback(self, result, prompt, directory, example):
+            calls.append("diagnostic")
+            return {
+                "diagnostics": [],
+                "candidate_sha256": digest("seed"),
+                "evidence_source": "baseline/1/semantic-recovery/observable.json",
+            }
+
+    monkeypatch.setattr(optimization, "verify_gepa", lambda _: None)
+    monkeypatch.setattr(study, "credentials", lambda _: ("fixture", "https://offline.invalid"))
+    monkeypatch.setattr(study, "StudyClient", Client)
+
+    def stop_before_search(*args):
+        raise ValueError("Synthetic stop before any search")
+
+    monkeypatch.setattr(study, "run_search", stop_before_search)
+    config.update(run_id="new", budget_predecessor=str(old.path), baseline_source_run=str(source))
+    result = study.run(config, live=True)
+    assert result["status"] == "stopped" and calls == ["read", "diagnostic"]
+    assert Budget(tmp_path / "new/budget.json").read()["requests"] == 998
+    assert old.path.read_bytes() == prior
+    assert (tmp_path / "new/baseline/1/reused_episode.json").exists()
+    config["seed"] = 43
+    with pytest.raises(ValueError, match="same-config"):
+        study.run(config, live=True)

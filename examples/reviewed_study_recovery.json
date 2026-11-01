@@ -1,0 +1,70 @@
+{
+  "study": "semantic-v1",
+  "run_id": "reviewed-study-002",
+  "output_dir": "../runs/semantic",
+  "credentials_dir": "../docs/ali",
+  "gepa_checkout": "../.cache/gepa-source",
+  "tau_python": "../environments/tau/.venv/Scripts/python.exe",
+  "seed_file": "m2/instruction.txt",
+  "seed": 42,
+  "train": [
+    "25",
+    "13",
+    "26",
+    "58",
+    "56",
+    "66",
+    "8",
+    "71",
+    "14",
+    "17",
+    "86",
+    "30",
+    "11",
+    "85",
+    "32",
+    "6",
+    "23",
+    "52"
+  ],
+  "validation": [
+    "22",
+    "50",
+    "112",
+    "74",
+    "18",
+    "64"
+  ],
+  "test": [
+    "102",
+    "49",
+    "80",
+    "42",
+    "65",
+    "79",
+    "83",
+    "97",
+    "53",
+    "78"
+  ],
+  "request_limit": 5000,
+  "cost_limit_rmb": 50,
+  "task_limits": {
+    "steps": 64,
+    "calls": 48,
+    "seconds": 900
+  },
+  "search": {
+    "max_evals": 60,
+    "minibatch": 3,
+    "max_proposals": 6
+  },
+  "diagnostic_tokens": 3072,
+  "reflection_tokens": 2048,
+  "analysis_request_seconds": 90,
+  "trials": 2,
+  "tau_protocol": "reviewed-en-text",
+  "budget_predecessor": "../runs/semantic/reviewed-study-001/budget.json",
+  "validation_trials": 2,
+  "baseline_source_run": "../runs/semantic/reviewed-study-001"
+}

@@ -88,3 +88,14 @@ fromtools=None in estimator found by local transport test, fixed; rerun1 passed.
 No observed Live fault from that local issue. Relevant unit19/6 and transport6
 passed before that correction; final CI still required. Do not count incomplete
 search or Test as complete while the root process is live.
+
+reviewed-study-001 then exited1 on request998: Simulator Task32 returned HTTP500
+twice, bounded request retry exhausted.14 completed tasks retained (6 official1,
+8 official0); Task32 unscored with partial Trace. No search/Test. Ledger stopped
+at998/RMB24.3324536, all prior reserves intact. This is SDK500 evidence, not a
+proven permanent outage. New one-time same-config baseline reschedule implemented:
+new reviewed-study-002, inherit stopped998 ledger; copy/revalidate completed task
+artifacts without Agent rerun; revisit failed new-protocol diagnoses under final
+two-pass method. Original files/stops unchanged. Reject changed splits/seeds/model
+or repeated reschedule chains. Unit4 passed including no task/counter reset.
+This follows the Goal's bounded safe-rescheduling authorization; no larger budget.

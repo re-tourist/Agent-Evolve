@@ -32,5 +32,7 @@ for Milestones/missing Issues because the plugin has no Milestone tool and its
 Issue transport failed. No fallback draft is needed: all requested tracking objects
 exist. Full local foundation evidence: `validation/M1_VALIDATION.md`.
 
-The foundation is committed locally only. No automatic push, release, Issue closure
+Foundation source/evidence commit: `8094da4ec7df87d564322eeaac500051d3cf750b`
+(local only). The Issues record local acceptance evidence and remain open for
+publication/review. No automatic push, release, Issue closure
 or paid run was performed. M1 stays open for the owner's publication/review workflow.

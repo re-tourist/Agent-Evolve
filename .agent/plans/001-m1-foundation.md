@@ -20,7 +20,7 @@ offline checks, upstream source audit and GitHub tracking. No model calls or M2 
 - [x] Initialize Python 3.12, uv lock, pytest/ruff and offline CI.
 - [x] Verify pinned upstream source, interfaces, license and dependency risks.
 - [x] Reuse/create GitHub tracking: five Milestones and six M1 Issues exist.
-- [ ] Run checks, inspect diff, commit only audited M1 files; report limitations.
+- [x] Run checks, inspect diff, commit only audited M1 files; report limitations.
 
 ## Verification
 Run the narrow smoke test, then full pytest, ruff check/format, package import,
@@ -40,4 +40,9 @@ GEPA-full/τ-bench LiteLLM constraints are provably incompatible; two-environmen
 design documented, no upstream integration or model call executed. Source plan
 bytes preserved. GitHub tracking is open pending publication/review; no push or
 remote CI run claimed. Validation failures and their resolutions are retained.
-Final staged inspection and local commit remain the delivery step.
+Staged changes were inspected and committed locally as
+`8094da4ec7df87d564322eeaac500051d3cf750b`; git status was empty after that commit.
+Only original PROJECT_PLAN.md Markdown hard-break spaces triggered diff notices;
+all other staged whitespace checks passed. This closing record adds no code change.
+M1 local acceptance is complete; remote publication/CI/review remain unexecuted.
+Stop here. Next-stage preflight is documented but was not implemented.

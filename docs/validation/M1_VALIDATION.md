@@ -4,6 +4,9 @@ Date: 2026-11-01 (Asia/Shanghai). Mode: **engineering_check**.
 Benchmark runs: None / Not run. Mock Agent runs: None / Not run. Model API calls: 0.
 Project source baseline: `b09786e7ebff300426fe4ca28cb5a2e47b33f35b` + M1 working-tree
 changes. This record is committed with those changes; it cannot contain its own SHA.
+The foundation was subsequently committed as
+`8094da4ec7df87d564322eeaac500051d3cf750b`, with empty git status after commit.
+This final documentation-only closure records that result; no implementation changed.
 Environment: Windows 11 / AMD64, CPython 3.12.8, uv 0.9.5, pytest 8.4.2,
 ruff 0.14.14. No GPU check/training required or executed. Dataset/seed/models: N/A.
 Config: pyproject.toml + uv.lock; no evaluation config or model keys used.

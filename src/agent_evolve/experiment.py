@@ -33,6 +33,7 @@ def worker(job):
     import agent_evolve.qwen_smoke as qwen
 
     directory = Path(job["directory"])
+    write_json(directory / "worker_source.json", git_info())
     budget = Budget(job["budget"])
     qwen.BASE = os.environ["DASHSCOPE_BASE_URL"]
     key = os.environ["DASHSCOPE_API_KEY"]
@@ -53,7 +54,18 @@ def worker(job):
             token = ROLE.set(job["kind"])
             try:
                 messages = job["messages"]
+                if job["kind"] == "diagnostic":
+                    from agent_evolve.semantic import SYSTEM
+
+                    messages[0]["content"] = SYSTEM
+                    payload = json.loads(messages[1]["content"])
+                    for i, m in enumerate(payload["messages"]):
+                        m["trace_pointer"] = f"/messages/{i}"
+                    messages[1]["content"] = json.dumps(payload, ensure_ascii=False)
                 if isinstance(messages, str):
+                    from agent_evolve.semantic import without_unverified_advice
+
+                    messages = without_unverified_advice(messages)
                     messages = [
                         {
                             "role": "system",
@@ -64,6 +76,7 @@ def worker(job):
                         },
                         {"role": "user", "content": messages},
                     ]
+                write_json(directory / "effective_input.json", messages)
                 response = llm_utils.completion(model=MODEL, messages=messages)
                 text = response.choices[0].message.content
                 if not isinstance(text, str) or not text.strip():

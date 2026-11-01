@@ -72,7 +72,19 @@ def test_reflection_worker_guarded_real_sdk_transport(tmp_path, monkeypatch, kin
                     "budget": str(budget.path),
                     "phase": "basic",
                     "association": 1,
-                    "messages": [{"role": "user", "content": "fixture"}],
+                    "messages": (
+                        [
+                            {"role": "system", "content": "fixture"},
+                            {
+                                "role": "user",
+                                "content": json.dumps(
+                                    {"messages": [{"role": "user", "content": "fixture"}]}
+                                ),
+                            },
+                        ]
+                        if kind == "diagnostic"
+                        else [{"role": "user", "content": "fixture"}]
+                    ),
                 }
             )
     assert len(requests) == budget.read()["requests"] == 1

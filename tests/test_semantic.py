@@ -7,7 +7,7 @@ import pytest
 
 from agent_evolve.baseline import Config, ProviderError
 from agent_evolve.live_runtime import Budget
-from agent_evolve.semantic import observable_view, validate_analysis
+from agent_evolve.semantic import observable_view, validate_analysis, without_unverified_advice
 from agent_evolve.study import FailureSampler, load
 
 
@@ -46,6 +46,12 @@ def test_observable_allowlist_and_citations():
     assert not rejected["diagnostics"] and rejected["rejected"]
     diagnostic["category"] = "policy_violation"
     assert not validate_analysis(json.dumps({"diagnostics": [diagnostic]}), view)["diagnostics"]
+    rendered = (
+        "## diagnostics\nvalid observation\n## success_principles\nuncited advice\n## note\nend\n"
+    )
+    assert (
+        without_unverified_advice(rendered) == "## diagnostics\nvalid observation\n## note\nend\n"
+    )
 
 
 def test_authorized_64_steps_constructs_m2_config():

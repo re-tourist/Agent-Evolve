@@ -26,7 +26,12 @@ Reward1 does not prove Policy compliance. A changed simulator preference may exp
 a mismatch: distinguish Agent, Simulator, Environment and Unknown responsibility.
 Use complete visible conversation and tool values to identify concrete errors, not
 keyword matching. Include correct behavior and uncertainty; do not invent faults.
-Return JSON ONLY: {"diagnostics": [up to 5 objects], "success_principles": [strings]}.
+Use each message's trace_pointer field for its index; never renumber or omit tool
+messages when citing. Prefer short exact quotations (under120 characters), not
+reconstructed paragraphs. You may return zero diagnostics. Do not require a
+particular tool path or invent a Policy requirement. No success_principles/advice
+outside evidence-checked diagnostics is accepted.
+Return JSON ONLY: {"diagnostics": [up to 3 well-supported objects]}.
 Each diagnostic has category (one of CATEGORIES), observation, hypothesis (or null),
 certainty (observed/plausible/unknown), responsibility (Agent/Simulator/Environment/Unknown),
 impact, suggestion (general reusable prompt principle, no specific task answer/IDs),
@@ -169,9 +174,7 @@ def validate_analysis(text, view):
     return {
         "diagnostics": accepted,
         "rejected": rejected,
-        "success_principles": [
-            s for s in parsed.get("success_principles", []) if isinstance(s, str)
-        ][:3],
+        "success_principles": [],
         "note": "Citation validity is checked; semantic correctness and causal attribution "
         "require human review.",
     }
@@ -214,3 +217,17 @@ def deterministic_observations(result):
                 and bool(content.get("user_id"))
             )
     return observations
+
+
+def without_unverified_advice(text):
+    """Remove GEPA-rendered uncited free advice; preserve all validated diagnostics."""
+    lines, result, suppressed = text.splitlines(keepends=True), [], None
+    for line in lines:
+        heading = re.match(r"^(#{1,6})\s+(\w+)", line)
+        if heading and suppressed is not None and len(heading[1]) <= suppressed:
+            suppressed = None
+        if heading and heading[2] == "success_principles":
+            suppressed = len(heading[1])
+        if suppressed is None:
+            result.append(line)
+    return "".join(result)

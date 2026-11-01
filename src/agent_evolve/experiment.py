@@ -99,7 +99,14 @@ def worker(job):
                         {"role": "user", "content": messages},
                     ]
                 write_json(directory / "effective_input.json", messages)
-                response = llm_utils.completion(model=MODEL, messages=messages)
+                diagnostic_options = (
+                    {"response_format": {"type": "json_object"}}
+                    if job["kind"] == "diagnostic" and job.get("tau_protocol") == "reviewed-en-text"
+                    else {}
+                )
+                response = llm_utils.completion(
+                    model=MODEL, messages=messages, **diagnostic_options
+                )
                 text = response.choices[0].message.content
                 if not isinstance(text, str) or not text.strip():
                     raise ValueError("Empty real reflection output")
@@ -141,7 +148,9 @@ def worker(job):
                             },
                         ]
                         write_json(directory / "review_input.json", review)
-                        reviewed = llm_utils.completion(model=MODEL, messages=review)
+                        reviewed = llm_utils.completion(
+                            model=MODEL, messages=review, **diagnostic_options
+                        )
                         review_text = reviewed.choices[0].message.content
                         write_json(directory / "review_raw.json", {"text": review_text})
                         try:

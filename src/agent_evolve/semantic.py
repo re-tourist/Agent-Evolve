@@ -159,6 +159,9 @@ concrete decisions; zero interventions is preferable to speculative repairs.
 Intervention fields must contain NO customer/card/account fragments, numeric
 examples, trace message pointers or task-specific examples. Evidence locators and
 literal identifiers belong in evidence only, never in the reusable decision rule.
+For a message's text cite /messages/N/content, NOT the message object /messages/N.
+For structured tool content cite a specific leaf field. Copy short literal strings
+instead of reconstructing Python dictionaries or long JSON fragments.
 """
 )
 
@@ -276,6 +279,16 @@ def validate_analysis(text, view):
             for e in evidence:
                 value = at_pointer(view, e["pointer"])
                 quote = e["quote"]
+                if (
+                    re.fullmatch(r"/messages/\d+", e["pointer"])
+                    and isinstance(value, dict)
+                    and isinstance(value.get("content"), str)
+                    and isinstance(quote, str)
+                    and quote in value["content"]
+                ):
+                    # Exact existing content only: canonicalize an unambiguous locator.
+                    e["pointer"] += "/content"
+                    value = value["content"]
                 rendered = (
                     value if isinstance(value, str) else json.dumps(value, ensure_ascii=False)
                 )

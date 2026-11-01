@@ -24,6 +24,13 @@ No hidden reference actions, expected database or private task criteria are avai
 Different legal tool paths are valid. Reward0 alone proves no particular cause;
 Reward1 does not prove Policy compliance. A changed simulator preference may explain
 a mismatch: distinguish Agent, Simulator, Environment and Unknown responsibility.
+Pinned framework fact: a user message containing its STOP marker ends execution
+BEFORE another Agent turn. If the simulator confirms an action and emits STOP in
+that same message, the Agent cannot execute the next tool. Attribute the observed
+termination mechanism to Simulator/Environment, not a nonexistent later Agent
+decision. Do not propose changing the benchmark or bypassing user confirmation.
+Affirmative confirmation followed immediately by the specified action is compliant;
+do NOT invent a requirement to restate details and ask for confirmation repeatedly.
 Use complete visible conversation and tool values to identify concrete errors, not
 keyword matching. Include correct behavior and uncertainty; do not invent faults.
 Use each message's trace_pointer field for its index; never renumber or omit tool

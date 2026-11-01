@@ -103,6 +103,20 @@ def algorithm_evidence(directory):
                     e
                     for p, e in events
                     if e.get("status") == "scored"
+                    and (
+                        config.get("tau_protocol") != "reviewed-en-text"
+                        or (
+                            review.get("candidate_sha256") == e["candidate_sha256"]
+                            and review.get("candidate_rule_quote")
+                            and review.get("candidate_rule_analysis")
+                            and review["candidate_rule_quote"]
+                            in read(
+                                directory
+                                / "structured/candidates"
+                                / (e["candidate_sha256"] + ".json")
+                            )["instruction"]
+                        )
+                    )
                     and e["candidate_sha256"] != seed_sha
                     and e["candidate_sha256"] != event["candidate_sha256"]
                     and p.stat().st_mtime > output.stat().st_mtime

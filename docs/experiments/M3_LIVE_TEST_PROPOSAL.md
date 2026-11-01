@@ -1,5 +1,10 @@
 # M3-B layered Live proposal — NOT APPROVED / NOT RUN
 
+Update 2026-11-01: the first single-task provider choice is superseded by
+[Qwen Task 0 preparation](QWEN_SINGLE_TASK_PROPOSAL.md). Both require explicit
+approval; no real call has run. The historical DeepSeek assumptions below do not
+authorize any call or select a provider for future GEPA automatically.
+
 Prepared 2026-11-01 (Asia/Shanghai). Both M2 and M3 live gates remain closed.
 This document is neither authorization nor a switch. No provider key is required
 for M3-A. User and technical adviser must explicitly approve each layer separately.

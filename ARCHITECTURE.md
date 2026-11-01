@@ -37,6 +37,13 @@ hosted-model experiments. M2/M3 Live remain closed; no M4 feedback algorithm exi
 See `docs/M3_RUNBOOK.md` and `docs/M3_GEPA_AUDIT.md`.
 
 ## System boundaries and later-stage intent
+Single-task preparation adds `qwen_smoke.py`: reuse M2 official participant
+construction, runner and normalization; Beijing Qwen only, task 0 / one trial,
+24-call shared guard, 30s requests, no retries and environment-only credentials.
+Default is offline preflight. Separate explicit Live opt-in is prepared for later
+approval, never executed during preparation. Original baseline/optimizer gates
+remain closed. No provider framework or dependency upgrade is introduced.
+
 | Component | Responsibility | Ownership / interface intent |
 |---|---|---|
 | Agent | Candidate instructions + fixed domain Policy; tool interactions | Custom Agent/factory using official τ-bench API |

@@ -6,6 +6,11 @@ subproject is **GEPA × τ-bench: trace-grounded Prompt optimization for custome
 Agents**. PROJECT_PLAN.md v0.2 is the design baseline.
 
 ## Current scope: M3-A (offline GEPA integration)
+Update: M3-A complete; current work prepares one Qwen Task 0 smoke only, without
+executing it. See docs/experiments/QWEN_SINGLE_TASK_PROPOSAL.md. The dedicated
+entry defaults to offline; Live flags require subsequent explicit user approval.
+No GEPA Live optimization, M4 or M5 is authorized.
+
 Retain M1 and M2-A. Integrate pinned real GEPA core with the M2 official Reward/Trace
 adapter, candidate evidence, explicit train/validation/test boundaries, deterministic
 reflection and offline tests. No actual model API chain has been verified in M2/M3.

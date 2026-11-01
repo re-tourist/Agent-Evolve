@@ -6,6 +6,8 @@ Evaluation-driven experiments for LLM Agents. 当前唯一正式子项目为 **G
 **Status / 当前状态**：M3-A offline GEPA integration. 真实 GEPA 引擎已接入 M2
 脚本化 Retail Runner，保存候选、官方 Reward/Trace、反思替身 I/O 和结果。
 真实模型基线/反思及 Prompt 效果尚未验证；付费调用 0 次，Live 仍关闭。
+单任务真实测试准备：新增默认离线的 Qwen 入口，执行前仍需用户明确批准；
+见 [Qwen Task 0 方案与命令](docs/experiments/QWEN_SINGLE_TASK_PROPOSAL.md)。
 
 ```powershell
 uv run --offline --frozen python -m agent_evolve.baseline --config examples/m2/mock.json

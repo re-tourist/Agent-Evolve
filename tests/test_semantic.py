@@ -98,3 +98,50 @@ def test_failure_success_sampling_rotates_and_never_uses_test(tmp_path):
     assert (
         len(config["train"]) == 20 and len(config["validation"]) == 5 and len(config["test"]) == 10
     )
+
+
+def test_timeout_recovery_preserves_counter_and_never_reexecutes_task(tmp_path, monkeypatch):
+    from agent_evolve import optimization, study
+    from agent_evolve.baseline import write_json
+
+    config = load("examples/semantic_study.json")
+    config["output_dir"] = str(tmp_path)
+    directory = tmp_path / config["run_id"]
+    directory.mkdir()
+    old = {k: v for k, v in config.items() if k != "analysis_request_seconds"}
+    write_json(directory / "config.json", old)
+    write_json(directory / "summary.json", {"search": {}, "test": []})
+    budget = Budget.create(
+        directory / "budget.json",
+        limit=5000,
+        cost_limit_rmb=50,
+        phase_limits={"baseline": 5000},
+        task_calls=48,
+    )
+    event = budget.begin("baseline", "diagnostic", "fixture")
+    with pytest.raises(ProviderError):
+        budget.finish(event, error="Timeout")
+    (directory / "baseline" / config["train"][0]).mkdir(parents=True)
+    monkeypatch.setattr(optimization, "verify_gepa", lambda _: None)
+    monkeypatch.setattr(study, "credentials", lambda _: ("fixture-key", "https://offline.invalid"))
+    calls = []
+
+    class Client(study.StudyClient):
+        def read_task(self, candidate, task_id, phase, path):
+            calls.append(("read", task_id))
+            return 0, {"termination_reason": "user_stop"}, {}, {}, {}
+
+        def task(self, candidate, task_id, phase, path):
+            calls.append(("task", task_id))
+            raise RuntimeError("Fixture stops before next real task")
+
+        def semantic_feedback(self, *args):
+            return {"diagnostics": []}
+
+    monkeypatch.setattr(study, "StudyClient", Client)
+    result = study.run(config, live=True, resume=True)
+    assert result["status"] == "stopped"
+    assert calls[0] == ("read", config["train"][0])
+    assert ("task", config["train"][0]) not in calls
+    assert budget.read()["requests"] == 1 and budget.read()["unknown_usage_requests"] == 1
+    assert budget.read()["cost_rmb"] > 4.8

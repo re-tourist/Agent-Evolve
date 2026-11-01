@@ -215,6 +215,7 @@ def shared_calls(
     limit=24,
     seconds=600,
     max_tokens=1024,
+    request_seconds=30,
 ):
     from tau2.agent import llm_agent
     from tau2.user import user_simulator
@@ -274,6 +275,7 @@ def shared_calls(
         limit=1 if reflection else limit,
         seconds=seconds,
         max_tokens=max_tokens,
+        request_seconds=request_seconds,
     )
     try:
         with (

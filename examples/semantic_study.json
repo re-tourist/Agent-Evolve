@@ -16,5 +16,6 @@
   "search": {"max_evals": 40, "minibatch": 3, "max_proposals": 6},
   "diagnostic_tokens": 3072,
   "reflection_tokens": 2048,
+  "analysis_request_seconds": 90,
   "trials": 2
 }

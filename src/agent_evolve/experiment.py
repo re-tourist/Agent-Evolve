@@ -48,6 +48,7 @@ def worker(job):
             job["association"],
             reflection=True,
             max_tokens=job.get("max_tokens", 1024),
+            request_seconds=job.get("request_seconds", 30),
         ) as calls:
             token = ROLE.set(job["kind"])
             try:
@@ -118,6 +119,8 @@ class WorkerClient:
         directory.mkdir(parents=True, exist_ok=False)
         job["budget"] = str(self.budget.path)
         job["limits"] = self.config.get("task_limits", {})
+        if job["kind"] in {"reflection", "diagnostic"}:
+            job["request_seconds"] = self.config.get("analysis_request_seconds", 30)
         write_json(directory / "request.json", job)
         start = time.monotonic()
         try:
@@ -171,6 +174,10 @@ class WorkerClient:
                 "association": digest(candidate),
             }
         )
+        return self.read_task(candidate, task_id, phase, directory)
+
+    def read_task(self, candidate, task_id, phase, directory):
+        """Validate a completed worker artifact; never reexecute a task during recovery."""
         path = Path(directory) / "task"
 
         def read(name):

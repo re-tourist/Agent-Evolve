@@ -46,6 +46,8 @@ def load(filename):
         raise ValueError("Study configuration exceeds approved scope")
     if set(config["test"]) & {"0", "5", "8", "9", "10", "12"}:
         raise ValueError("Previously inspected tasks cannot be new Test")
+    if not 30 <= config.get("analysis_request_seconds", 30) <= 90:
+        raise ValueError("Analysis request timeout exceeds approved bounded recovery")
     for k in ("diagnostic_tokens", "reflection_tokens"):
         if not 256 <= config[k] <= 4096:
             raise ValueError("Invalid output limit")
@@ -122,6 +124,8 @@ class StudyClient(WorkerClient):
         tools = read(directory / "task/tools.json")
         view = observable_view(result, prompt["policy"], tools)
         target = directory / "semantic"
+        if target.exists():
+            target = directory / "semantic-recovery"
         # Only observable content enters hosted diagnosis. Raw output remains private.
         phase = (
             "baseline" if directory.is_relative_to(self.directory / "baseline") else "structured"
@@ -178,7 +182,7 @@ class StudyClient(WorkerClient):
         return analysis
 
 
-def run(config, *, live=False):
+def run(config, *, live=False, resume=False):
     if not live:
         return {"status": "offline_config_only", "real_calls": 0}
     from agent_evolve.optimization import verify_gepa
@@ -186,28 +190,85 @@ def run(config, *, live=False):
     verify_gepa(config["gepa_checkout"])
     key, endpoint = credentials(config["credentials_dir"])
     directory = Path(config["output_dir"]) / config["run_id"]
-    directory.mkdir(parents=True, exist_ok=False)
+    if resume:
+        previous = read(directory / "summary.json")
+        old_config = read(directory / "config.json")
+        if {k: v for k, v in config.items() if k != "analysis_request_seconds"} != old_config:
+            raise ValueError("Recovery may only extend the analysis request timeout")
+        budget = Budget(directory / "budget.json")
+        state = budget.read()
+        events = [
+            json.loads(line)
+            for line in budget.path.with_suffix(".jsonl").read_text(encoding="utf-8").splitlines()
+        ]
+        failures = [e for e in events if e["status"] == "error"]
+        if (
+            state["stopped"] != "Timeout"
+            or state["pending"] is not None
+            or len(failures) != 1
+            or failures[0]["role"] != "diagnostic"
+            or failures[0]["phase"] != "baseline"
+            or previous["search"]
+            or previous["test"]
+        ):
+            raise ValueError("Recovery is restricted to one baseline diagnostic timeout")
+        # Unknown Usage is NOT invented or erased. Reserve maximum context+output cost
+        # at the highest Beijing tier, rather than silently undercounting the bill.
+        reserve = 1_000_000 * 4.8 / 1_000_000 + old_config["diagnostic_tokens"] * 48 / 1_000_000
+        write_json(
+            directory / "recovery.json",
+            {
+                "kind": "one_bounded_diagnostic_recovery",
+                "source_git": git_info(),
+                "failed_request": failures[0]["request"],
+                "prior_requests": state["requests"],
+                "usage": "unavailable",
+                "unknown_cost_upper_bound_rmb": reserve,
+                "task_reexecuted": False,
+                "reason": "30s local analysis deadline inadequate; allow one attempt at90s",
+            },
+        )
+        write_json(directory / "config_revision_2.json", config)
+        state.update(
+            stopped=None,
+            cost_rmb=state["cost_rmb"] + reserve,
+            unknown_usage_requests=1,
+            unknown_cost_reserve_rmb=reserve,
+        )
+        budget.save(state)
+        budget.log(
+            {
+                "status": "recovery_reserve",
+                "request": failures[0]["request"],
+                "estimated_rmb": reserve,
+                "usage": "unavailable",
+            }
+        )
+    else:
+        directory.mkdir(parents=True, exist_ok=False)
     phases = {p: config["request_limit"] for p in ("baseline", "basic", "structured", "test")}
-    Budget.create(
-        directory / "budget.json",
-        limit=config["request_limit"],
-        cost_limit_rmb=config["cost_limit_rmb"],
-        phase_limits=phases,
-        task_calls=config["task_limits"]["calls"],
-    )
-    write_json(directory / "config.json", config)
-    write_json(
-        directory / "metadata.json",
-        {
-            "git": git_info(),
-            "tau_sha": TAU_SHA,
-            "model": MODEL,
-            "test_sent_to_gepa": False,
-            "judge": "none",
-        },
-    )
+    if not resume:
+        Budget.create(
+            directory / "budget.json",
+            limit=config["request_limit"],
+            cost_limit_rmb=config["cost_limit_rmb"],
+            phase_limits=phases,
+            task_calls=config["task_limits"]["calls"],
+        )
+        write_json(directory / "config.json", config)
+        write_json(
+            directory / "metadata.json",
+            {
+                "git": git_info(),
+                "tau_sha": TAU_SHA,
+                "model": MODEL,
+                "test_sent_to_gepa": False,
+                "judge": "none",
+            },
+        )
     seed = candidate_text(Path(config["seed_file"]).read_text(encoding="utf-8"))
-    write_json(directory / "seed_prompt.json", {"instruction": seed, "sha256": digest(seed)})
+    if not resume:
+        write_json(directory / "seed_prompt.json", {"instruction": seed, "sha256": digest(seed)})
     env = dict(
         os.environ,
         DASHSCOPE_API_KEY=key,
@@ -229,10 +290,16 @@ def run(config, *, live=False):
     try:
         for task_id in splits.train:
             target = directory / "baseline" / task_id
-            score, info, result, prompt, _ = client.task(seed, task_id, "baseline", target)
-            diagnostic = client.semantic_feedback(
-                result, prompt, target, {"id": task_id, "split": "train"}
-            )
+            if resume and target.exists():
+                score, info, result, prompt, _ = client.read_task(seed, task_id, "baseline", target)
+            else:
+                score, info, result, prompt, _ = client.task(seed, task_id, "baseline", target)
+            if (target / "semantic/analysis.json").exists():
+                diagnostic = read(target / "semantic/analysis.json")
+            else:
+                diagnostic = client.semantic_feedback(
+                    result, prompt, target, {"id": task_id, "split": "train"}
+                )
             client.pool[task_id] = {
                 "reward": score,
                 "termination_reason": info["termination_reason"],
@@ -326,7 +393,7 @@ def run(config, *, live=False):
             summary["gate_error"] = str(exc)[:200]
     finally:
         save()
-        write_json(directory / "summary.json", summary)
+        write_json(directory / ("summary_recovered.json" if resume else "summary.json"), summary)
     return {
         "status": summary["status"],
         "artifacts": str(directory),
@@ -338,9 +405,14 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", required=True, type=Path)
     parser.add_argument("--live", action="store_true")
+    parser.add_argument(
+        "--resume",
+        action="store_true",
+        help="One baseline diagnostic-timeout recovery; never rerun a task",
+    )
     args = parser.parse_args()
     try:
-        result = run(load(args.config), live=args.live)
+        result = run(load(args.config), live=args.live, resume=args.resume)
     except Exception as exc:
         print(json.dumps({"status": "stopped", "error_type": type(exc).__name__}))
         return 2

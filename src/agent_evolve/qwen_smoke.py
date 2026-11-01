@@ -36,11 +36,14 @@ class CallLimit(ProviderError):
 class Calls:
     """Serial total-call guard for Agent and Simulator; no retry after any fault."""
 
-    def __init__(self, completion, key, path, *, limit=24, seconds=600, max_tokens=1024):
+    def __init__(
+        self, completion, key, path, *, limit=24, seconds=600, max_tokens=1024, request_seconds=30
+    ):
         self.completion, self.key, self.path = completion, key, path
         self.limit, self.deadline = limit, time.monotonic() + seconds
         self.count, self.failed = 0, False
         self.max_tokens = max_tokens
+        self.request_seconds = request_seconds
 
     def __call__(self, **kwargs):
         if self.failed or self.count >= self.limit or time.monotonic() >= self.deadline:
@@ -55,7 +58,7 @@ class Calls:
         kwargs.update(
             api_key=self.key,
             api_base=BASE,
-            timeout=30,
+            timeout=self.request_seconds,
             num_retries=0,
             max_retries=0,
             max_tokens=self.max_tokens,

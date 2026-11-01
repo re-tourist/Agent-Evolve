@@ -11,6 +11,30 @@ from agent_evolve.semantic import observable_view, validate_analysis, without_un
 from agent_evolve.study import FailureSampler, load
 
 
+@pytest.fixture
+def synthetic_task_metadata(monkeypatch):
+    """Unit checks must not depend on a downloaded official checkout in root CI."""
+    from pathlib import Path
+
+    from agent_evolve import study
+
+    config = json.loads(Path("examples/semantic_study.json").read_text(encoding="utf-8"))
+    original = study.read
+
+    def read_fixture(path):
+        if Path(path).name == "split_tasks.json":
+            return {"train": config["train"] + config["validation"], "test": config["test"]}
+        if Path(path).name == "tasks.json":
+            return [
+                {"id": i, "evaluation_criteria": {}}
+                for group in ("train", "validation", "test")
+                for i in config[group]
+            ]
+        return original(path)
+
+    monkeypatch.setattr(study, "read", read_fixture)
+
+
 def test_observable_allowlist_and_citations():
     result = {
         "messages": [
@@ -87,7 +111,7 @@ def test_new_shared_limits_and_diagnostic_role(tmp_path):
         budget.begin("baseline", "agent", "no501st-budget-reset")
 
 
-def test_failure_success_sampling_rotates_and_never_uses_test(tmp_path):
+def test_failure_success_sampling_rotates_and_never_uses_test(tmp_path, synthetic_task_metadata):
     class Loader:
         def all_ids(self):
             return list(range(6))
@@ -106,7 +130,9 @@ def test_failure_success_sampling_rotates_and_never_uses_test(tmp_path):
     )
 
 
-def test_timeout_recovery_preserves_counter_and_never_reexecutes_task(tmp_path, monkeypatch):
+def test_timeout_recovery_preserves_counter_and_never_reexecutes_task(
+    tmp_path, monkeypatch, synthetic_task_metadata
+):
     from agent_evolve import optimization, study
     from agent_evolve.baseline import write_json
 

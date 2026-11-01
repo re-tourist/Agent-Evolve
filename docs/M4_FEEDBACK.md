@@ -1,5 +1,10 @@
 # M4-A: trace-grounded feedback, offline only
 
+Historical offline specification below. Later real comparison:
+[core sprint report](experiments/CORE_EXPERIMENT_REPORT.md). Reflection sampled only
+successful Train7, adding a redundant stop observation; both tied proposals were
+rejected. No feedback benefit is established and no extra rules/Judge were added.
+
 Current scope is four conservative observations, not a complete failure classifier
 or evidence of Prompt improvement. No LLM Judge, API request or formal optimization.
 

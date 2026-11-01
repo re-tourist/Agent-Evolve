@@ -18,6 +18,9 @@
 | ADR-014 / 2026-11-01 | Save all observed candidates separately from GEPA accepted pool | Rejected candidates may be absent from GEPAResult; preserve feedback and exposed lineage without inventing parents |
 | ADR-015 / 2026-11-01 | Explicit development split and test_set=None; both Live gates closed | Train 0 / validation 1 from official train, reserved test 5 never evaluated; layered M3-B approval required |
 | ADR-016 / 2026-11-01 | M4-A uses conservative observation rules with JSON Pointer evidence; basic feedback stays default | Explicit tool flags/binding markers and termination only; Reward failure is not causal evidence, hidden details never exported, no score/model/Policy change |
+| ADR-017 / 2026-11-01 | Authorized real sprint reuses Qwen single-task body and GEPA callable seam across existing isolated environments | `experiment.py`, `live_runtime.py`; shared serial400-request/RMB30 estimated stop ledger, phase92/92/216, no dependency/upstream changes |
+| ADR-018 / 2026-11-01 | Formal Live optimization/aggregation uses raw official Reward, including step/protocol zeros; infrastructure faults are unscored | Supersedes ADR-011 only for benchmark score handling: old normalized smoke null annotations never remove official failures; three Test truncations retained |
+| ADR-019 / 2026-11-01 | Keep strict rejection and identical frozen Best prompts even when final arm scores differ | Both proposals tied Seed at Train7=1; no further proposals under whole-task reserves. All9 Test trials retained, no post-Test tuning or benefit claim |
 
 New major decisions record context, choice, alternatives, evidence and consequences.
 Distinguish pinned-source facts from local decisions and unverified runtime assumptions.

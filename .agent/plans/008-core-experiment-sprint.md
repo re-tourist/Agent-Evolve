@@ -15,8 +15,8 @@ separate, only after both Best prompts frozen. Never send gold details to GEPA.
 
 - [x] Reusable live task + secure credentials + global serial budget/role guard.
 - [x] Live GEPA evaluator/reflection and one continuous entry; offline checks.
-- [ ] Freeze source/config before paid work; Basic then Structured then9 Test trials.
-- [ ] All raw official failures retained; analyse real feedback/candidates/costs.
+- [x] Freeze source/config before paid work; Basic then Structured then9 Test trials.
+- [x] All raw official failures retained; analyse real feedback/candidates/costs.
 - [ ] Sanitize evidence/history; original Milestone Issues, branch push and review PR.
 
 API/permission/network/missing usage/unknown model/loop/global budget stop all sends.
@@ -29,3 +29,11 @@ Retail Task1 scripted/Reflection2 passed(25.24s). Visible upstream warnings reta
 Ruff fixed initial local style issues; fixture string-to-Path/allowed-train-ID
 assertion mistakes corrected without changing acceptance semantics. Zero real calls
 before freeze. Credential available, all8 tasks judge-free, official split verified.
+
+Executed from clean source0a820f0 with run core-sprint-001. Basic4/8 evaluations,
+Structured4/8, each one real new candidate evaluated and rejected on a1-to-1 tie;
+both Best=Seed, complete Validation mean0.5, Train coverage7 only. Whole-task
+24-call reserves stop both searches before a second proposal. Test9/9 complete:
+Baseline3/3, Basic1/3, Structured2/3; all prompts identical, three max_steps zeros
+retained. No improvement claim. Requests306/400, Tokens1,571,250, estimatedRMB1.293252,
+all Usage reconciled, zero provider errors. No additional real calls after completion.

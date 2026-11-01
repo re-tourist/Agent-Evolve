@@ -1,5 +1,9 @@
 # M3-A offline optimization runbook
 
+Historical M3-A instructions. The later authorized real sprint is complete; see
+[current runbook](CORE_EXPERIMENT_RUNBOOK.md) and [real report](experiments/CORE_EXPERIMENT_REPORT.md).
+The continuous entry defaults to configuration-only; no further real calls are authorized.
+
 Read GOALS/architecture/protocol and M3_GEPA_AUDIT first. M2-B has never run;
 its live gate is retained. No model service or paid inference is permitted in M3-A.
 

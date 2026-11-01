@@ -1,5 +1,27 @@
 # Architecture and implementation boundary
 
+## Current real execution path (core-sprint-001)
+
+`experiment.py` provides the authorized continuous Live entry. `qwen_smoke.py`
+keeps its original single-task CLI and exposes the same official execution body
+for fresh serial task workers. `optimization.optimize_live()` uses pinned public
+GEPA with `LiveEvaluator` and Qwen callable Reflection in the existing tau worker;
+legacy baseline/standalone optimizer Live gates remain closed.
+
+`live_runtime.py` owns secure local CSV/environment injection and the one serial
+JSON/append-log budget shared across Agent, Simulator and Reflection. Whole-task
+admission protects Test reserves; official raw zeros remain scores, while
+infrastructure/global-budget faults abort unscored. No upstream or provider
+framework fork was added. JSON writes are atomic for this serial process model;
+the ledger is not a concurrent service or a cloud billing guarantee.
+
+Real engine + real Qwen candidate evaluation and all9 held-out Test trials are
+verified. Both proposals tied their Seed and were rejected, so all Test prompts
+are identical. Structured feedback added little information on the successful
+sampled training task. See `docs/experiments/CORE_EXPERIMENT_REPORT.md`; this is
+integration evidence and exploratory outcomes, not demonstrated improvement.
+The following sections record the stages that established this path.
+
 ## Implemented in M1
 `src/agent_evolve/__init__.py` exposes package version metadata only.
 `tools/capture_environment.py` writes an allowlisted CPU-only environment snapshot.

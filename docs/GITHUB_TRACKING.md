@@ -88,3 +88,21 @@ Local M3-A implementation/evidence commit:
 contain checked M3-A criteria, actual validation evidence and this SHA. A final
 authenticated read verified #13-18 are open, assigned to milestone 3 and retain
 the evidence. This closure changes documentation only; it does not authorize Live.
+
+## Core sprint — M3-B2 / M4-B / M5 — 2026-11-01
+
+Reused M3 Issues13–18 and original Milestones3/4/5. Created only missing delivery
+Issues [#19 M4 comparison](https://github.com/re-tourist/Agent-Evolve/issues/19)
+and [#20 M5 test/publication](https://github.com/re-tourist/Agent-Evolve/issues/20).
+No new Milestone or duplicate task management system.
+
+Real source0a820f0, run core-sprint-001: real GEPA generated/evaluated1 new candidate
+per arm, both rejected on equal Train7 score1; Best=Seed. Val mean0.5,4 evals/arm,
+Train7 only. Independent Test9/9, success3/3,1/3,2/3; all prompts equal, no demonstrated
+improvement.306 requests/1,571,250 Tokens/estimatedRMB1.293252, no provider errors.
+Three step-limit official zeros remain. All raw logs/credentials stay ignored.
+
+Evidence: `experiments/CORE_EXPERIMENT_REPORT.md`, reviewed scalar/candidate/manifest
+JSON, `validation/CORE_SPRINT_VALIDATION.md`. Relevant Issue acceptance/evidence
+is updated for review. Branch `codex/core-experiment-sprint` is the authorized
+publication target; review remains open, no main merge or Release.

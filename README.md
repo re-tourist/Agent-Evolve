@@ -1,74 +1,95 @@
 # Agent-Evolve
 
-Evaluation-driven experiments for LLM Agents. 当前唯一正式子项目为 **GEPA × τ-bench**：
-基于执行轨迹反馈的客服 Agent Prompt 自动优化。
+Evaluation-driven optimization and training experiments for LLM Agents.
+当前项目：**GEPA × τ-bench 客服 Agent Prompt 优化与 Trace Feedback 对照**。
 
-**Status / 当前状态**：M4-A offline trace diagnostics. 保留 M3-A 离线 GEPA 闭环，
-新增可选结构化反馈：工具错误、参数异常、结束状态和不确定失败，附 Trace 位置。
-官方 Reward 不变；第二次获批 Qwen 单任务已正常 user_stop，官方 Reward=1，10 次调用。
-第一次因人工 Step 上限截断的官方 Reward=0 完整保留。真实 GEPA 与 Prompt 优化效果未验证。
-见 [M3-B1.2 实验记录](docs/experiments/M3B12_QWEN_TASK0_002.md)，未执行第三次或真实 GEPA。
-说明与示例见 [M4 feedback](docs/M4_FEEDBACK.md)。
-单任务真实测试准备：新增默认离线的 Qwen 入口，执行前仍需用户明确批准；
-见 [Qwen Task 0 方案与命令](docs/experiments/QWEN_SINGLE_TASK_PROPOSAL.md)。
+**实际结果**：已完成真实 Qwen Agent / Simulator / Reflection 链路及一次小规模
+独立测试。GEPA-Basic、GEPA-Structured 各提出并真实评估 1 个新 Prompt，因评分
+未严格超过 Seed 而拒绝；两组 Best 均保持 Seed。**没有证明性能提升或结构化反馈优势。**
 
-```powershell
-uv run --offline --frozen python -m agent_evolve.baseline --config examples/m2/mock.json
+| 独立 Retail Test | Baseline | GEPA-Basic Best | GEPA-Structured Best |
+|---|---:|---:|---:|
+| Task 5 | 1 | 0 (step limit) | 1 |
+| Task 9 | 1 | 0 (step limit) | 0 (step limit) |
+| Task 12 | 1 | 1 | 1 |
+| 官方成功数 / 计划任务数 | 3/3 | 1/3 | 2/3 |
+| 官方平均 Reward | 1.000 | 0.333 | 0.667 |
+
+三列实际上使用**同一个 Prompt**，每任务每组仅 1 Trial。这些差异属于相同 Prompt
+独立运行的变动，不能解释为优化效果；32 Steps 截断的原始官方 0 全部保留。
+官方满分也不保证所有回复都遵守 Policy：人工审查发现认证遗漏与无依据时效承诺。
+本轮 17 次任务评估 + 2 次 Reflection，共 **306 次请求、1,571,250 Tokens、估算 ¥1.293252**；
+实际账单不可获得。仅覆盖无需 Judge 的 Retail 小子集，不是完整 Benchmark 或显著性结论。
+
+[完整报告](docs/experiments/CORE_EXPERIMENT_REPORT.md) ·
+[逐任务 JSON](docs/experiments/core-sprint-001/results.json) ·
+[实际候选](docs/experiments/core-sprint-001/prompts.json) ·
+[产物哈希](docs/experiments/core-sprint-001/manifest.json)
+
+## Architecture / 数据流
+
+```mermaid
+flowchart LR
+    P[Candidate Instruction + Fixed Policy/Tools] --> T[Official τ-bench Retail]
+    T --> R[Official Reward + Private Trace]
+    R --> F[Basic / Structured Feedback]
+    F --> G[Pinned GEPA: Train + Validation]
+    G --> P
+    G --> B[Frozen Best]
+    B --> E[Isolated Test: no feedback to search]
 ```
 
-这是合成 Fixture；官方 Retail 脚本化运行、独立环境安装及输出格式见
-[M2 runbook](docs/M2_RUNBOOK.md)。同一 run_id 不可重复覆盖。
+GEPA core 与 τ-bench 使用独立锁定环境，串行子进程隔离业务状态；共享调用账本
+覆盖 Agent、Simulator、Reflection。结构化诊断只描述可观察证据，不从 Reward=0
+猜测原因，不把参考工具路径当成唯一正确答案。上游任务、Policy、Tools、Reward 未修改。
 
-GEPA 独立环境及离线优化入口见 [M3 runbook](docs/M3_RUNBOOK.md)。默认仅使用
-确定性反思替身，不表示已在真实 LLM 上取得提升。真实 GEPA 优化尚未执行；
-M3-B1.2 已有一次正常终止的单任务记录，等待 M3-B2 单独审查。
+## Quick start / 离线启动
 
-## Quick start / 本地启动
-Use Python 3.12 and uv 0.9.5. If uv is absent, install it locally in PowerShell:
+Python 3.12，uv 0.9.5。首次安装依赖需访问包仓库，以下检查无需模型密钥：
 
 ```powershell
-python -m venv .bootstrap
-.\.bootstrap\Scripts\python.exe -m pip install --index-url https://pypi.org/simple uv==0.9.5
-.\.bootstrap\Scripts\uv.exe sync --frozen --group dev
-```
-
-From the repository root, run the following. When using the local bootstrap above,
-replace `uv` with `.\.bootstrap\Scripts\uv.exe` (no global installation required):
-
-```sh
 uv sync --frozen --group dev
 uv run --offline --frozen python -m pytest
 uv run --offline --frozen ruff check .
 uv run --offline --frozen ruff format --check .
-uv run --offline --frozen python -c "import agent_evolve; print(agent_evolve.__version__)"
-uv run --offline --frozen python tools/capture_environment.py --output runs/local-check/environment.json
+uv run --offline --frozen python -m agent_evolve.baseline --config examples/m2/mock.json
 ```
 
-Initial provisioning downloads packages; subsequent checks need no model key or
-network. The snapshot command refuses to overwrite an existing file. The baseline
-entry point supports offline/scripted runs only. `.env.example` contains comments
-only; no key is needed for M1, M2-A or M3-A.
+没有 uv 时可用 `python -m venv .bootstrap`，再用
+`.bootstrap/Scripts/python.exe -m pip install uv==0.9.5`；后续将 `uv` 替换为
+`.bootstrap/Scripts/uv.exe`。同一 run_id 拒绝覆盖，已有示例运行需使用独立输出目录。
+Mock 成绩仅验证工程接口。官方源码及隔离环境安装见 [M2](docs/M2_RUNBOOK.md)、
+[M3](docs/M3_RUNBOOK.md)。
 
-## Roadmap
-| Stage | Scope | State |
-|---|---|---|
-| M1 | Repository Foundation & Codex Governance | See validation evidence |
-| M2 | τ-bench Baseline & Trace | Task 0 Live smoke normal stop / official Reward 1 |
-| M3 | GEPA Optimization Loop | M3-A offline; real API loop not approved |
-| M4 | Trace-grounded Structured Feedback | M4-A offline; real-trace validation/comparison pending |
-| M5 | Controlled Experiments & Portfolio Release | Planned |
+连续实验入口默认只读配置、零模型调用：
 
-长期可探索 SFT/RL；当前不训练模型权重，不重写官方 Benchmark 或 GEPA。
-Policy 与可优化 Prompt 分离，训练/验证/测试隔离，所有付费批量运行需预算批准。
+```powershell
+environments/gepa/.venv/Scripts/python.exe -m agent_evolve.experiment --config examples/core_experiment.json
+# 仅在新的明确预算授权下执行；本轮 ID 已使用，不可覆盖或自行重跑：
+# ... -m agent_evolve.experiment --config <new-reviewed-config> --live
+```
+
+[真实运行与预算规则](docs/CORE_EXPERIMENT_RUNBOOK.md) 包含冻结配置、环境、停止条件
+和私有产物结构。密钥及原始日志保持忽略，不进入 Git 或 CI。
+
+## Roadmap / 实际进度
+
+| Stage | Evidence |
+|---|---|
+| M1 Foundation | 工程规范、离线 CI、版本审计 |
+| M2 Baseline & Trace | Qwen 真实单任务与官方 Reward |
+| M3 GEPA Loop | 真实候选生成与评估完成；未产生更优 Best |
+| M4 Trace Feedback | 离线规则 + 真实对照；未证明额外收益 |
+| M5 Controlled Experiments | 9/9 Test、成本与失败分析、可审查交付；不合并、不发 Release |
+
+长期可探索数据构建和 SFT/RL；当前不训练模型权重。下一步需先审查本轮的反馈信息
+不足、Simulator/终止波动和官方评分覆盖边界，再决定新的实验。
 
 ## Documentation
+
 - [Goals](GOALS.md), [Architecture](ARCHITECTURE.md), [Agent rules](AGENTS.md)
-- [Project plan v0.2](docs/PROJECT_PLAN.md), [M1 ExecPlan](.agent/plans/001-m1-foundation.md)
-- [Experiment protocol](docs/EXPERIMENT_PROTOCOL.md), [Decisions](docs/DECISIONS.md)
-- [Template audit](docs/TEMPLATE_AUDIT.md), [Upstream audit](docs/UPSTREAM_AUDIT.md)
-- [Actual validation](docs/validation/M1_VALIDATION.md), [GitHub tracking](docs/GITHUB_TRACKING.md)
-- [Experiment log](docs/experiments/EXPERIMENT_LOG.md), [Template](docs/experiments/EXPERIMENT_TEMPLATE.md)
-- [M2 source audit](docs/M2_UPSTREAM_AUDIT.md), [M2 validation](docs/validation/M2A_VALIDATION.md)
-- [Live proposal — not approved](docs/experiments/M2_LIVE_RUN_PROPOSAL.md)
-- [M3 interface audit](docs/M3_GEPA_AUDIT.md), [M3 validation](docs/validation/M3A_VALIDATION.md)
-- [M3 layered Live proposal — not approved](docs/experiments/M3_LIVE_TEST_PROPOSAL.md)
+- [Project plan v0.2 (historical baseline)](docs/PROJECT_PLAN.md), [Protocol](docs/EXPERIMENT_PROTOCOL.md), [Decisions](docs/DECISIONS.md)
+- [Core sprint validation](docs/validation/CORE_SPRINT_VALIDATION.md), [Experiment log](docs/experiments/EXPERIMENT_LOG.md)
+- [GEPA audit](docs/M3_GEPA_AUDIT.md), [τ-bench audit](docs/M2_UPSTREAM_AUDIT.md), [Feedback rules](docs/M4_FEEDBACK.md)
+- [M1 validation](docs/validation/M1_VALIDATION.md), [M2-A](docs/validation/M2A_VALIDATION.md), [M3-A](docs/validation/M3A_VALIDATION.md), [M4-A](docs/validation/M4A_VALIDATION.md)
+- [GitHub tracking](docs/GITHUB_TRACKING.md), [ExecPlan](.agent/plans/008-core-experiment-sprint.md)

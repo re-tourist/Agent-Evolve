@@ -1,44 +1,44 @@
 # Goals and acceptance
 
-Agent-Evolve is a local-first repository for Agent evaluation, Prompt optimization,
-and optionally future data construction and SFT/RL experiments. The sole current
-subproject is **GEPA × τ-bench: trace-grounded Prompt optimization for customer-service
-Agents**. PROJECT_PLAN.md v0.2 is the design baseline.
+Agent-Evolve studies evaluation-driven optimization for LLM Agents. Its current
+subproject is **GEPA × τ-bench: trace-grounded Prompt optimization for customer
+service Agents**. `docs/PROJECT_PLAN.md` v0.2 is the preserved design baseline;
+the execution log and reports describe actual progress.
 
-## Current scope: M4-A (offline trace diagnostics)
-Active authorization update: implement the approved continuous M3-B2 -> M4-B -> M5
-sprint, with one shared400-request/RMB30 estimated budget and fixed3/2/3 split.
-This supersedes the older no-next-task restrictions below only within that sprint.
-See docs/CORE_EXPERIMENT_RUNBOOK.md; do not add Task0 smoke or expand the budget.
-M3-A and Qwen single-task preparation are retained. Add four small evidence-linked
-diagnostic types and optional structured GEPA feedback using the same official
-Reward. No reference tool path, hidden target or test trace enters reflection.
-M3-B1.2 update: a second separately authorized Qwen task-0 trial ended normally
-with official Reward 1. The first step-capped raw 0 is retained, never silently
-excluded from official benchmark denominators. See docs/experiments/M3B12_QWEN_TASK0_002.md.
-No third task, GEPA Live optimization, M4-B or M5 is authorized. Dedicated entry
-still defaults to offline; next real optimization needs separate approval.
+## Current outcome: M3-B2 / M4-B / M5 exploratory sprint
 
-Retain M1 and M2-A. Integrate pinned real GEPA core with the M2 official Reward/Trace
-adapter, candidate evidence, explicit train/validation/test boundaries, deterministic
-reflection and offline tests. One actual Agent/User/tool chain is verified, but no
-real GEPA reflection/optimization is verified; task 0 has one normal Live completion.
-The original baseline/optimizer Live gates remain closed. M3-B requires staged approval: one real
-Agent task first; only after review, separately approve the smallest real GEPA loop.
-Synthetic score changes and scripted trajectories are engineering evidence only.
+The explicitly approved `core-sprint-001` is complete and stopped. Real Qwen
+Agent/User/Reflection calls exercised pinned GEPA and official Retail scoring.
+Both search arms proposed and evaluated one new instruction, rejected its tied
+score, and retained Seed. All nine independent Test trials ran. **No optimization
+improvement or structured-feedback advantage was demonstrated.** See
+`docs/experiments/CORE_EXPERIMENT_REPORT.md` for failures and limitations.
 
-## Milestone gates
-- M1 Repository Foundation & Codex Governance: reproducible offline foundation.
-- M2 τ-bench Baseline & Trace: one authorized real Retail task with isolated state,
-  full trace, official Reward and provenance.
-- M3 GEPA Optimization Loop: real bounded search with candidate lineage and scores.
-- M4 Trace-grounded Structured Feedback: evidence-linked diagnoses and scalar comparison.
-- M5 Controlled Experiments & Portfolio Release: frozen splits, matched budgets,
-  honest final-test results and reproducible public report.
+The shared authorization was 400 requests / RMB30 estimated stop threshold;
+actual use was 306 requests / RMB1.293252 estimated, with no automatic task retry.
+The historical two Task0 smokes are separate and unchanged. No further real run,
+new task split, extra trial, budget reset, merge or Release is authorized by this
+completion. Any future paid work needs a new reviewed experiment scope/budget.
 
-## Non-goals
-M4-A adds no paid run, model-backed reflection, large taxonomy or formal comparison.
-The current project does not rewrite upstream algorithms/benchmarks, build a web
-platform, add RAG, voice or multi-Agent execution, or train SFT/RLHF/RL weights.
-GPU provisioning and paid evaluation are not foundation requirements. No Agent
-performance claim is made.
+## Milestone evidence
+
+- M1: repository governance, pinned environments and offline checks.
+- M2: real isolated Retail traces, tools and raw official Reward; both Task0
+  attempts retained, including the first step-capped official zero.
+- M3: actual hosted-model reflection → new candidate → official reevaluation →
+  strict selection, with full candidate evidence; Best may remain Seed.
+- M4: conservative evidence-linked diagnostics and a real Basic/Structured
+  comparison. The sampled successful training task provided little new diagnosis.
+- M5: fixed train/validation/test split, nine final trials, reviewed scalar
+  artifacts/report and branch/PR delivery for review; no main merge or Release.
+
+## Boundaries
+
+Policy, tools, tasks and scoring belong to pinned upstream τ-bench and remain
+unchanged. GEPA optimizes Agent Instructions only. Test traces/hidden criteria do
+not enter reflection or selection. Official failures, step truncation and
+infrastructure faults stay distinguishable; no result is fabricated or discarded.
+
+No new provider framework, Judge, large taxonomy, web platform, RAG, voice,
+multi-Agent system or SFT/RL weight training is included. Future research can
+address the observed weak feedback and termination sensitivity after review.

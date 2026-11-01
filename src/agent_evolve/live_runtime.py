@@ -119,7 +119,16 @@ class Budget:
     def save(self, state):
         temporary = self.path.with_suffix(".tmp")
         temporary.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
-        os.replace(temporary, self.path)
+        # Windows file watchers can briefly hold a new JSON file. Retry only this
+        # atomic local rename, never a model request or task, and fail closed.
+        for delay in (0.02, 0.05, 0.1, None):
+            try:
+                os.replace(temporary, self.path)
+                break
+            except PermissionError:
+                if delay is None:
+                    raise
+                time.sleep(delay)
 
     def stop(self, reason):
         state = self.read()

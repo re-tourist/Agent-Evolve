@@ -81,6 +81,16 @@ def worker(job):
                 text = response.choices[0].message.content
                 if not isinstance(text, str) or not text.strip():
                     raise ValueError("Empty real reflection output")
+                if job["kind"] == "diagnostic":
+                    from agent_evolve.semantic import validate_analysis
+
+                    write_json(directory / "raw_output.json", {"text": text})
+                    try:
+                        verified = validate_analysis(text, payload)
+                    except (ValueError, KeyError, TypeError):
+                        verified = {"diagnostics": [], "rejected": [{"reason": "invalid_json"}]}
+                    write_json(directory / "validation.json", verified)
+                    text = json.dumps(verified, ensure_ascii=False)
                 write_json(directory / "output.json", {"text": text, "calls": calls.count})
             finally:
                 ROLE.reset(token)

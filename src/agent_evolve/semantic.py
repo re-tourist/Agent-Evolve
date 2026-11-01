@@ -40,6 +40,7 @@ particular tool path or invent a Policy requirement. No success_principles/advic
 outside evidence-checked diagnostics is accepted.
 Return JSON ONLY: {"diagnostics": [up to 3 well-supported objects]}.
 Each diagnostic has category (one of CATEGORIES), observation, hypothesis (or null),
+finding (error/risk/positive/unknown; correct behavior is positive, never an error),
 certainty (observed/plausible/unknown), responsibility (Agent/Simulator/Environment/Unknown),
 impact, suggestion (general reusable prompt principle, no specific task answer/IDs),
 and evidence: [{pointer: JSON Pointer into payload, quote: exact nonempty substring
@@ -134,7 +135,7 @@ def validate_analysis(text, view):
     parsed = json.loads(fenced.group(1) if fenced else text)
     if not isinstance(parsed, dict) or not isinstance(parsed.get("diagnostics"), list):
         raise ValueError("Invalid diagnostic schema")
-    accepted, rejected = [], []
+    accepted, rejected, positives = [], [], []
     for index, item in enumerate(parsed["diagnostics"][:5]):
         try:
             if item["category"] not in CATEGORIES or item["responsibility"] not in {
@@ -174,6 +175,11 @@ def validate_analysis(text, view):
                     raise ValueError("Unsupported evidence source")
             if re.search(r"<id_|\d{5,}|[\w.+-]+@", item["suggestion"]):
                 raise ValueError("Suggestion contains instance-specific identifiers")
+            if item.get("finding") == "positive":
+                positives.append(item)
+                continue
+            if item.get("finding") not in {None, "error", "risk", "unknown"}:
+                raise ValueError("Invalid finding kind")
             # Reflection receives reusable observations, not copied tool records/variant IDs.
             accepted.append(item)
         except (KeyError, ValueError, TypeError, IndexError):
@@ -182,6 +188,7 @@ def validate_analysis(text, view):
         "diagnostics": accepted,
         "rejected": rejected,
         "success_principles": [],
+        "positive_observations": positives,
         "note": "Citation validity is checked; semantic correctness and causal attribution "
         "require human review.",
     }

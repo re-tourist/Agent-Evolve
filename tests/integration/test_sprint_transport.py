@@ -89,7 +89,14 @@ def test_reflection_worker_guarded_real_sdk_transport(tmp_path, monkeypatch, kin
             )
     assert len(requests) == budget.read()["requests"] == 1
     output = json.loads((directory / "output.json").read_text())
-    assert output["text"] == "real SDK mock transport output"
+    if kind == "diagnostic":
+        assert json.loads(output["text"])["diagnostics"] == []
+        assert (
+            json.loads((directory / "raw_output.json").read_text())["text"]
+            == "real SDK mock transport output"
+        )
+    else:
+        assert output["text"] == "real SDK mock transport output"
     assert "private-fixture-key" not in budget.path.with_suffix(".jsonl").read_text()
 
 

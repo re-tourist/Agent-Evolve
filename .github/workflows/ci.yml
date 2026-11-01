@@ -18,3 +18,4 @@ jobs:
       - run: uv run --offline --frozen ruff format --check .
       - run: uv run --offline --frozen python -m pytest
       - run: uv run --offline --frozen python -c "import agent_evolve; print(agent_evolve.__version__)"
+      - run: uv run --offline --frozen python -m agent_evolve.baseline --config examples/m2/mock.json

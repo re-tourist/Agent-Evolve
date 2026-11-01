@@ -1,0 +1,11 @@
+[project]
+name = "agent-evolve-tau-env"
+version = "0.0.0"
+requires-python = ">=3.12,<3.13"
+dependencies = ["agent-evolve", "tau2==2.0.0", "pytest>=8.3,<9"]
+
+[tool.uv.sources]
+agent-evolve = { path = "../..", editable = true }
+# Recreate this ignored checkout at the exact SHA in docs/M2_UPSTREAM_AUDIT.md.
+# The backend rejects another checkout SHA or changed tracked files.
+tau2 = { path = "../../.cache/tau2-source", editable = true }

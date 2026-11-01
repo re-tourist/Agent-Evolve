@@ -1,0 +1,14 @@
+{
+  "mode": "mock",
+  "backend": "fixture",
+  "domain": "retail",
+  "task_ids": ["fixture-retail-001"],
+  "num_tasks": 1,
+  "seed": 42,
+  "max_steps": 12,
+  "agent_model": "mock/agent",
+  "user_model": "mock/user",
+  "instruction_file": "instruction.txt",
+  "output_dir": "../../runs/m2",
+  "run_id": "fixture-smoke-001"
+}

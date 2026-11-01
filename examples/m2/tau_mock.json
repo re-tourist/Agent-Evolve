@@ -1,0 +1,14 @@
+{
+  "mode": "mock",
+  "backend": "tau",
+  "task_ids": ["0"],
+  "num_tasks": 1,
+  "seed": 42,
+  "max_steps": 12,
+  "agent_model": "mock/scripted-agent",
+  "user_model": "mock/scripted-user",
+  "instruction_file": "instruction.txt",
+  "tau_checkout": "../../.cache/tau2-source",
+  "output_dir": "../../runs/m2",
+  "run_id": "tau-scripted-001"
+}

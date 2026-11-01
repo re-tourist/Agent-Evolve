@@ -36,3 +36,23 @@ Foundation source/evidence commit: `8094da4ec7df87d564322eeaac500051d3cf750b`
 (local only). The Issues record local acceptance evidence and remain open for
 publication/review. No automatic push, release, Issue closure
 or paid run was performed. M1 stays open for the owner's publication/review workflow.
+
+## M2-A — 2026-11-01
+Reused [M2 milestone 2](https://github.com/re-tourist/Agent-Evolve/milestone/2).
+Authoritative repository Issue list checked before creation; no existing M2 Issues.
+Created the following six Issues, all assigned to M2:
+
+| Issue | Scope | Local M2-A acceptance |
+|---|---|---|
+| [#7 M2-01](https://github.com/re-tourist/Agent-Evolve/issues/7) | Official interface audit | Source pin, guide/examples, defaults/Judge and Windows evidence recorded |
+| [#8 M2-02](https://github.com/re-tourist/Agent-Evolve/issues/8) | Baseline Runner | Offline/mock CLI/config/artifacts; live closed |
+| [#9 M2-03](https://github.com/re-tourist/Agent-Evolve/issues/9) | Prompt/Policy separation | Independent text/hashes, instance-level Prompt, isolation tests |
+| [#10 M2-04](https://github.com/re-tourist/Agent-Evolve/issues/10) | Trace/Reward export | Actual scripted tool/RewardInfo export, unavailable metrics and fault labels |
+| [#11 M2-05](https://github.com/re-tourist/Agent-Evolve/issues/11) | State/offline tests | Root 41 passed; upstream 6 passed; ruff/format/import passed |
+| [#12 M2-06](https://github.com/re-tourist/Agent-Evolve/issues/12) | Live proposal | One train task / one trial, documented RMB assumptions and limitations |
+
+Evidence: `validation/M2A_VALIDATION.md`, command JSON, source/data hashes and
+`experiments/M2A_SCRIPTED_SMOKE.md`. Issues stay **open pending publication/review**,
+following M1's workflow; local completion does not claim remote CI success.
+M2 as a whole is not complete: M2-B real model validation is not approved or run.
+No new Milestone, automatic merge, release, push or later-stage issue was created.

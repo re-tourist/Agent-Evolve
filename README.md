@@ -1,10 +1,13 @@
 # Agent-Evolve
 
-**最新 Goal：未完成。** 新语义反馈研究因 Qwen SDK `InternalServerError` 在第755次请求
-停止。已完成20个Train基线、Basic的3个真实候选（第三批部分中断）；Structured搜索与
-新M5 Test尚未运行。已知Usage估算¥3.3939484，另有未知请求保守预留¥9.796608，实际账单未知。
-算法实现、误归因审查及未满足验收见 [本轮报告](docs/experiments/SEMANTIC_STUDY_REPORT.md)。
-不能把下面的**历史小规模实验**当作新Goal或完整M4/M5的验收。
+**当前 Goal：进行中，尚未验收。** 正在对齐审核版 English Retail 的语言绑定、Persona
+和官方文本构造路径，并验证 Observation → Attribution → Intervention 的失败反馈。
+冻结18/6/10个无需Judge的任务，使用Qwen自定义Simulator，不能称为完整text-v1排行榜复现。
+累计预算包含此前755次请求和保守预留，旧停止记录不清除；详细进度见
+[当前执行计划](.agent/plans/010-reviewed-protocol-goal.md)。目前没有证明优化收益。
+
+此前registry协议的部分语义研究见[历史报告](docs/experiments/SEMANTIC_STUDY_REPORT.md)。
+下面的小规模实验同样是**历史结果**，不能作为新协议或完整M4/M5的验收。
 
 Evaluation-driven optimization and training experiments for LLM Agents.
 当前项目：**GEPA × τ-bench 客服 Agent Prompt 优化与 Trace Feedback 对照**。

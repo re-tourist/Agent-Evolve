@@ -1,5 +1,34 @@
 # Architecture and implementation boundary
 
+## Reviewed English text research protocol (in progress)
+
+`tau_protocol=reviewed-en-text` restricts task selection to the English pack's
+reviewed50 IDs, loads the official language binding and uses build_text_orchestrator
+for Persona/CallContext/environment/User construction. Only Agent Instruction is
+replaced; resolved language guidance and fixed Policy/tools remain. Actual context
+and effective system prompt are saved. Registry mode remains for old reproduction.
+The34 judge-free tasks have frozen18/6/10 research splits; Qwen Simulator and partial
+population differ from a full official text-v1/default-Simulator leaderboard run.
+
+Semantic workers extract observable facts first, then attribute control and propose
+conditional interventions with limits. Literal evidence checks are not semantic
+truth; unsupported advice abstains. Same-model reasoning is not an independent gold
+Judge. Official Reward remains the only search score. A real supported failure
+Episode→actual Reflection→changed candidate→official scoring chain gates final Test.
+Both arms use paired seed42/43 Validation and native GEPA strict selection; perfect
+minibatches skip useless proposals. Identical selected prompts share Test measurements
+explicitly. No Test evidence enters search or feedback.
+
+Run ledgers inherit prior requests/cost/reserves with immutable snapshots and one
+successor marker, never reset authorization. One same-config baseline reschedule can
+reuse completed reviewed Episodes after a bounded5xx stop; original failed attempt
+and all raw scores stay recorded. Final research acceptance is still unproven.
+
+Audit correction: explicit 'agreement is not completion' instructions occur in the
+pinned Voice scaffolds, not the ordinary Text scaffold. Text's generic completion
+rule has not prevented Qwen from emitting STOP with confirmations. Simulator prompts
+remain unchanged; this is a protocol limitation, not a reason to rewrite Reward.
+
 ## Semantic-feedback Goal: implemented path, incomplete real acceptance
 
 `study.py` reuses the existing task worker/evaluator/public GEPA optimizer. It
